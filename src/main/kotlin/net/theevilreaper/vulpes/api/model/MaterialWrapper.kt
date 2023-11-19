@@ -1,7 +1,5 @@
 package net.theevilreaper.vulpes.api.model
 
-import net.theevilreaper.vulpes.api.model.VulpesModel
-
 data class MaterialWrapper(
     val id: Int,
     val mojangName: String,
