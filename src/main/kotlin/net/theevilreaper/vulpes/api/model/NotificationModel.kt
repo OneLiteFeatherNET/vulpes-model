@@ -1,0 +1,22 @@
+package net.theevilreaper.vulpes.api.model
+
+import net.theevilreaper.vulpes.api.model.VulpesModel
+import org.springframework.data.annotation.Id
+import org.springframework.data.mongodb.core.mapping.Document
+
+/**
+ * @author theEvilReaper
+ * @version 1.0.0
+ * @since
+ **/
+@Document("notifications")
+data class NotificationModel(
+    @Id val id: String?,
+    val modelName: String?,
+    val name: String?,
+    val description: String?,
+    val generator: String = "NotificationGenerator",
+    val material: String?,
+    val frameType: String?,
+    val title: String?
+) : VulpesModel
