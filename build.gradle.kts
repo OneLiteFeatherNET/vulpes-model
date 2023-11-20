@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "net.theevilreaper.vulpes.api"
-version = "0.0.1-SNAPSHOT"
+val baseVersion = "0.0.1"
 
 java {
 	sourceCompatibility = JavaVersion.VERSION_17
@@ -41,6 +41,12 @@ tasks {
 	bootBuildImage {
 		builder.set("paketobuildpacks/builder-jammy-base:latest")
 	}
+}
+
+version = if (System.getenv().containsKey("CI")) {
+	"${baseVersion}+${System.getenv("CI_COMMIT_SHORT_SHA")}"
+} else {
+	baseVersion
 }
 
 publishing {
