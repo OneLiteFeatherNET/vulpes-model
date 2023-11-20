@@ -1,13 +1,14 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
 	id("org.springframework.boot") version "3.1.5"
 	id("io.spring.dependency-management") version "1.1.3"
 	kotlin("jvm") version "1.9.20"
 	kotlin("plugin.spring") version "1.9.20"
+	`maven-publish`
 }
 
-group = "net.theevilreaper"
+group = "net.theevilreaper.vulpes.api"
 version = "0.0.1-SNAPSHOT"
 
 java {
@@ -25,17 +26,45 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
-tasks.withType<KotlinCompile> {
-	kotlinOptions {
-		freeCompilerArgs += "-Xjsr305=strict"
-		jvmTarget = "17"
+tasks {
+	compileKotlin {
+		compilerOptions {
+			freeCompilerArgs.add("-Xjsr305=strict")
+			jvmTarget.set(JvmTarget.JVM_17)
+		}
+	}
+
+	test {
+		useJUnitPlatform()
+	}
+
+	bootBuildImage {
+		builder.set("paketobuildpacks/builder-jammy-base:latest")
 	}
 }
 
-tasks.withType<Test> {
-	useJUnitPlatform()
-}
+publishing {
+	publications {
+		create<MavenPublication>("maven") {
+			from(components["java"])
+		}
+	}
 
-tasks.bootBuildImage {
-	builder.set("paketobuildpacks/builder-jammy-base:latest")
+	if (System.getenv().containsKey("CI")) {
+		repositories {
+			maven {
+				name = "GitLab"
+				val ciApiv4Url = System.getenv("CI_API_V4_URL")
+				val projectId = System.getenv("CI_PROJECT_ID")
+				url = uri("$ciApiv4Url/projects/$projectId/packages/maven")
+				credentials(HttpHeaderCredentials::class.java) {
+					name = "Job-Token"
+					value = System.getenv("CI_JOB_TOKEN")
+				}
+				authentication {
+					create<HttpHeaderAuthentication>("header")
+				}
+			}
+		}
+	}
 }
