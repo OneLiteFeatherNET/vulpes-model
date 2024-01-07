@@ -3,6 +3,11 @@ package net.theevilreaper.vulpes.api.model
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
 
+/**
+ * The model class describes the data structure to represent an attribute from the game Minecraft.
+ * @since 1.0.0
+ * @author theEvilReaper
+ */
 @Document("attributes")
 data class AttributeModel(
     @Id
