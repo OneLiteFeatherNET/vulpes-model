@@ -14,7 +14,6 @@ data class NotificationModel(
     val modelName: String?,
     val name: String?,
     val description: String?,
-    val generator: String = "NotificationGenerator",
     val material: String?,
     val frameType: String?,
     val title: String?

@@ -15,7 +15,6 @@ data class BlockModel(
     val modelName: String,
     val name: String?,
     val material: String?,
-    val generator: String = "BlockGenerator",
     val customModelId: Int?,
 ) : VulpesModel {
 

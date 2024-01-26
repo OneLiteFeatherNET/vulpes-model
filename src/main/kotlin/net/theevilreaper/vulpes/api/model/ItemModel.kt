@@ -17,7 +17,6 @@ data class ItemModel(
     val displayName: String?,
     val material: String?,
     val group: String?,
-    val generatorKey: String = "ItemGenerator",
     val customModelId: Int?,
     val amount: Int?,
     val enchantments: Map<String, Short>?,
