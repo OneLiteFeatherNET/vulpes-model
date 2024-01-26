@@ -1,15 +1,15 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    id("org.springframework.boot") version "3.1.5"
-    id("io.spring.dependency-management") version "1.1.3"
-    kotlin("jvm") version "1.9.20"
-    kotlin("plugin.spring") version "1.9.20"
+    alias(libs.plugins.spring)
+    alias(libs.plugins.spring.dependency)
+    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.kotlin.spring)
     `maven-publish`
 }
 
 group = "net.theevilreaper.vulpes.api"
-val baseVersion = "0.0.2-SNAPSHOT"
+val baseVersion = "0.0.3-SNAPSHOT"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
@@ -20,10 +20,10 @@ repositories {
 }
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter")
-    implementation("org.springframework.boot:spring-boot-starter-data-mongodb:3.0.2")
-    implementation("org.jetbrains.kotlin:kotlin-reflect")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    implementation(libs.spring.starter)
+    implementation(libs.spring.starter.mongodb)
+    implementation(libs.kotlin.reflect)
+    testImplementation(libs.spring.starter.test)
 }
 
 tasks {
