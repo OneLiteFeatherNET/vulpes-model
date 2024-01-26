@@ -15,7 +15,6 @@ data class FontModel(
     val name: String?,
     val description: String?,
     val type: String?,
-    val generator: String = "FontGenerator",
     val ascent: Int?,
     val height: Int?,
     val chars: List<Char>?,
