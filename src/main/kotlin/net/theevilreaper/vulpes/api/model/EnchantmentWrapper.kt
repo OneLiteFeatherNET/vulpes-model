@@ -1,5 +1,9 @@
 package net.theevilreaper.vulpes.api.model
 
+@Deprecated(
+    "This class is deprecated and will be removed in the future",
+    replaceWith = ReplaceWith("Use the Enchantment object from the server instead")
+)
 data class EnchantmentWrapper(
     val mojangName: String,
     val minLevel: Int = 1,
