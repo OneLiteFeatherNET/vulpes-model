@@ -1,5 +1,9 @@
 package net.theevilreaper.vulpes.api.model
 
+@Deprecated(
+    "This class is deprecated and will be removed in the future",
+    replaceWith = ReplaceWith("Use the Material object from the server instead")
+)
 data class MaterialWrapper(
     val id: Int,
     val mojangName: String,
