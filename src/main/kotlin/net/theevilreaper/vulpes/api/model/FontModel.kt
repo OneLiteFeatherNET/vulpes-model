@@ -17,6 +17,6 @@ data class FontModel(
     val type: String?,
     val ascent: Int?,
     val height: Int?,
-    val chars: List<Char>?,
+    val chars: List<String>?,
     val shift: List<Double>?
 ) : VulpesModel
