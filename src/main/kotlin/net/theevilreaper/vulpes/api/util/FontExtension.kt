@@ -16,10 +16,6 @@ fun FontModel.hasShiftData(): Boolean {
     return shift.isNullOrEmpty()
 }
 
-fun FontModel.getCharsAsArray(): Array<Char> {
-    return chars!!.map { it }.toTypedArray()
-}
-
 fun FontModel.getShiftAsArray(): Array<Double> {
     return shift!!.map { it }.toTypedArray()
 }
