@@ -1,6 +1,9 @@
 rootProject.name = "vulpes-spring-api"
 
 dependencyResolutionManagement {
+    repositories {
+        mavenCentral()
+    }
     versionCatalogs {
         create("libs") {
             version("kotlin", "1.9.22")
