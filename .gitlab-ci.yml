@@ -1,4 +1,4 @@
-image: repo.htl-md.schule:5003/gradle:8.5.0-jdk17-alpine
+image: repo.htl-md.schule:5003/gradle:8.10.0-jdk21-alpine
 
 include:
   - template: Jobs/Dependency-Scanning.gitlab-ci.yml
