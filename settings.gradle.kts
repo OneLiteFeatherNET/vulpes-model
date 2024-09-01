@@ -6,7 +6,7 @@ dependencyResolutionManagement {
     }
     versionCatalogs {
         create("libs") {
-            version("kotlin", "2.0.0")
+            version("kotlin", "2.0.20")
 
             library("spring.starter", "org.springframework.boot", "spring-boot-starter").withoutVersion()
             library(
