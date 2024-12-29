@@ -5,13 +5,10 @@ plugins {
 }
 
 dependencyResolutionManagement {
-    repositories {
-        mavenCentral()
-    }
-    versionCatalogs {
-        create("libs") {
-            version("kotlin", "2.0.21")
-            plugin("kotlin.jvm", "org.jetbrains.kotlin.jvm").versionRef("kotlin")
+    pluginManagement {
+        repositories {
+            gradlePluginPortal()
+            maven("https://eldonexus.de/repository/maven-public/")
         }
     }
 }
