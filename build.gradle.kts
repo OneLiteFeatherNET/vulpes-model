@@ -1,44 +1,36 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins {
-    alias(libs.plugins.spring)
-    alias(libs.plugins.spring.dependency)
-    alias(libs.plugins.kotlin.jvm)
-    alias(libs.plugins.kotlin.spring)
+    java
     `maven-publish`
 }
 
 group = "net.theevilreaper.vulpes.api"
-val baseVersion = "0.1.0-SNAPSHOT"
+val baseVersion = "1.0.0-SNAPSHOT"
 
 java {
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(21))
     }
+    withSourcesJar()
 }
 
 dependencies {
-    implementation(libs.spring.starter)
-    implementation(libs.spring.starter.mongodb)
-    implementation(libs.kotlin.reflect)
-    testImplementation(libs.spring.starter.test)
+    annotationProcessor(mn.micronaut.serde.processor)
+    annotationProcessor(mn.micronaut.mongo.core)
+    implementation(mn.micronaut.data.document.processor)
+    implementation(mn.micronaut.data.mongodb)
+    implementation(mn.micronaut.mongo.core)
+    implementation(mn.micronaut.runtime)
 }
-
 tasks {
-    compileKotlin {
-        compilerOptions {
-            freeCompilerArgs.add("-Xjsr305=strict")
-            jvmTarget.set(JvmTarget.JVM_21)
-        }
+    compileJava {
+        options.encoding = "UTF-8"
+        options.release.set(21)
     }
 
     test {
         useJUnitPlatform()
     }
 
-    bootBuildImage {
-        builder.set("paketobuildpacks/builder-jammy-base:latest")
-    }
 }
 
 version = if (System.getenv().containsKey("CI")) {
