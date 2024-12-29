@@ -1,10 +1,12 @@
 plugins {
     java
+    jacoco
     `maven-publish`
+    id("de.chojo.publishdata") version "1.4.0"
 }
 
 group = "net.theevilreaper.vulpes.api"
-val baseVersion = "1.0.0-SNAPSHOT"
+version = "1.0.0"
 
 java {
     toolchain {
@@ -28,39 +30,42 @@ tasks {
     }
 
     test {
-        useJUnitPlatform()
-    }
-
-}
-
-version = if (System.getenv().containsKey("CI")) {
-    "${baseVersion}+${System.getenv("CI_COMMIT_SHORT_SHA")}"
-} else {
-    baseVersion
-}
-
-publishing {
-    publications {
-        create<MavenPublication>("maven") {
-            from(components["java"])
+        finalizedBy(rootProject.tasks.jacocoTestReport)
+        jvmArgs("-Dminestom.inside-test=true")
+        testLogging {
+            events("passed", "skipped", "failed")
         }
     }
 
-    if (System.getenv().containsKey("CI")) {
-        repositories {
-            maven {
-                name = "GitLab"
-                val ciApiv4Url = System.getenv("CI_API_V4_URL")
-                val projectId = System.getenv("CI_PROJECT_ID")
-                url = uri("$ciApiv4Url/projects/$projectId/packages/maven")
-                credentials(HttpHeaderCredentials::class.java) {
-                    name = "Job-Token"
-                    value = System.getenv("CI_JOB_TOKEN")
-                }
-                authentication {
-                    create<HttpHeaderAuthentication>("header")
-                }
+}
+
+publishData {
+    addBuildData()
+    useGitlabReposForProject("265", "https://gitlab.onelitefeather.dev/")
+    publishTask("jar")
+}
+
+publishing {
+    publications.create<MavenPublication>("maven") {
+        // configure the publication as defined previously.
+        publishData.configurePublication(this)
+        version = publishData.getVersion(false)
+    }
+
+    repositories {
+        maven {
+            credentials(HttpHeaderCredentials::class) {
+                name = "Job-Token"
+                value = System.getenv("CI_JOB_TOKEN")
             }
+            authentication {
+                create("header", HttpHeaderAuthentication::class)
+            }
+
+
+            name = "Gitlab"
+            // Get the detected repository from the publishing data
+            url = uri(publishData.getRepository())
         }
     }
 }
