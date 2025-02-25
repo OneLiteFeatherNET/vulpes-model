@@ -16,13 +16,22 @@ java {
 }
 
 dependencies {
+    // Annotation Processors
     annotationProcessor(mn.micronaut.serde.processor)
     annotationProcessor(mn.micronaut.mongo.core)
-    implementation(mn.micronaut.data.document.processor)
-    implementation(mn.micronaut.data.mongodb)
-    implementation(mn.micronaut.mongo.core)
-    implementation(mn.micronaut.runtime)
+    annotationProcessor(mn.micronaut.data.processor)
+
+    implementation(mn.micronaut.serde.jackson)
+    implementation(mn.micronaut.data.spring.jpa)
+    implementation(mn.micronaut.hibernate.jpa)
+    implementation(mn.micronaut.hibernate.validator)
+    implementation(mn.micronaut.data.tx.hibernate)
+
+    // Runtime Libraries
+    implementation(mn.jackson.core)
+    implementation(mn.jackson.databind)
 }
+
 tasks {
     compileJava {
         options.encoding = "UTF-8"
