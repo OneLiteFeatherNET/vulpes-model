@@ -40,7 +40,6 @@ tasks {
 
     test {
         finalizedBy(rootProject.tasks.jacocoTestReport)
-        jvmArgs("-Dminestom.inside-test=true")
         testLogging {
             events("passed", "skipped", "failed")
         }
@@ -70,7 +69,6 @@ publishing {
             authentication {
                 create("header", HttpHeaderAuthentication::class)
             }
-
 
             name = "Gitlab"
             // Get the detected repository from the publishing data
