@@ -1,5 +1,0 @@
-* @dungeon/teams/developers
-/.gitlab/CODEOWNERS @dungeon/teams/core
-.gitlab-ci.yml @dungeon/teams/devops @dungeon/teams/core
-.editorconfig @dungeon/teams/core
-
