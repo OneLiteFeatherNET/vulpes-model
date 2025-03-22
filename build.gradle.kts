@@ -2,11 +2,10 @@ plugins {
     java
     jacoco
     `maven-publish`
-    id("de.chojo.publishdata") version "1.4.0"
 }
 
 group = "net.theevilreaper.vulpes.api"
-version = "2.0.0"
+version = "1.0.0"
 
 java {
     toolchain {
@@ -47,32 +46,25 @@ tasks {
 
 }
 
-publishData {
-    addBuildData()
-    useGitlabReposForProject("265", "https://gitlab.onelitefeather.dev/")
-    publishTask("jar")
-}
-
 publishing {
     publications.create<MavenPublication>("maven") {
-        // configure the publication as defined previously.
-        publishData.configurePublication(this)
-        version = publishData.getVersion(false)
+        from(components["java"])
     }
 
     repositories {
         maven {
-            credentials(HttpHeaderCredentials::class) {
-                name = "Job-Token"
-                value = System.getenv("CI_JOB_TOKEN")
-            }
             authentication {
-                create("header", HttpHeaderAuthentication::class)
+                credentials(PasswordCredentials::class) {
+                    username = System.getenv("ONELITEFEATHER_MAVEN_USERNAME")
+                    password = System.getenv("ONELITEFEATHER_MAVEN_PASSWORD")
+                }
             }
-
-            name = "Gitlab"
-            // Get the detected repository from the publishing data
-            url = uri(publishData.getRepository())
+            name = "OneLiteFeatherRepository"
+            url = if (project.version.toString().contains("SNAPSHOT")) {
+                uri("https://repo.onelitefeather.dev/onelitefeather-snapshots")
+            } else {
+                uri("https://repo.onelitefeather.dev/onelitefeather-releases")
+            }
         }
     }
 }
