@@ -2,7 +2,6 @@ plugins {
     java
     jacoco
     `maven-publish`
-    id("de.chojo.publishdata") version "1.4.0"
 }
 
 group = "net.theevilreaper.vulpes.api"
@@ -47,18 +46,9 @@ tasks {
 
 }
 
-publishData {
-    addMainRepo("https://repo.onelitefeather.dev/onelitefeather-releases")
-    addMasterRepo("https://repo.onelitefeather.dev/onelitefeather-releases")
-    addSnapshotRepo("https://repo.onelitefeather.dev/onelitefeather-snapshots")
-    publishTask("jar")
-}
-
 publishing {
     publications.create<MavenPublication>("maven") {
-        // configure the publication as defined previously.
-        publishData.configurePublication(this)
-        version = publishData.getVersion(false)
+        from(components["java"])
     }
 
     repositories {
