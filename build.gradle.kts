@@ -2,6 +2,7 @@ plugins {
     java
     jacoco
     `maven-publish`
+    id("io.micronaut.library") version "4.5.0"
 }
 
 group = "net.theevilreaper.vulpes.api"
@@ -12,6 +13,8 @@ java {
         languageVersion.set(JavaLanguageVersion.of(21))
     }
     withSourcesJar()
+    withJavadocJar()
+
 }
 
 dependencies {
