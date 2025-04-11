@@ -2,7 +2,7 @@ plugins {
     java
     jacoco
     `maven-publish`
-    id("io.micronaut.library") version "4.5.0"
+    id("io.micronaut.library") version "4.5.2"
 }
 
 group = "net.theevilreaper.vulpes.api"
