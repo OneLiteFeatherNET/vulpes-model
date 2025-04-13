@@ -1,16 +1,14 @@
 package net.theevilreaper.vulpes.api.model;
 
-import io.micronaut.data.annotation.MappedEntity;
-import io.micronaut.serde.annotation.Serdeable;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Index;
-import jakarta.persistence.Table;
+import net.theevilreaper.vulpes.api.generator.VulpesGenerator;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Represents a Font in the system. This class is used as an entity for persistence
@@ -21,15 +19,13 @@ import java.util.List;
  * are automatically persisted by the JPA and Micronaut Data layers.
  * </p>
  */
-@Serdeable
 @Entity(name = "fonts")
-@Table(name = "vulpes_fonts", indexes = @Index(columnList = "id"))
-@MappedEntity
 public class FontModel implements VulpesModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @VulpesGenerator
+    private UUID id;
     private String modelName;
     private String name;
     private String description;
@@ -64,7 +60,7 @@ public class FontModel implements VulpesModel {
      * @param chars       the list of characters included in the font
      * @param shift       the list of shift values for the font
      */
-    public FontModel(String id, String modelName, String name, String description, String type, int ascent, int height, List<String> chars, List<Double> shift) {
+    public FontModel(UUID id, String modelName, String name, String description, String type, int ascent, int height, List<String> chars, List<Double> shift) {
         this.id = id;
         this.modelName = modelName;
         this.name = name;
@@ -83,7 +79,7 @@ public class FontModel implements VulpesModel {
      *
      * @return the unique identifier of the font
      */
-    public String getId() {
+    public UUID getId() {
         return id;
     }
 
@@ -92,7 +88,7 @@ public class FontModel implements VulpesModel {
      *
      * @param id the unique identifier to set
      */
-    public void setId(String id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

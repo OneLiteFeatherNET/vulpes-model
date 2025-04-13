@@ -1,13 +1,13 @@
 package net.theevilreaper.vulpes.api.model;
 
-import io.micronaut.data.annotation.MappedEntity;
-import io.micronaut.serde.annotation.Serdeable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Index;
-import jakarta.persistence.Table;
+import net.theevilreaper.vulpes.api.generator.VulpesGenerator;
+
+import javax.annotation.processing.Generated;
+import java.util.UUID;
 
 /**
  * Represents an Attribute in the system. This class is used as an entity for persistence
@@ -18,15 +18,13 @@ import jakarta.persistence.Table;
  * are automatically persisted by the JPA and Micronaut Data layers.
  * </p>
  */
-@Serdeable
 @Entity(name = "attributes")
-@Table(name = "vulpes_attributes", indexes = @Index(columnList = "id"))
-@MappedEntity
 public class AttributeModel implements VulpesModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @VulpesGenerator
+    private UUID id;
     private String modelName;
     private String name;
     private double defaultValue;
@@ -51,7 +49,7 @@ public class AttributeModel implements VulpesModel {
      * @param defaultValue  the default value of the attribute
      * @param maximumValue  the maximum value of the attribute
      */
-    public AttributeModel(String id, String modelName, String name, double defaultValue, double maximumValue) {
+    public AttributeModel(UUID id, String modelName, String name, double defaultValue, double maximumValue) {
         this.id = id;
         this.modelName = modelName;
         this.name = name;
@@ -66,7 +64,7 @@ public class AttributeModel implements VulpesModel {
      *
      * @return the unique identifier of the attribute
      */
-    public String getId() {
+    public UUID getId() {
         return id;
     }
 
@@ -75,7 +73,7 @@ public class AttributeModel implements VulpesModel {
      *
      * @param id the unique identifier to set
      */
-    public void setId(String id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

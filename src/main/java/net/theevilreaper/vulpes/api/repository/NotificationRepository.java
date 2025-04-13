@@ -4,6 +4,8 @@ import io.micronaut.data.annotation.Repository;
 import io.micronaut.data.repository.PageableRepository;
 import net.theevilreaper.vulpes.api.model.NotificationModel;
 
+import java.util.UUID;
+
 @Repository
-public interface NotificationRepository extends PageableRepository<NotificationModel, String> {
+public interface NotificationRepository extends PageableRepository<NotificationModel, UUID> {
 }

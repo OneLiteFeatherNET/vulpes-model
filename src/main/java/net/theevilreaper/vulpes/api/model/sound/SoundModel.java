@@ -1,15 +1,15 @@
 package net.theevilreaper.vulpes.api.model.sound;
 
-import io.micronaut.data.annotation.MappedEntity;
-import io.micronaut.serde.annotation.Serdeable;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-import jakarta.persistence.Index;
+import net.theevilreaper.vulpes.api.generator.VulpesGenerator;
 import net.theevilreaper.vulpes.api.model.VulpesModel;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Represents sound data in the system. This class is used as an entity for persistence
@@ -20,14 +20,13 @@ import java.util.List;
  * are automatically persisted by the JPA and Micronaut Data layers.
  * </p>
  */
-@Serdeable
 @Entity(name = "sounds")
-@Table(name = "vulpes_sounds", indexes = @Index(columnList = "id"))
-@MappedEntity
 public class SoundModel implements VulpesModel {
 
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @VulpesGenerator
+    private UUID id;
     private String modelName;
     private String source;
 
@@ -35,7 +34,7 @@ public class SoundModel implements VulpesModel {
      * Represents the list of sound data related to this sound model.
      * This is a one-to-many relationship where each sound model can have multiple sound data entities.
      */
-    @OneToMany(mappedBy = "soundModel")
+    @OneToMany(mappedBy = "id")
     private List<SoundData> soundData;
 
     /**
@@ -56,7 +55,7 @@ public class SoundModel implements VulpesModel {
      * @param source    the source file or location of the sound model
      * @param soundData the list of sound data related to this sound model
      */
-    public SoundModel(String id, String modelName, String source, List<SoundData> soundData) {
+    public SoundModel(UUID id, String modelName, String source, List<SoundData> soundData) {
         this.id = id;
         this.modelName = modelName;
         this.source = source;
@@ -70,7 +69,7 @@ public class SoundModel implements VulpesModel {
      *
      * @return the unique identifier of the sound model
      */
-    public String getId() {
+    public UUID getId() {
         return id;
     }
 
@@ -79,7 +78,7 @@ public class SoundModel implements VulpesModel {
      *
      * @param id the unique identifier to set
      */
-    public void setId(String id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

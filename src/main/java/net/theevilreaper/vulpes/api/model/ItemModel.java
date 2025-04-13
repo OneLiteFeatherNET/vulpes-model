@@ -1,16 +1,15 @@
 package net.theevilreaper.vulpes.api.model;
 
-import io.micronaut.serde.annotation.Serdeable;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Index;
-import jakarta.persistence.Table;
+import net.theevilreaper.vulpes.api.generator.VulpesGenerator;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Represents an Item in the system. This class is used as an entity for persistence
@@ -21,21 +20,20 @@ import java.util.Map;
  * persisted by the JPA and Micronaut Data layers.
  * </p>
  */
-@Serdeable
 @Entity(name = "items")
-@Table(name = "vulpes_items", indexes = @Index(columnList = "id"))
 public class ItemModel implements VulpesModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @VulpesGenerator
+    private UUID id;
 
     private String modelName;
     private String name;
     private String description;
     private String displayName;
     private String material;
-    private String group;
+    private String groupName;
     private int customModelData;
     private int amount;
     @ElementCollection
@@ -64,21 +62,21 @@ public class ItemModel implements VulpesModel {
      * @param description     a description of the item
      * @param displayName     the display name of the item
      * @param material        the material type associated with the item
-     * @param group           the group to which the item belongs
+     * @param groupName           the group to which the item belongs
      * @param customModelData the custom model data for the item
      * @param amount          the amount of the item
      * @param enchantments    the enchantments applied to the item
      * @param lore            the lore associated with the item
      * @param flags           the flags associated with the item
      */
-    public ItemModel(String id, String modelName, String name, String description, String displayName, String material, String group, int customModelData, int amount, Map<String, Short> enchantments, List<String> lore, List<String> flags) {
+    public ItemModel(UUID id, String modelName, String name, String description, String displayName, String material, String groupName, int customModelData, int amount, Map<String, Short> enchantments, List<String> lore, List<String> flags) {
         this.id = id;
         this.modelName = modelName;
         this.name = name;
         this.description = description;
         this.displayName = displayName;
         this.material = material;
-        this.group = group;
+        this.groupName = groupName;
         this.customModelData = customModelData;
         this.amount = amount;
         this.enchantments = enchantments;
@@ -93,7 +91,7 @@ public class ItemModel implements VulpesModel {
      *
      * @return the unique identifier of the item
      */
-    public String getId() {
+    public UUID getId() {
         return id;
     }
 
@@ -102,7 +100,7 @@ public class ItemModel implements VulpesModel {
      *
      * @param id the unique identifier to set
      */
-    public void setId(String id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -201,8 +199,8 @@ public class ItemModel implements VulpesModel {
      *
      * @return the group of the item
      */
-    public String getGroup() {
-        return group;
+    public String getGroupName() {
+        return groupName;
     }
 
     /**
@@ -210,8 +208,8 @@ public class ItemModel implements VulpesModel {
      *
      * @param group the group to set
      */
-    public void setGroup(String group) {
-        this.group = group;
+    public void setGroupName(String group) {
+        this.groupName = group;
     }
 
     /**
@@ -318,7 +316,7 @@ public class ItemModel implements VulpesModel {
                 ", description='" + description + '\'' +
                 ", displayName='" + displayName + '\'' +
                 ", material='" + material + '\'' +
-                ", group='" + group + '\'' +
+                ", group='" + groupName + '\'' +
                 ", customModelData=" + customModelData +
                 ", amount=" + amount +
                 ", enchantments=" + enchantments +
