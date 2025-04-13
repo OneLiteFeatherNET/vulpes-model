@@ -2,11 +2,12 @@ plugins {
     java
     jacoco
     `maven-publish`
+    `java-library`
     id("io.micronaut.library") version "4.5.2"
 }
 
 group = "net.theevilreaper.vulpes.api"
-version = "1.0.1"
+version = "1.1.0"
 
 java {
     toolchain {
@@ -19,19 +20,12 @@ java {
 
 dependencies {
     // Annotation Processors
-    annotationProcessor(mn.micronaut.serde.processor)
-    annotationProcessor(mn.micronaut.mongo.core)
     annotationProcessor(mn.micronaut.data.processor)
 
-    implementation(mn.micronaut.serde.jackson)
-    implementation(mn.micronaut.data.spring.jpa)
+    implementation(mn.micronaut.data.processor)
+    implementation(mn.micronaut.data.jpa)
     implementation(mn.micronaut.hibernate.jpa)
-    implementation(mn.micronaut.hibernate.validator)
-    implementation(mn.micronaut.data.tx.hibernate)
-
-    // Runtime Libraries
-    implementation(mn.jackson.core)
-    implementation(mn.jackson.databind)
+    api(libs.uuid.creator)
 }
 
 tasks {
