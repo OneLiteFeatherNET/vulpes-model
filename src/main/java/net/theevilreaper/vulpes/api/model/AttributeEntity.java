@@ -6,7 +6,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import net.theevilreaper.vulpes.api.generator.VulpesGenerator;
 
-import javax.annotation.processing.Generated;
 import java.util.UUID;
 
 /**
@@ -19,7 +18,7 @@ import java.util.UUID;
  * </p>
  */
 @Entity(name = "attributes")
-public class AttributeModel implements VulpesModel {
+public class AttributeEntity implements VulpesModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -36,12 +35,12 @@ public class AttributeModel implements VulpesModel {
      * This constructor is required for the JPA provider to instantiate the entity.
      * </p>
      */
-    public AttributeModel() {
+    public AttributeEntity() {
         // No-argument constructor for JPA
     }
 
     /**
-     * Constructs a new {@link AttributeModel} with the specified values.
+     * Constructs a new {@link AttributeEntity} with the specified values.
      *
      * @param id            the unique identifier of the attribute
      * @param modelName     the model name associated with the attribute
@@ -49,7 +48,7 @@ public class AttributeModel implements VulpesModel {
      * @param defaultValue  the default value of the attribute
      * @param maximumValue  the maximum value of the attribute
      */
-    public AttributeModel(UUID id, String modelName, String name, double defaultValue, double maximumValue) {
+    public AttributeEntity(UUID id, String modelName, String name, double defaultValue, double maximumValue) {
         this.id = id;
         this.modelName = modelName;
         this.name = name;

@@ -21,7 +21,7 @@ import java.util.UUID;
  * </p>
  */
 @Entity(name = "sounds")
-public class SoundModel implements VulpesModel {
+public class SoundEntity implements VulpesModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -35,7 +35,7 @@ public class SoundModel implements VulpesModel {
      * This is a one-to-many relationship where each sound model can have multiple sound data entities.
      */
     @OneToMany(mappedBy = "id")
-    private List<SoundData> soundData;
+    private List<SoundDataEntity> soundDatumEntities;
 
     /**
      * Default constructor for JPA and Micronaut Data.
@@ -43,23 +43,23 @@ public class SoundModel implements VulpesModel {
      * This constructor is required for the JPA provider to instantiate the entity.
      * </p>
      */
-    public SoundModel() {
+    public SoundEntity() {
         // No-argument constructor for JPA
     }
 
     /**
-     * Constructs a new {@link SoundModel} with the specified values.
+     * Constructs a new {@link SoundEntity} with the specified values.
      *
      * @param id        the unique identifier of the sound model
      * @param modelName the name of the sound model
      * @param source    the source file or location of the sound model
-     * @param soundData the list of sound data related to this sound model
+     * @param soundDatumEntities the list of sound data related to this sound model
      */
-    public SoundModel(UUID id, String modelName, String source, List<SoundData> soundData) {
+    public SoundEntity(UUID id, String modelName, String source, List<SoundDataEntity> soundDatumEntities) {
         this.id = id;
         this.modelName = modelName;
         this.source = source;
-        this.soundData = soundData;
+        this.soundDatumEntities = soundDatumEntities;
     }
 
     // Getters and setters for each field
@@ -123,17 +123,17 @@ public class SoundModel implements VulpesModel {
      *
      * @return the list of sound data
      */
-    public List<SoundData> getSoundData() {
-        return soundData;
+    public List<SoundDataEntity> getSoundData() {
+        return soundDatumEntities;
     }
 
     /**
      * Sets the list of sound data related to this sound model
      *
-     * @param soundData the list of sound data to set
+     * @param soundDatumEntities the list of sound data to set
      */
-    public void setSoundData(List<SoundData> soundData) {
-        this.soundData = soundData;
+    public void setSoundData(List<SoundDataEntity> soundDatumEntities) {
+        this.soundDatumEntities = soundDatumEntities;
     }
 
     /**
@@ -147,7 +147,7 @@ public class SoundModel implements VulpesModel {
                 "id='" + id + '\'' +
                 ", modelName='" + modelName + '\'' +
                 ", source='" + source + '\'' +
-                ", soundData=" + soundData +
+                ", soundData=" + soundDatumEntities +
                 '}';
     }
 }
