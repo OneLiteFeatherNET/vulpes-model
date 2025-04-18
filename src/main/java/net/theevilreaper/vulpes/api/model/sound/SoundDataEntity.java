@@ -4,11 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import net.theevilreaper.vulpes.api.generator.UuidV7Generator;
 import net.theevilreaper.vulpes.api.generator.VulpesGenerator;
 import net.theevilreaper.vulpes.api.model.VulpesModel;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.IdGeneratorType;
 
 import java.util.UUID;
 
@@ -22,7 +19,7 @@ import java.util.UUID;
  * </p>
  */
 @Entity(name = "sound_data")
-public class SoundData implements VulpesModel {
+public class SoundDataEntity implements VulpesModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -39,12 +36,12 @@ public class SoundData implements VulpesModel {
      * This constructor is required for the JPA provider to instantiate the entity.
      * </p>
      */
-    public SoundData() {
+    public SoundDataEntity() {
         // No-argument constructor for JPA
     }
 
     /**
-     * Constructs a new {@link SoundData} with the specified values.
+     * Constructs a new {@link SoundDataEntity} with the specified values.
      *
      * @param id      the unique identifier of the sound data
      * @param name    the name of the sound data
@@ -52,7 +49,7 @@ public class SoundData implements VulpesModel {
      * @param volume  the volume level of the sound
      * @param pitch   the pitch of the sound
      */
-    public SoundData(UUID id, String name, String source, double volume, double pitch) {
+    public SoundDataEntity(UUID id, String name, String source, double volume, double pitch) {
         this.id = id;
         this.name = name;
         this.source = source;

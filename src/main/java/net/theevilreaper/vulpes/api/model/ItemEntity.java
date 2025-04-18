@@ -21,7 +21,7 @@ import java.util.UUID;
  * </p>
  */
 @Entity(name = "items")
-public class ItemModel implements VulpesModel {
+public class ItemEntity implements VulpesModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -49,12 +49,12 @@ public class ItemModel implements VulpesModel {
      * This constructor is required for the JPA provider to instantiate the entity.
      * </p>
      */
-    public ItemModel() {
+    public ItemEntity() {
         // No-argument constructor for JPA
     }
 
     /**
-     * Constructs a new {@link ItemModel} with the specified values.
+     * Constructs a new {@link ItemEntity} with the specified values.
      *
      * @param id              the unique identifier of the item
      * @param modelName       the model name associated with the item
@@ -69,7 +69,7 @@ public class ItemModel implements VulpesModel {
      * @param lore            the lore associated with the item
      * @param flags           the flags associated with the item
      */
-    public ItemModel(UUID id, String modelName, String name, String description, String displayName, String material, String groupName, int customModelData, int amount, Map<String, Short> enchantments, List<String> lore, List<String> flags) {
+    public ItemEntity(UUID id, String modelName, String name, String description, String displayName, String material, String groupName, int customModelData, int amount, Map<String, Short> enchantments, List<String> lore, List<String> flags) {
         this.id = id;
         this.modelName = modelName;
         this.name = name;

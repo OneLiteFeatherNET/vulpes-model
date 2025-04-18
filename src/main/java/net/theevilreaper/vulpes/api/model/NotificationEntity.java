@@ -18,7 +18,7 @@ import java.util.UUID;
  * </p>
  */
 @Entity(name = "notifications")
-public class NotificationModel implements VulpesModel {
+public class NotificationEntity implements VulpesModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -37,12 +37,12 @@ public class NotificationModel implements VulpesModel {
      * This constructor is required for the JPA provider to instantiate the entity.
      * </p>
      */
-    public NotificationModel() {
+    public NotificationEntity() {
         // No-argument constructor for JPA
     }
 
     /**
-     * Constructs a new {@link NotificationModel} with the specified values.
+     * Constructs a new {@link NotificationEntity} with the specified values.
      *
      * @param id          the unique identifier of the notification
      * @param modelName   the model name associated with the notification
@@ -52,7 +52,7 @@ public class NotificationModel implements VulpesModel {
      * @param frameType   the frame type associated with the notification
      * @param title       the title of the notification
      */
-    public NotificationModel(UUID id, String modelName, String name, String description, String material, String frameType, String title) {
+    public NotificationEntity(UUID id, String modelName, String name, String description, String material, String frameType, String title) {
         this.id = id;
         this.modelName = modelName;
         this.name = name;

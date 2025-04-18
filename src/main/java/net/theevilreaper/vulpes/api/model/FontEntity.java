@@ -20,7 +20,7 @@ import java.util.UUID;
  * </p>
  */
 @Entity(name = "fonts")
-public class FontModel implements VulpesModel {
+public class FontEntity implements VulpesModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -43,12 +43,12 @@ public class FontModel implements VulpesModel {
      * This constructor is required for the JPA provider to instantiate the entity.
      * </p>
      */
-    public FontModel() {
+    public FontEntity() {
         // No-argument constructor for JPA
     }
 
     /**
-     * Constructs a new {@link FontModel} with the specified values.
+     * Constructs a new {@link FontEntity} with the specified values.
      *
      * @param id          the unique identifier of the font
      * @param modelName   the model name associated with the font
@@ -60,7 +60,7 @@ public class FontModel implements VulpesModel {
      * @param chars       the list of characters included in the font
      * @param shift       the list of shift values for the font
      */
-    public FontModel(UUID id, String modelName, String name, String description, String type, int ascent, int height, List<String> chars, List<Double> shift) {
+    public FontEntity(UUID id, String modelName, String name, String description, String type, int ascent, int height, List<String> chars, List<Double> shift) {
         this.id = id;
         this.modelName = modelName;
         this.name = name;
