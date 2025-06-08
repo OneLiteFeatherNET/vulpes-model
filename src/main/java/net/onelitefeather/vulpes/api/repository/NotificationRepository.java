@@ -1,8 +1,8 @@
-package net.theevilreaper.vulpes.api.repository;
+package net.onelitefeather.vulpes.api.repository;
 
 import io.micronaut.data.annotation.Repository;
 import io.micronaut.data.repository.PageableRepository;
-import net.theevilreaper.vulpes.api.model.NotificationEntity;
+import net.onelitefeather.vulpes.api.model.NotificationEntity;
 
 import java.util.UUID;
 
