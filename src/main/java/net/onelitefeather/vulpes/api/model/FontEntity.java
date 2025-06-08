@@ -26,16 +26,16 @@ public class FontEntity implements VulpesModel {
     @GeneratedValue(strategy = GenerationType.UUID)
     @VulpesGenerator
     private UUID id;
-    private String modelName;
-    private String name;
-    private String description;
-    private String type;
-    private int ascent;
+    private String uiName;
+    private String variableName;
+    private String provider;
+    private String mapper = "font";
+    private String texturePath;
+    private String comment;
     private int height;
+    private int ascent;
     @ElementCollection
     private List<String> chars;
-    @ElementCollection
-    private List<Double> shift;
 
     /**
      * Default constructor for JPA and Micronaut Data.
@@ -50,26 +50,25 @@ public class FontEntity implements VulpesModel {
     /**
      * Constructs a new {@link FontEntity} with the specified values.
      *
-     * @param id          the unique identifier of the font
-     * @param modelName   the model name associated with the font
-     * @param name        the name of the font
-     * @param description a description of the font
-     * @param type        the type of the font
-     * @param ascent      the ascent of the font
-     * @param height      the height of the font
-     * @param chars       the list of characters included in the font
-     * @param shift       the list of shift values for the font
+     * @param id           the unique identifier of the font
+     * @param uiName       the user interface name of the font
+     * @param variableName the variable name of the font
+     * @param provider     the provider of the font
+     * @param texturePath  the path to the texture of the font
+     * @param height       the height of the font
+     * @param ascent       the ascent of the font
+     * @param chars        the list of characters included in the font
      */
-    public FontEntity(UUID id, String modelName, String name, String description, String type, int ascent, int height, List<String> chars, List<Double> shift) {
+    public FontEntity(UUID id, String uiName, String variableName, String provider, String texturePath, String comment, int height, int ascent, List<String> chars) {
         this.id = id;
-        this.modelName = modelName;
-        this.name = name;
-        this.description = description;
-        this.type = type;
-        this.ascent = ascent;
+        this.uiName = uiName;
+        this.variableName = variableName;
+        this.provider = provider;
+        this.texturePath = texturePath;
+        this.comment = comment;
         this.height = height;
+        this.ascent = ascent;
         this.chars = chars;
-        this.shift = shift;
     }
 
     // Getters and setters for each field
@@ -92,76 +91,52 @@ public class FontEntity implements VulpesModel {
         this.id = id;
     }
 
-    /**
-     * Returns the model name associated with the font
-     *
-     * @return the model name of the font
-     */
-    public String getModelName() {
-        return modelName;
+    public void setUiName(String uiName) {
+        this.uiName = uiName;
     }
 
-    /**
-     * Sets the model name associated with the font
-     *
-     * @param modelName the model name to set
-     */
-    public void setModelName(String modelName) {
-        this.modelName = modelName;
+    public String getUiName() {
+        return uiName;
     }
 
-    /**
-     * Returns the name of the font
-     *
-     * @return the name of the font
-     */
-    public String getName() {
-        return name;
+    public void setVariableName(String variableName) {
+        this.variableName = variableName;
     }
 
-    /**
-     * Sets the name of the font
-     *
-     * @param name the name to set
-     */
-    public void setName(String name) {
-        this.name = name;
+    public String getVariableName() {
+        return variableName;
     }
 
-    /**
-     * Returns the description of the font
-     *
-     * @return the description of the font
-     */
-    public String getDescription() {
-        return description;
+    public void setMapper(String mapper) {
+        this.mapper = mapper;
     }
 
-    /**
-     * Sets the description of the font
-     *
-     * @param description the description to set
-     */
-    public void setDescription(String description) {
-        this.description = description;
+    public String getMapper() {
+        return mapper;
     }
 
-    /**
-     * Returns the type of the font
-     *
-     * @return the type of the font
-     */
-    public String getType() {
-        return type;
+    public void setProvider(String provider) {
+        this.provider = provider;
     }
 
-    /**
-     * Sets the type of the font
-     *
-     * @param type the type to set
-     */
-    public void setType(String type) {
-        this.type = type;
+    public String getProvider() {
+        return provider;
+    }
+
+    public void setTexturePath(String texturePath) {
+        this.texturePath = texturePath;
+    }
+
+    public String getTexturePath() {
+        return texturePath;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public String getComment() {
+        return comment;
     }
 
     /**
@@ -218,41 +193,19 @@ public class FontEntity implements VulpesModel {
         this.chars = chars;
     }
 
-    /**
-     * Returns the list of shift values for the font
-     *
-     * @return the list of shift values for the font
-     */
-    public List<Double> getShift() {
-        return shift;
-    }
-
-    /**
-     * Sets the list of shift values for the font
-     *
-     * @param shift the list of shift values to set
-     */
-    public void setShift(List<Double> shift) {
-        this.shift = shift;
-    }
-
-    /**
-     * Provides a string representation of the FontModel
-     *
-     * @return a string representation
-     */
     @Override
     public String toString() {
-        return "FontModel{" +
-                "id='" + id + '\'' +
-                ", modelName='" + modelName + '\'' +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", type='" + type + '\'' +
-                ", ascent=" + ascent +
+        return "FontEntity{" +
+                "id=" + id +
+                ", uiName='" + uiName + '\'' +
+                ", variableName='" + variableName + '\'' +
+                ", provider='" + provider + '\'' +
+                ", mapper='" + mapper + '\'' +
+                ", texturePath='" + texturePath + '\'' +
+                ", comment='" + comment + '\'' +
                 ", height=" + height +
+                ", ascent=" + ascent +
                 ", chars=" + chars +
-                ", shift=" + shift +
                 '}';
     }
 }
