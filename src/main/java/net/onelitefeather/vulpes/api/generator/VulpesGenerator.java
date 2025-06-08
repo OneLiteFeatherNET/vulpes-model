@@ -1,4 +1,4 @@
-package net.theevilreaper.vulpes.api.generator;
+package net.onelitefeather.vulpes.api.generator;
 
 import org.hibernate.annotations.IdGeneratorType;
 

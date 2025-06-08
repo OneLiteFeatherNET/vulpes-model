@@ -1,4 +1,4 @@
-package net.theevilreaper.vulpes.api.model;
+package net.onelitefeather.vulpes.api.model;
 
 public interface VulpesModel {
 }

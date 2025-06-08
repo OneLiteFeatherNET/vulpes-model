@@ -1,4 +1,4 @@
-package net.theevilreaper.vulpes.api.generator;
+package net.onelitefeather.vulpes.api.generator;
 
 import com.github.f4b6a3.uuid.UuidCreator;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;

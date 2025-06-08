@@ -1,12 +1,12 @@
-package net.theevilreaper.vulpes.api.model.sound;
+package net.onelitefeather.vulpes.api.model.sound;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import net.theevilreaper.vulpes.api.generator.VulpesGenerator;
-import net.theevilreaper.vulpes.api.model.VulpesModel;
+import net.onelitefeather.vulpes.api.generator.VulpesGenerator;
+import net.onelitefeather.vulpes.api.model.VulpesModel;
 
 import java.util.List;
 import java.util.UUID;
