@@ -6,7 +6,7 @@ plugins {
     id("io.micronaut.library") version "4.5.3"
 }
 
-group = "net.theevilreaper.vulpes.api"
+group = "net.theevilreaper.vulpes"
 version = "1.2.0"
 
 java {
