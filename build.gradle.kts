@@ -2,34 +2,30 @@ plugins {
     java
     jacoco
     `maven-publish`
-    id("de.chojo.publishdata") version "1.4.0"
+    `java-library`
+    id("io.micronaut.library") version "4.5.3"
 }
 
-group = "net.theevilreaper.vulpes.api"
-version = "2.0.0"
+group = "net.onelitefeather.vulpes"
+version = "1.2.0"
 
 java {
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(21))
     }
     withSourcesJar()
+    withJavadocJar()
+
 }
 
 dependencies {
     // Annotation Processors
-    annotationProcessor(mn.micronaut.serde.processor)
-    annotationProcessor(mn.micronaut.mongo.core)
     annotationProcessor(mn.micronaut.data.processor)
 
-    implementation(mn.micronaut.serde.jackson)
-    implementation(mn.micronaut.data.spring.jpa)
+    implementation(mn.micronaut.data.processor)
+    implementation(mn.micronaut.data.jpa)
     implementation(mn.micronaut.hibernate.jpa)
-    implementation(mn.micronaut.hibernate.validator)
-    implementation(mn.micronaut.data.tx.hibernate)
-
-    // Runtime Libraries
-    implementation(mn.jackson.core)
-    implementation(mn.jackson.databind)
+    api(libs.uuid.creator)
 }
 
 tasks {
@@ -47,32 +43,25 @@ tasks {
 
 }
 
-publishData {
-    addBuildData()
-    useGitlabReposForProject("265", "https://gitlab.onelitefeather.dev/")
-    publishTask("jar")
-}
-
 publishing {
     publications.create<MavenPublication>("maven") {
-        // configure the publication as defined previously.
-        publishData.configurePublication(this)
-        version = publishData.getVersion(false)
+        from(components["java"])
     }
 
     repositories {
         maven {
-            credentials(HttpHeaderCredentials::class) {
-                name = "Job-Token"
-                value = System.getenv("CI_JOB_TOKEN")
-            }
             authentication {
-                create("header", HttpHeaderAuthentication::class)
+                credentials(PasswordCredentials::class) {
+                    username = System.getenv("ONELITEFEATHER_MAVEN_USERNAME")
+                    password = System.getenv("ONELITEFEATHER_MAVEN_PASSWORD")
+                }
             }
-
-            name = "Gitlab"
-            // Get the detected repository from the publishing data
-            url = uri(publishData.getRepository())
+            name = "OneLiteFeatherRepository"
+            url = if (project.version.toString().contains("SNAPSHOT")) {
+                uri("https://repo.onelitefeather.dev/onelitefeather-snapshots")
+            } else {
+                uri("https://repo.onelitefeather.dev/onelitefeather-releases")
+            }
         }
     }
 }

@@ -1,12 +1,12 @@
-package net.theevilreaper.vulpes.api.model;
+package net.onelitefeather.vulpes.api.model;
 
-import io.micronaut.serde.annotation.Serdeable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Index;
-import jakarta.persistence.Table;
+import net.onelitefeather.vulpes.api.generator.VulpesGenerator;
+
+import java.util.UUID;
 
 /**
  * Represents a Notification in the system. This class is used as an entity for persistence
@@ -17,14 +17,13 @@ import jakarta.persistence.Table;
  * are automatically persisted by the JPA and Micronaut Data layers.
  * </p>
  */
-@Serdeable
 @Entity(name = "notifications")
-@Table(name = "vulpes_notifications", indexes = @Index(columnList = "id"))
-public class NotificationModel implements VulpesModel {
+public class NotificationEntity implements VulpesModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @VulpesGenerator
+    private UUID id;
     private String modelName;
     private String name;
     private String description;
@@ -38,12 +37,12 @@ public class NotificationModel implements VulpesModel {
      * This constructor is required for the JPA provider to instantiate the entity.
      * </p>
      */
-    public NotificationModel() {
+    public NotificationEntity() {
         // No-argument constructor for JPA
     }
 
     /**
-     * Constructs a new {@link NotificationModel} with the specified values.
+     * Constructs a new {@link NotificationEntity} with the specified values.
      *
      * @param id          the unique identifier of the notification
      * @param modelName   the model name associated with the notification
@@ -53,7 +52,7 @@ public class NotificationModel implements VulpesModel {
      * @param frameType   the frame type associated with the notification
      * @param title       the title of the notification
      */
-    public NotificationModel(String id, String modelName, String name, String description, String material, String frameType, String title) {
+    public NotificationEntity(UUID id, String modelName, String name, String description, String material, String frameType, String title) {
         this.id = id;
         this.modelName = modelName;
         this.name = name;
@@ -68,7 +67,7 @@ public class NotificationModel implements VulpesModel {
      *
      * @return the unique identifier of the notification
      */
-    public String getId() {
+    public UUID getId() {
         return id;
     }
 
@@ -77,7 +76,7 @@ public class NotificationModel implements VulpesModel {
      *
      * @param id the unique identifier to set
      */
-    public void setId(String id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

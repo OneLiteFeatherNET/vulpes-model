@@ -1,15 +1,15 @@
-package net.theevilreaper.vulpes.api.model.sound;
+package net.onelitefeather.vulpes.api.model.sound;
 
-import io.micronaut.data.annotation.MappedEntity;
-import io.micronaut.serde.annotation.Serdeable;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-import jakarta.persistence.Index;
-import net.theevilreaper.vulpes.api.model.VulpesModel;
+import net.onelitefeather.vulpes.api.generator.VulpesGenerator;
+import net.onelitefeather.vulpes.api.model.VulpesModel;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Represents sound data in the system. This class is used as an entity for persistence
@@ -20,14 +20,13 @@ import java.util.List;
  * are automatically persisted by the JPA and Micronaut Data layers.
  * </p>
  */
-@Serdeable
 @Entity(name = "sounds")
-@Table(name = "vulpes_sounds", indexes = @Index(columnList = "id"))
-@MappedEntity
-public class SoundModel implements VulpesModel {
+public class SoundEntity implements VulpesModel {
 
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @VulpesGenerator
+    private UUID id;
     private String modelName;
     private String source;
 
@@ -35,8 +34,8 @@ public class SoundModel implements VulpesModel {
      * Represents the list of sound data related to this sound model.
      * This is a one-to-many relationship where each sound model can have multiple sound data entities.
      */
-    @OneToMany(mappedBy = "soundModel")
-    private List<SoundData> soundData;
+    @OneToMany(mappedBy = "id")
+    private List<SoundDataEntity> soundDatumEntities;
 
     /**
      * Default constructor for JPA and Micronaut Data.
@@ -44,23 +43,23 @@ public class SoundModel implements VulpesModel {
      * This constructor is required for the JPA provider to instantiate the entity.
      * </p>
      */
-    public SoundModel() {
+    public SoundEntity() {
         // No-argument constructor for JPA
     }
 
     /**
-     * Constructs a new {@link SoundModel} with the specified values.
+     * Constructs a new {@link SoundEntity} with the specified values.
      *
      * @param id        the unique identifier of the sound model
      * @param modelName the name of the sound model
      * @param source    the source file or location of the sound model
-     * @param soundData the list of sound data related to this sound model
+     * @param soundDatumEntities the list of sound data related to this sound model
      */
-    public SoundModel(String id, String modelName, String source, List<SoundData> soundData) {
+    public SoundEntity(UUID id, String modelName, String source, List<SoundDataEntity> soundDatumEntities) {
         this.id = id;
         this.modelName = modelName;
         this.source = source;
-        this.soundData = soundData;
+        this.soundDatumEntities = soundDatumEntities;
     }
 
     // Getters and setters for each field
@@ -70,7 +69,7 @@ public class SoundModel implements VulpesModel {
      *
      * @return the unique identifier of the sound model
      */
-    public String getId() {
+    public UUID getId() {
         return id;
     }
 
@@ -79,7 +78,7 @@ public class SoundModel implements VulpesModel {
      *
      * @param id the unique identifier to set
      */
-    public void setId(String id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -124,17 +123,17 @@ public class SoundModel implements VulpesModel {
      *
      * @return the list of sound data
      */
-    public List<SoundData> getSoundData() {
-        return soundData;
+    public List<SoundDataEntity> getSoundData() {
+        return soundDatumEntities;
     }
 
     /**
      * Sets the list of sound data related to this sound model
      *
-     * @param soundData the list of sound data to set
+     * @param soundDatumEntities the list of sound data to set
      */
-    public void setSoundData(List<SoundData> soundData) {
-        this.soundData = soundData;
+    public void setSoundData(List<SoundDataEntity> soundDatumEntities) {
+        this.soundDatumEntities = soundDatumEntities;
     }
 
     /**
@@ -148,7 +147,7 @@ public class SoundModel implements VulpesModel {
                 "id='" + id + '\'' +
                 ", modelName='" + modelName + '\'' +
                 ", source='" + source + '\'' +
-                ", soundData=" + soundData +
+                ", soundData=" + soundDatumEntities +
                 '}';
     }
 }

@@ -1,14 +1,13 @@
-package net.theevilreaper.vulpes.api.model.sound;
+package net.onelitefeather.vulpes.api.model.sound;
 
-import io.micronaut.data.annotation.MappedEntity;
-import io.micronaut.serde.annotation.Serdeable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Index;
-import jakarta.persistence.Table;
-import net.theevilreaper.vulpes.api.model.VulpesModel;
+import net.onelitefeather.vulpes.api.generator.VulpesGenerator;
+import net.onelitefeather.vulpes.api.model.VulpesModel;
+
+import java.util.UUID;
 
 /**
  * Represents sound data in the system. This class is used as an entity for persistence
@@ -19,15 +18,13 @@ import net.theevilreaper.vulpes.api.model.VulpesModel;
  * are automatically persisted by the JPA and Micronaut Data layers.
  * </p>
  */
-@Serdeable
 @Entity(name = "sound_data")
-@Table(name = "vulpes_sound_data", indexes = @Index(columnList = "id"))
-@MappedEntity
-public class SoundData implements VulpesModel {
+public class SoundDataEntity implements VulpesModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @VulpesGenerator
+    private UUID id;
     private String name;
     private String source;
     private double volume;
@@ -39,12 +36,12 @@ public class SoundData implements VulpesModel {
      * This constructor is required for the JPA provider to instantiate the entity.
      * </p>
      */
-    public SoundData() {
+    public SoundDataEntity() {
         // No-argument constructor for JPA
     }
 
     /**
-     * Constructs a new {@link SoundData} with the specified values.
+     * Constructs a new {@link SoundDataEntity} with the specified values.
      *
      * @param id      the unique identifier of the sound data
      * @param name    the name of the sound data
@@ -52,7 +49,7 @@ public class SoundData implements VulpesModel {
      * @param volume  the volume level of the sound
      * @param pitch   the pitch of the sound
      */
-    public SoundData(String id, String name, String source, double volume, double pitch) {
+    public SoundDataEntity(UUID id, String name, String source, double volume, double pitch) {
         this.id = id;
         this.name = name;
         this.source = source;
@@ -67,7 +64,7 @@ public class SoundData implements VulpesModel {
      *
      * @return the unique identifier of the sound data
      */
-    public String getId() {
+    public UUID getId() {
         return id;
     }
 
@@ -76,7 +73,7 @@ public class SoundData implements VulpesModel {
      *
      * @param id the unique identifier to set
      */
-    public void setId(String id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
