@@ -24,9 +24,9 @@ public class NotificationEntity implements VulpesModel {
     @GeneratedValue(strategy = GenerationType.UUID)
     @VulpesGenerator
     private UUID id;
-    private String modelName;
-    private String name;
-    private String description;
+    private String uiName;
+    private String variableName;
+    private String comment;
     private String material;
     private String frameType;
     private String title;
@@ -44,19 +44,17 @@ public class NotificationEntity implements VulpesModel {
     /**
      * Constructs a new {@link NotificationEntity} with the specified values.
      *
-     * @param id          the unique identifier of the notification
-     * @param modelName   the model name associated with the notification
-     * @param name        the name of the notification
-     * @param description a description of the notification
-     * @param material    the material type associated with the notification
-     * @param frameType   the frame type associated with the notification
-     * @param title       the title of the notification
+     * @param id        the unique identifier of the notification
+     * @param comment   a comment for the description
+     * @param material  the material type associated with the notification
+     * @param frameType the frame type associated with the notification
+     * @param title     the title of the notification
      */
-    public NotificationEntity(UUID id, String modelName, String name, String description, String material, String frameType, String title) {
+    public NotificationEntity(UUID id, String uiName, String variableName, String comment, String material, String frameType, String title) {
         this.id = id;
-        this.modelName = modelName;
-        this.name = name;
-        this.description = description;
+        this.uiName = uiName;
+        this.variableName = variableName;
+        this.comment = comment;
         this.material = material;
         this.frameType = frameType;
         this.title = title;
@@ -81,57 +79,57 @@ public class NotificationEntity implements VulpesModel {
     }
 
     /**
-     * Returns the model name associated with the notification
+     * Sets the name representation for the ui
      *
-     * @return the model name of the notification
+     * @param uiName the name to set for the ui
      */
-    public String getModelName() {
-        return modelName;
+    public void setUiName(String uiName) {
+        this.uiName = uiName;
     }
 
     /**
-     * Sets the model name associated with the notification
+     * Returns the name representation for the ui
      *
-     * @param modelName the model name to set
+     * @return the given ui name
      */
-    public void setModelName(String modelName) {
-        this.modelName = modelName;
+    public String getUiName() {
+        return uiName;
     }
 
     /**
-     * Returns the name of the notification
+     * Sets the variable name for the notification
      *
-     * @return the name of the notification
+     * @param variableName the variable name to set
      */
-    public String getName() {
-        return name;
+    public void setVariableName(String variableName) {
+        this.variableName = variableName;
     }
 
     /**
-     * Sets the name of the notification
+     * Returns the variable name for the notification
      *
-     * @param name the name to set
+     * @return the variable name of the notification
      */
-    public void setName(String name) {
-        this.name = name;
+    public String getVariableName() {
+        return variableName;
     }
 
     /**
-     * Returns the description of the notification
+     * Returns the comment of the notification
      *
-     * @return the description of the notification
+     * @return the description
      */
-    public String getDescription() {
-        return description;
+    public String getComment() {
+        return comment;
     }
 
     /**
-     * Sets the description of the notification
+     * Sets the comment of the notification
      *
-     * @param description the description to set
+     * @param description the comment to set
      */
-    public void setDescription(String description) {
-        this.description = description;
+    public void setComment(String description) {
+        this.comment = description;
     }
 
     /**
@@ -197,9 +195,9 @@ public class NotificationEntity implements VulpesModel {
     public String toString() {
         return "NotificationModel{" +
                 "id='" + id + '\'' +
-                ", modelName='" + modelName + '\'' +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
+                ", uiName='" + uiName + '\'' +
+                ", variableName='" + variableName + '\'' +
+                ", description='" + comment + '\'' +
                 ", material='" + material + '\'' +
                 ", frameType='" + frameType + '\'' +
                 ", title='" + title + '\'' +

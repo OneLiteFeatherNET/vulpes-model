@@ -28,9 +28,9 @@ public class ItemEntity implements VulpesModel {
     @VulpesGenerator
     private UUID id;
 
-    private String modelName;
-    private String name;
-    private String description;
+    private String uiName;
+    private String variableName;
+    private String comment;
     private String displayName;
     private String material;
     private String groupName;
@@ -57,23 +57,23 @@ public class ItemEntity implements VulpesModel {
      * Constructs a new {@link ItemEntity} with the specified values.
      *
      * @param id              the unique identifier of the item
-     * @param modelName       the model name associated with the item
-     * @param name            the name of the item
-     * @param description     a description of the item
+     * @param uiName          the model name associated with the item
+     * @param variableName    the name of the item
+     * @param comment         a description of the item
      * @param displayName     the display name of the item
      * @param material        the material type associated with the item
-     * @param groupName           the group to which the item belongs
+     * @param groupName       the group to which the item belongs
      * @param customModelData the custom model data for the item
      * @param amount          the amount of the item
      * @param enchantments    the enchantments applied to the item
      * @param lore            the lore associated with the item
      * @param flags           the flags associated with the item
      */
-    public ItemEntity(UUID id, String modelName, String name, String description, String displayName, String material, String groupName, int customModelData, int amount, Map<String, Short> enchantments, List<String> lore, List<String> flags) {
+    public ItemEntity(UUID id, String uiName, String variableName, String comment, String displayName, String material, String groupName, int customModelData, int amount, Map<String, Short> enchantments, List<String> lore, List<String> flags) {
         this.id = id;
-        this.modelName = modelName;
-        this.name = name;
-        this.description = description;
+        this.uiName = uiName;
+        this.variableName = variableName;
+        this.comment = comment;
         this.displayName = displayName;
         this.material = material;
         this.groupName = groupName;
@@ -105,58 +105,59 @@ public class ItemEntity implements VulpesModel {
     }
 
     /**
-     * Returns the model name associated with the item.
+     * Sets the name representation for the ui
      *
-     * @return the model name of the item
+     * @param uiName the name to set for the ui
      */
-    public String getModelName() {
-        return modelName;
+    public void setUiName(String uiName) {
+        this.uiName = uiName;
     }
 
     /**
-     * Sets the model name associated with the item.
+     * Returns the name representation for the ui
      *
-     * @param modelName the model name to set
+     * @return the given ui name
      */
-    public void setModelName(String modelName) {
-        this.modelName = modelName;
+    public String getUiName() {
+        return uiName;
     }
 
     /**
-     * Returns the name of the item.
+     * Sets the variable name for the notification
      *
-     * @return the name of the item
+     * @param variableName the variable name to set
      */
-    public String getName() {
-        return name;
+    public void setVariableName(String variableName) {
+        this.variableName = variableName;
     }
 
     /**
-     * Sets the name of the item.
+     * Returns the variable name for the notification
      *
-     * @param name the name to set
+     * @return the variable name of the notification
      */
-    public void setName(String name) {
-        this.name = name;
+    public String getVariableName() {
+        return variableName;
     }
 
     /**
-     * Returns the description of the item.
+     * Returns the comment of the notification
      *
-     * @return the description of the item
+     * @return the description
      */
-    public String getDescription() {
-        return description;
+    public String getComment() {
+        return comment;
     }
 
     /**
-     * Sets the description of the item.
+     * Sets the comment of the notification
      *
-     * @param description the description to set
+     * @param description the comment to set
      */
-    public void setDescription(String description) {
-        this.description = description;
+    public void setComment(String description) {
+        this.comment = description;
     }
+
 
     /**
      * Returns the display name of the item.
@@ -311,9 +312,9 @@ public class ItemEntity implements VulpesModel {
     public String toString() {
         return "ItemModel{" +
                 "id='" + id + '\'' +
-                ", modelName='" + modelName + '\'' +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
+                ", modelName='" + uiName + '\'' +
+                ", name='" + variableName + '\'' +
+                ", comment='" + comment + '\'' +
                 ", displayName='" + displayName + '\'' +
                 ", material='" + material + '\'' +
                 ", group='" + groupName + '\'' +
