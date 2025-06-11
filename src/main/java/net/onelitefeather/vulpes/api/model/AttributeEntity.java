@@ -24,8 +24,8 @@ public class AttributeEntity implements VulpesModel {
     @GeneratedValue(strategy = GenerationType.UUID)
     @VulpesGenerator
     private UUID id;
-    private String modelName;
-    private String name;
+    private String uiName;
+    private String variableName;
     private double defaultValue;
     private double maximumValue;
 
@@ -43,15 +43,15 @@ public class AttributeEntity implements VulpesModel {
      * Constructs a new {@link AttributeEntity} with the specified values.
      *
      * @param id            the unique identifier of the attribute
-     * @param modelName     the model name associated with the attribute
-     * @param name          the name of the attribute
+     * @param uiName     the model name associated with the attribute
+     * @param variableName          the name of the attribute
      * @param defaultValue  the default value of the attribute
      * @param maximumValue  the maximum value of the attribute
      */
-    public AttributeEntity(UUID id, String modelName, String name, double defaultValue, double maximumValue) {
+    public AttributeEntity(UUID id, String uiName, String variableName, double defaultValue, double maximumValue) {
         this.id = id;
-        this.modelName = modelName;
-        this.name = name;
+        this.uiName = uiName;
+        this.variableName = variableName;
         this.defaultValue = defaultValue;
         this.maximumValue = maximumValue;
     }
@@ -81,8 +81,8 @@ public class AttributeEntity implements VulpesModel {
      *
      * @return the model name of the attribute
      */
-    public String getModelName() {
-        return modelName;
+    public String getUiName() {
+        return uiName;
     }
 
     /**
@@ -90,8 +90,8 @@ public class AttributeEntity implements VulpesModel {
      *
      * @param modelName the model name to set
      */
-    public void setModelName(String modelName) {
-        this.modelName = modelName;
+    public void setUiName(String modelName) {
+        this.uiName = modelName;
     }
 
     /**
@@ -99,8 +99,8 @@ public class AttributeEntity implements VulpesModel {
      *
      * @return the name of the attribute
      */
-    public String getName() {
-        return name;
+    public String getVariableName() {
+        return variableName;
     }
 
     /**
@@ -108,8 +108,8 @@ public class AttributeEntity implements VulpesModel {
      *
      * @param name the name to set
      */
-    public void setName(String name) {
-        this.name = name;
+    public void setVariableName(String name) {
+        this.variableName = name;
     }
 
     /**
@@ -157,8 +157,8 @@ public class AttributeEntity implements VulpesModel {
     public String toString() {
         return "AttributeModel{" +
                 "id='" + id + '\'' +
-                ", modelName='" + modelName + '\'' +
-                ", name='" + name + '\'' +
+                ", modelName='" + uiName + '\'' +
+                ", name='" + variableName + '\'' +
                 ", defaultValue=" + defaultValue +
                 ", maximumValue=" + maximumValue +
                 '}';
