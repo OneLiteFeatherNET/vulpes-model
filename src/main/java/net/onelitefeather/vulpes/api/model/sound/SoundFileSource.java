@@ -8,19 +8,19 @@ import net.onelitefeather.vulpes.api.generator.VulpesGenerator;
 import net.onelitefeather.vulpes.api.model.VulpesModel;
 import org.hibernate.annotations.ColumnDefault;
 
+import java.util.Objects;
 import java.util.UUID;
 
 /**
- * Represents sound data in the system. This class is used as an entity for persistence
- * with JPA and Micronaut Data. It contains details related to sound such as name, source,
- * volume, and pitch.
- * <p>
- * This class is mapped to the database table "vulpes_sound_data" and contains fields that
- * are automatically persisted by the JPA and Micronaut Data layers.
- * </p>
+ * The {@link SoundFileSource} class represents a sound file entity that contains information about a sound itself.
+ * It includes properties such as volume, pitch, weight, and whether the sound is streamed or preloaded.
+ *
+ * @author theEvilReaper
+ * @version 2.0.0
+ * @since 0.1.0
  */
 @Entity(name = "sound_data")
-public class SoundDataEntity implements VulpesModel {
+public class SoundFileSource implements VulpesModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -47,12 +47,12 @@ public class SoundDataEntity implements VulpesModel {
      * This constructor is required for the JPA provider to instantiate the entity.
      * </p>
      */
-    public SoundDataEntity() {
+    public SoundFileSource() {
         // No-argument constructor for JPA
     }
 
     /**
-     * Constructs a new {@link SoundDataEntity} with the specified values.
+     * Constructs a new {@link SoundFileSource} with the specified values.
      *
      * @param id                  the unique identifier of the sound data
      * @param name                the name of the sound data
@@ -64,7 +64,7 @@ public class SoundDataEntity implements VulpesModel {
      * @param preload             whether to preload the sound data
      * @param type                the type of sound data (e.g., file)
      */
-    public SoundDataEntity(
+    public SoundFileSource(
             UUID id,
             String name,
             float volume,
@@ -230,6 +230,18 @@ public class SoundDataEntity implements VulpesModel {
      */
     public boolean isStreamable() {
         return stream;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        SoundFileSource that = (SoundFileSource) o;
+        return Float.compare(volume, that.volume) == 0 && Float.compare(pitch, that.pitch) == 0 && weight == that.weight && stream == that.stream && attenuationDistance == that.attenuationDistance && preload == that.preload && Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(type, that.type);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, volume, pitch, weight, stream, attenuationDistance, preload, type);
     }
 
     @Override
