@@ -16,7 +16,7 @@ import java.util.UUID;
 /**
  * The {@link SoundEventEntity} class represents a sound event to represent a custom sound.
  * It contains all relevant information about the sound to be used on a Minecraft server.
- * </p>
+ * <br>
  * For more information about the data structure, see the <a href="https://minecraft.wiki/w/Sounds.json">wiki</a> page
  *
  * @author theEvilReaper
@@ -61,6 +61,7 @@ public class SoundEventEntity implements VulpesModel {
      * @param id           the unique identifier of the sound model
      * @param uiName       the user interface name for the sound model
      * @param variableName the variable name for the sound model
+     * @param keyName      the key name for the sound model
      * @param replace      whether to replace an existing sound model
      * @param subTitle     the subtitle for the sound model
      * @param dataEntities the list of sound data entities related to this sound model
