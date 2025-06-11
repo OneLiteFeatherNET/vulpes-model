@@ -6,6 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import net.onelitefeather.vulpes.api.generator.VulpesGenerator;
 import net.onelitefeather.vulpes.api.model.VulpesModel;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.util.UUID;
 
@@ -26,9 +27,19 @@ public class SoundDataEntity implements VulpesModel {
     @VulpesGenerator
     private UUID id;
     private String name;
-    private String source;
-    private double volume;
-    private double pitch;
+    @ColumnDefault("1.0")
+    private float volume;
+    @ColumnDefault("1.0")
+    private float pitch;
+    private int weight;
+    @ColumnDefault("true")
+    private boolean stream;
+    @ColumnDefault("16")
+    private int attenuationDistance;
+    @ColumnDefault("false")
+    private boolean preload;
+    @ColumnDefault("file")
+    private String type;
 
     /**
      * Default constructor for JPA and Micronaut Data.
@@ -43,47 +54,56 @@ public class SoundDataEntity implements VulpesModel {
     /**
      * Constructs a new {@link SoundDataEntity} with the specified values.
      *
-     * @param id      the unique identifier of the sound data
-     * @param name    the name of the sound data
-     * @param source  the source file or location of the sound
-     * @param volume  the volume level of the sound
-     * @param pitch   the pitch of the sound
+     * @param id                  the unique identifier of the sound data
+     * @param name                the name of the sound data
+     * @param volume              the volume level of the sound data
+     * @param pitch               the pitch of the sound data
+     * @param weight              the weight of the sound data
+     * @param stream              whether the sound data is streamed
+     * @param attenuationDistance the distance at which sound attenuation occurs
+     * @param preload             whether to preload the sound data
+     * @param type                the type of sound data (e.g., file)
      */
-    public SoundDataEntity(UUID id, String name, String source, double volume, double pitch) {
+    public SoundDataEntity(
+            UUID id,
+            String name,
+            float volume,
+            float pitch,
+            int weight,
+            boolean stream,
+            int attenuationDistance,
+            boolean preload,
+            String type
+    ) {
         this.id = id;
         this.name = name;
-        this.source = source;
         this.volume = volume;
         this.pitch = pitch;
+        this.weight = weight;
+        this.stream = stream;
+        this.attenuationDistance = attenuationDistance;
+        this.preload = preload;
+        this.type = type;
     }
 
     // Getters and setters for each field
 
     /**
-     * Returns the unique identifier of the sound data
+     * Returns the unique identifier of the data.
      *
-     * @return the unique identifier of the sound data
+     * @return the unique identifier
      */
     public UUID getId() {
         return id;
     }
 
     /**
-     * Sets the unique identifier of the sound data
+     * Sets the unique identifier of the sound data.
      *
      * @param id the unique identifier to set
      */
     public void setId(UUID id) {
         this.id = id;
-    }
-
-    /**
-     * Returns the name of the sound data
-     *
-     * @return the name of the sound data
-     */
-    public String getName() {
-        return name;
     }
 
     /**
@@ -96,29 +116,20 @@ public class SoundDataEntity implements VulpesModel {
     }
 
     /**
-     * Returns the source of the sound data
+     * Returns the name of the sound data
      *
-     * @return the source of the sound data
+     * @return the name
      */
-    public String getSource() {
-        return source;
-    }
-
-    /**
-     * Sets the source of the sound data
-     *
-     * @param source the source to set
-     */
-    public void setSource(String source) {
-        this.source = source;
+    public String getName() {
+        return name;
     }
 
     /**
      * Returns the volume level of the sound data
      *
-     * @return the volume level of the sound data
+     * @return the volume level
      */
-    public double getVolume() {
+    public float getVolume() {
         return volume;
     }
 
@@ -127,16 +138,16 @@ public class SoundDataEntity implements VulpesModel {
      *
      * @param volume the volume to set
      */
-    public void setVolume(double volume) {
+    public void setVolume(float volume) {
         this.volume = volume;
     }
 
     /**
      * Returns the pitch of the sound data
      *
-     * @return the pitch of the sound data
+     * @return the pitch
      */
-    public double getPitch() {
+    public float getPitch() {
         return pitch;
     }
 
@@ -145,23 +156,94 @@ public class SoundDataEntity implements VulpesModel {
      *
      * @param pitch the pitch to set
      */
-    public void setPitch(double pitch) {
+    public void setPitch(float pitch) {
         this.pitch = pitch;
     }
 
     /**
-     * Provides a string representation of the SoundData
+     * Returns the attenuation distance of the sound.
      *
-     * @return
+     * @return the attenuation distance
      */
+    public int getAttenuationDistance() {
+        return attenuationDistance;
+    }
+
+    /**
+     * Sets the attenuation distance of the sound.
+     *
+     * @param attenuationDistance the attenuation distance to set
+     */
+    public void setAttenuationDistance(int attenuationDistance) {
+        this.attenuationDistance = attenuationDistance;
+    }
+
+    /**
+     * Returns the weight of the sound.
+     *
+     * @return the weight
+     */
+    public int getWeight() {
+        return weight;
+    }
+
+    /**
+     * Sets the weight of the sound.
+     *
+     * @param weight the weight to set
+     */
+    public void setWeight(int weight) {
+        this.weight = weight;
+    }
+
+    /**
+     * Return the type of the sound which refers to a file or other source.
+     *
+     * @return the given type
+     */
+    public String getType() {
+        return type;
+    }
+
+    /**
+     * Sets the type of the sound which refers to a file or other source.
+     *
+     * @param type the type to set
+     */
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    /**
+     * Checks if the sound is preloadable.
+     *
+     * @return true if preloadable, false otherwise
+     */
+    public boolean isPreloadable() {
+        return preload;
+    }
+
+    /**
+     * Sets whether the sound should be preloaded.
+     *
+     * @return true if preloadable, false otherwise
+     */
+    public boolean isStreamable() {
+        return stream;
+    }
+
     @Override
     public String toString() {
-        return "SoundData{" +
-                "id='" + id + '\'' +
+        return "SoundDataEntity{" +
+                "id=" + id +
                 ", name='" + name + '\'' +
-                ", source='" + source + '\'' +
                 ", volume=" + volume +
                 ", pitch=" + pitch +
+                ", weight=" + weight +
+                ", stream=" + stream +
+                ", attenuationDistance=" + attenuationDistance +
+                ", preload=" + preload +
+                ", type='" + type + '\'' +
                 '}';
     }
 }
