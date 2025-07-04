@@ -1,4 +1,4 @@
-## Vulpes Spring Data
+## Vulpes Model
 
 This project provides a unified model structure for storing various data used in the Vulpes project.  
 It is utilized by both `vulpes-backend` and `vulpes-generator` to ensure consistency while avoiding code duplication.
