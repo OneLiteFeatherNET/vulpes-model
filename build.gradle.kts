@@ -6,9 +6,6 @@ plugins {
     id("io.micronaut.library") version "4.5.3"
 }
 
-group = "net.onelitefeather.vulpes"
-version = "1.4.0"
-
 java {
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(21))
@@ -46,21 +43,52 @@ tasks {
 publishing {
     publications.create<MavenPublication>("maven") {
         from(components["java"])
-    }
-
-    repositories {
-        maven {
-            authentication {
-                credentials(PasswordCredentials::class) {
-                    username = System.getenv("ONELITEFEATHER_MAVEN_USERNAME")
-                    password = System.getenv("ONELITEFEATHER_MAVEN_PASSWORD")
+        version = rootProject.version as String
+        artifactId = "vulpes-model"
+        groupId = rootProject.group as String
+        pom {
+            name = "Vulpes Model"
+            description = "Vulpes Model for OneLiteFeather"
+            url = "https://github.com/OneLiteFeatherNET/vulpes-model"
+            licenses {
+                license {
+                    name = "AGPL-3.0"
+                    url = "https://www.gnu.org/licenses/agpl-3.0.en.html"
                 }
             }
-            name = "OneLiteFeatherRepository"
-            url = if (project.version.toString().contains("SNAPSHOT")) {
-                uri("https://repo.onelitefeather.dev/onelitefeather-snapshots")
-            } else {
-                uri("https://repo.onelitefeather.dev/onelitefeather-releases")
+            developers {
+                developer {
+                    id = "themeinerlp"
+                    name = "Phillipp Glanz"
+                    email = "p.glanz@madfix.me"
+                }
+                developer {
+                    id = "theEvilReaper"
+                    name = "Steffen Wonning"
+                    email = "steffenwx@gmail.com"
+                }
+                scm {
+                    connection = "scm:git:git://github.com:OneLiteFeatherNET/vulpes-model.git"
+                    developerConnection = "scm:git:ssh://git@github.com:OneLiteFeatherNET/vulpes-model.git"
+                    url = "https://github.com/OneLiteFeatherNET/vulpes-model"
+                }
+            }
+        }
+
+        repositories {
+            maven {
+                authentication {
+                    credentials(PasswordCredentials::class) {
+                        // Those credentials need to be set under "Settings -> Secrets -> Actions" in your repository
+                        username = System.getenv("ONELITEFEATHER_MAVEN_USERNAME")
+                        password = System.getenv("ONELITEFEATHER_MAVEN_PASSWORD")
+                    }
+                }
+
+                name = "OneLiteFeatherRepository"
+                val releasesRepoUrl = uri("https://repo.onelitefeather.dev/onelitefeather-releases")
+                val snapshotsRepoUrl = uri("https://repo.onelitefeather.dev/onelitefeather-snapshots")
+                url = if (version.toString().contains("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl
             }
         }
     }
