@@ -9,6 +9,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * The {@link ItemRepository} interface inherits from {@link PageableRepository} and provides methods to manage {@link ItemEntity} objects.
+ *
+ * @author theEvilReaper
+ * @version 1.0.0
+ * @since 0.1.0
+ */
 @Repository
 public interface ItemRepository extends PageableRepository<ItemEntity, UUID> {
 
