@@ -1,5 +1,6 @@
 package net.onelitefeather.vulpes.api.model.sound;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -33,6 +34,7 @@ public class SoundEventEntity implements VulpesModel {
     private String uiName;
     private String variableName;
     private String keyName;
+    @Column(name = "replace_flag")
     @ColumnDefault("false")
     private boolean replace;
     @ColumnDefault("null")
