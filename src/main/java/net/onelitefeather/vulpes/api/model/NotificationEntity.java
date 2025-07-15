@@ -44,11 +44,13 @@ public class NotificationEntity implements VulpesModel {
     /**
      * Constructs a new {@link NotificationEntity} with the specified values.
      *
-     * @param id        the unique identifier of the notification
-     * @param comment   a comment for the description
-     * @param material  the material type associated with the notification
-     * @param frameType the frame type associated with the notification
-     * @param title     the title of the notification
+     * @param id           the unique identifier of the notification
+     * @param uiName       the user interface name of the notification
+     * @param variableName the variable name of the notification
+     * @param comment      a comment for the description
+     * @param material     the material type associated with the notification
+     * @param frameType    the frame type associated with the notification
+     * @param title        the title of the notification
      */
     public NotificationEntity(UUID id, String uiName, String variableName, String comment, String material, String frameType, String title) {
         this.id = id;
