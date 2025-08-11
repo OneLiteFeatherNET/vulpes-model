@@ -38,7 +38,7 @@ public class SoundFileSource implements VulpesModel {
     private int attenuationDistance;
     @ColumnDefault("false")
     private boolean preload;
-    @ColumnDefault("'file'")
+    @ColumnDefault("'type_file'")
     private String type;
 
     /**
