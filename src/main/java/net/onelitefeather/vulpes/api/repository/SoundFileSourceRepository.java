@@ -2,6 +2,7 @@ package net.onelitefeather.vulpes.api.repository;
 
 import io.micronaut.data.annotation.Query;
 import io.micronaut.data.annotation.Repository;
+import io.micronaut.data.model.Page;
 import io.micronaut.data.model.Pageable;
 import io.micronaut.data.repository.PageableRepository;
 import net.onelitefeather.vulpes.api.model.sound.SoundFileSource;
@@ -27,6 +28,6 @@ public interface SoundFileSourceRepository extends PageableRepository<SoundFileS
      * @return a list of sound file sources associated with the sound event
      */
     @Query("SELECT f FROM sound_data f WHERE f.soundEvent.id = :id")
-    List<SoundFileSource> findSoundFileSourcesBySoundEvent(UUID id, Pageable pageable);
+    Page<SoundFileSource> findSoundFileSourcesBySoundEvent(UUID id, Pageable pageable);
 
 }
