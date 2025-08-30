@@ -242,6 +242,10 @@ public class SoundFileSource implements VulpesModel {
         return soundEvent;
     }
 
+    public void setSoundEvent(SoundEventEntity soundEvent) {
+        this.soundEvent = soundEvent;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
