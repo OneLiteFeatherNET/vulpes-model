@@ -27,7 +27,8 @@ public interface SoundFileSourceRepository extends PageableRepository<SoundFileS
      * @param pageable the pagination information
      * @return a list of sound file sources associated with the sound event
      */
-    @Query("SELECT f FROM sound_data f WHERE f.soundEvent.id = :id")
+    @Query(value = "SELECT f FROM sound_data f WHERE f.soundEvent.id = :id",
+    countQuery = "SELECT count(f) FROM sound_data f WHERE f.soundEvent.id = :id")
     Page<SoundFileSource> findSoundFileSourcesBySoundEvent(UUID id, Pageable pageable);
 
 }
