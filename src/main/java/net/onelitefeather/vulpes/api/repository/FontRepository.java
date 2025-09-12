@@ -26,4 +26,12 @@ public interface FontRepository extends PageableRepository<FontEntity, UUID> {
      */
     @Query("SELECT c FROM fonts f JOIN f.chars c WHERE f.id = :id")
     List<String> findCharsByFontId(UUID id);
+
+    /**
+     * Retrieves all fonts along with their associated characters.
+     *
+     * @return a list of all FontEntity objects with their characters
+     */
+    @Query("select f from fonts f JOIN FETCH f.chars")
+    List<FontEntity> findAll();
 }
