@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import net.onelitefeather.vulpes.api.generator.VulpesGenerator;
 import net.onelitefeather.vulpes.api.model.VulpesModel;
 import org.hibernate.annotations.ColumnDefault;
@@ -40,6 +42,10 @@ public class SoundFileSource implements VulpesModel {
     private boolean preload;
     @ColumnDefault("'type_file'")
     private String type;
+
+    @ManyToOne
+    @JoinColumn(name = "sound_event_id")
+    private SoundEventEntity soundEvent;
 
     /**
      * Default constructor for JPA and Micronaut Data.
@@ -230,6 +236,14 @@ public class SoundFileSource implements VulpesModel {
      */
     public boolean isStreamable() {
         return stream;
+    }
+
+    public SoundEventEntity getSoundEvent() {
+        return soundEvent;
+    }
+
+    public void setSoundEvent(SoundEventEntity soundEvent) {
+        this.soundEvent = soundEvent;
     }
 
     @Override
