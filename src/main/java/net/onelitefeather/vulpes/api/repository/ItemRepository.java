@@ -45,4 +45,13 @@ public interface ItemRepository extends PageableRepository<ItemEntity, UUID> {
      */
     @Query("SELECT f FROM items i JOIN i.enchantments f WHERE i.id = :id")
     List<String> findFlagsById(UUID id);
+
+
+    /**
+     * Retrieves all items along with their associated enchantments, lore, and flags.
+     *
+     * @return a list of all ItemEntity objects with their enchantments, lore, and flags
+     */
+    @Query("SELECT i FROM items i LEFT JOIN FETCH i.enchantments LEFT JOIN FETCH i.lore LEFT JOIN FETCH i.flags")
+    List<ItemEntity> findAllWithFetches();
 }
