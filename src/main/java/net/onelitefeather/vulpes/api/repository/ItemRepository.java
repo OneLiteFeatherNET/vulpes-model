@@ -34,7 +34,7 @@ public interface ItemRepository extends PageableRepository<ItemEntity, UUID> {
      * @param id the unique identifier of the item
      * @return a list of lore strings associated with the item
      */
-    @Query("SELECT l FROM items i JOIN i.enchantments l WHERE i.id = :id")
+    @Query("SELECT l FROM items i JOIN i.lore l WHERE i.id = :id")
     List<String> findLoreById(UUID id);
 
     /**
@@ -43,7 +43,7 @@ public interface ItemRepository extends PageableRepository<ItemEntity, UUID> {
      * @param id the unique identifier of the item
      * @return a list of flags associated with the item
      */
-    @Query("SELECT f FROM items i JOIN i.enchantments f WHERE i.id = :id")
+    @Query("SELECT f FROM items i JOIN i.flags f WHERE i.id = :id")
     List<String> findFlagsById(UUID id);
 
 
