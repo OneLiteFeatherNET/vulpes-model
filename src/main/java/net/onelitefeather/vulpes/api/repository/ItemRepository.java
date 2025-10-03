@@ -2,6 +2,7 @@ package net.onelitefeather.vulpes.api.repository;
 
 import io.micronaut.data.annotation.Query;
 import io.micronaut.data.annotation.Repository;
+import io.micronaut.data.model.Pageable;
 import io.micronaut.data.repository.PageableRepository;
 import net.onelitefeather.vulpes.api.model.ItemEntity;
 
