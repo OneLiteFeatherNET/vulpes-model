@@ -55,6 +55,7 @@ public class FontEntity implements VulpesModel {
      * @param variableName the variable name of the font
      * @param provider     the provider of the font
      * @param texturePath  the path to the texture of the font
+     * @param comment      a comment or description for the font
      * @param height       the height of the font
      * @param ascent       the ascent of the font
      * @param chars        the list of characters included in the font
