@@ -17,7 +17,7 @@ import java.util.UUID;
  *
  */
 @Entity(name = "item_lore")
-public final class ItemLoreEntity {
+public final class ItemLoreEntity implements Comparable<ItemLoreEntity> {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @VulpesGenerator
@@ -26,6 +26,7 @@ public final class ItemLoreEntity {
     @ManyToOne
     @JoinColumn(name = "item_id", nullable = false)
     private ItemEntity item;
+    private int orderIndex;
 
 
     public ItemLoreEntity() {
@@ -38,11 +39,13 @@ public final class ItemLoreEntity {
     public ItemLoreEntity(
             UUID id,
             String text,
-            ItemEntity item
+            ItemEntity item,
+            int orderIndex
     ) {
         this.id = id;
         this.text = text;
         this.item = item;
+        this.orderIndex = orderIndex;
     }
 
     public void setId(UUID id) {
@@ -69,6 +72,14 @@ public final class ItemLoreEntity {
         return text;
     }
 
+    public void setOrderIndex(int orderIndex) {
+        this.orderIndex = orderIndex;
+    }
+
+    public int getOrderIndex() {
+        return orderIndex;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj == this) return true;
@@ -92,4 +103,8 @@ public final class ItemLoreEntity {
                 "item=" + item + ']';
     }
 
+    @Override
+    public int compareTo(ItemLoreEntity o) {
+        return Integer.compare(this.orderIndex, o.orderIndex);
+    }
 }

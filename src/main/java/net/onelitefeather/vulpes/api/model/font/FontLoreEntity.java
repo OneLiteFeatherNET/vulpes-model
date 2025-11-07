@@ -13,15 +13,16 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Entity(name = "font_lore")
-public final class FontLoreEntity {
+public final class FontLoreEntity implements Comparable<FontLoreEntity> {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @VulpesGenerator
     private UUID id;
-    private  String line;
+    private String line;
     @ManyToOne
     @JoinColumn(name = "font_id", nullable = false)
-    private  FontEntity font;
+    private FontEntity font;
+    private int orderIndex;
 
     public FontLoreEntity() {
     }
@@ -29,11 +30,13 @@ public final class FontLoreEntity {
     public FontLoreEntity(
             UUID id,
             String line,
-            FontEntity font
+            FontEntity font,
+            int orderIndex
     ) {
         this.id = id;
         this.line = line;
         this.font = font;
+        this.orderIndex = orderIndex;
     }
 
     public void setId(UUID id) {
@@ -60,6 +63,14 @@ public final class FontLoreEntity {
         return font;
     }
 
+    public void setOrderIndex(int orderIndex) {
+        this.orderIndex = orderIndex;
+    }
+
+    public int getOrderIndex() {
+        return orderIndex;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj == this) return true;
@@ -83,4 +94,8 @@ public final class FontLoreEntity {
                 "font=" + font + ']';
     }
 
+    @Override
+    public int compareTo(FontLoreEntity o) {
+        return Integer.compare(this.orderIndex, o.orderIndex);
+    }
 }
