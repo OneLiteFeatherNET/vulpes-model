@@ -41,10 +41,12 @@ public final class FontStringEntity implements Comparable<FontStringEntity> {
     public FontStringEntity(
             UUID id,
             String content,
+            FontEntity font,
             int orderIndex
     ) {
         this.id = id;
         this.line = content;
+        this.font = font;
         this.orderIndex = orderIndex;
     }
 
