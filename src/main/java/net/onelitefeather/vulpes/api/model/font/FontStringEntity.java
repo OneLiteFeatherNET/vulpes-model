@@ -24,49 +24,98 @@ public final class FontStringEntity implements Comparable<FontStringEntity> {
     private FontEntity font;
     private int orderIndex;
 
+    /**
+     * Default constructor for JPA.
+     */
     public FontStringEntity() {
+        // No-argument constructor for JPA
     }
 
+    /**
+     * Constructs a new {@link FontStringEntity} with the specified values.
+     *
+     * @param id         the unique identifier of the font string
+     * @param content    the content of the font string
+     * @param orderIndex the order index of the font string
+     */
     public FontStringEntity(
             UUID id,
             String content,
-            FontEntity font,
             int orderIndex
     ) {
         this.id = id;
         this.line = content;
-        this.font = font;
         this.orderIndex = orderIndex;
     }
 
+    /**
+     * Sets the unique identifier of the font string.
+     *
+     * @param id the unique identifier to set
+     */
     public void setId(UUID id) {
         this.id = id;
     }
 
+    /**
+     * Gets the unique identifier of the font string.
+     *
+     * @return the unique identifier
+     */
     public UUID getId() {
         return id;
     }
 
+    /**
+     * Sets the content of the font string.
+     *
+     * @param line the content to set
+     */
     public void setLine(String line) {
         this.line = line;
     }
 
+    /**
+     * Gets the content of the font string.
+     *
+     * @return the content
+     */
     public String getLine() {
         return line;
     }
 
+    /**
+     * Sets the font associated with this font string.
+     *
+     * @param font the font to set
+     */
     public void setFont(FontEntity font) {
         this.font = font;
     }
 
+    /**
+     * Gets the font associated with this font string.
+     *
+     * @return the font
+     */
     public FontEntity getFont() {
         return font;
     }
 
+    /**
+     * Sets the order index of the font string.
+     *
+     * @param orderIndex the order index to set
+     */
     public void setOrderIndex(int orderIndex) {
         this.orderIndex = orderIndex;
     }
 
+    /**
+     * Gets the order index of the font string.
+     *
+     * @return the order index
+     */
     public int getOrderIndex() {
         return orderIndex;
     }
