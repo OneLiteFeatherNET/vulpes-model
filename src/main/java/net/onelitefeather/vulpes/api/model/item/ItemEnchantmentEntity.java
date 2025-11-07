@@ -40,20 +40,36 @@ public final class ItemEnchantmentEntity {
         this.item = item;
     }
 
-    public UUID id() {
+    public UUID getId() {
         return id;
     }
 
-    public String name() {
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public String getName() {
         return name;
     }
 
-    public short level() {
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public short getLevel() {
         return level;
     }
 
-    public ItemEntity item() {
+    public void setLevel(short level) {
+        this.level = level;
+    }
+
+    public ItemEntity getItem() {
         return item;
+    }
+
+    public void setItem(ItemEntity item) {
+        this.item = item;
     }
 
     @Override
