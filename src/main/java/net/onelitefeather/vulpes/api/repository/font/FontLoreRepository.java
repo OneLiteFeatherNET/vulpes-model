@@ -6,7 +6,6 @@ import io.micronaut.data.model.Page;
 import io.micronaut.data.model.Pageable;
 import io.micronaut.data.repository.PageableRepository;
 import net.onelitefeather.vulpes.api.model.font.FontLoreEntity;
-import net.onelitefeather.vulpes.api.model.item.ItemEnchantmentEntity;
 
 import java.util.UUID;
 
@@ -18,7 +17,7 @@ import java.util.UUID;
  * @author theEvilReaper
  */
 @Repository
-public interface FontLoreRepository extends PageableRepository<ItemEnchantmentEntity, UUID> {
+public interface FontLoreRepository extends PageableRepository<FontLoreEntity, UUID> {
 
     /**
      * Retrieves the characters associated with a font by its ID.
