@@ -7,7 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import net.onelitefeather.vulpes.api.generator.VulpesGenerator;
-import net.onelitefeather.vulpes.api.model.font.FontLoreEntity;
+import net.onelitefeather.vulpes.api.model.font.FontStringEntity;
 
 import java.util.List;
 import java.util.UUID;
@@ -37,7 +37,7 @@ public class FontEntity implements VulpesModel {
     private int height;
     private int ascent;
     @OneToMany(mappedBy = "font", cascade = CascadeType.ALL)
-    private List<FontLoreEntity> chars;
+    private List<FontStringEntity> chars;
 
     /**
      * Default constructor for JPA and Micronaut Data.
@@ -71,7 +71,7 @@ public class FontEntity implements VulpesModel {
             String comment,
             int height,
             int ascent,
-            List<FontLoreEntity> chars
+            List<FontStringEntity> chars
     ) {
         this.id = id;
         this.uiName = uiName;
@@ -193,7 +193,7 @@ public class FontEntity implements VulpesModel {
      *
      * @return the list of characters in the font
      */
-    public List<FontLoreEntity> getChars() {
+    public List<FontStringEntity> getChars() {
         return chars;
     }
 
@@ -202,7 +202,7 @@ public class FontEntity implements VulpesModel {
      *
      * @param chars the list of characters to set
      */
-    public void setChars(List<FontLoreEntity> chars) {
+    public void setChars(List<FontStringEntity> chars) {
         this.chars = chars;
     }
 
