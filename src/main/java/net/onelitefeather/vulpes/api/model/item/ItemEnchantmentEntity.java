@@ -24,50 +24,98 @@ public final class ItemEnchantmentEntity {
     @JoinColumn(name = "item_id", nullable = false)
     private ItemEntity item;
 
+    /**
+     * Default constructor for JPA and Micronaut Data.
+     */
     public ItemEnchantmentEntity() {
-
+        // No-argument constructor for JPA
     }
 
+    /**
+     * Constructs a new {@link ItemEnchantmentEntity} with the specified values.
+     *
+     * @param id    the unique identifier of the item enchantment
+     * @param name  the name of the enchantment
+     * @param level the level of the enchantment
+     */
     public ItemEnchantmentEntity(
             UUID id,
             String name,
-            short level,
-            ItemEntity item
+            short level
     ) {
         this.id = id;
         this.name = name;
         this.level = level;
-        this.item = item;
     }
 
+    /**
+     * Returns the unique identifier of the item enchantment.
+     *
+     * @return the id
+     */
     public UUID getId() {
         return id;
     }
 
+    /**
+     * Sets the unique identifier of the item enchantment.
+     *
+     * @param id the id to set
+     */
     public void setId(UUID id) {
         this.id = id;
     }
 
+    /**
+     * Returns the name of the enchantment.
+     *
+     * @return the name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Sets the name of the enchantment.
+     *
+     * @param name the name to set
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Returns the level of the enchantment.
+     *
+     * @return the level
+     */
     public short getLevel() {
         return level;
     }
 
+    /**
+     * Sets the level of the enchantment.
+     *
+     * @param level the level to set
+     */
     public void setLevel(short level) {
         this.level = level;
     }
 
+    /**
+     * Returns the {@link ItemEntity} which is linked with this enchantment.
+     *
+     * @return the item associated with this enchantment
+     */
     public ItemEntity getItem() {
         return item;
     }
 
+    /**
+     * Sets the item associated with this enchantment.
+     *
+     * @param item the item to associate with this enchantment
+     */
     public void setItem(ItemEntity item) {
         this.item = item;
     }

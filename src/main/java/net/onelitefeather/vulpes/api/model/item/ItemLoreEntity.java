@@ -15,6 +15,9 @@ import java.util.UUID;
 /**
  * The {@link ItemLoreEntity} represents a lore entry associated with an item.
  *
+ * @author theEvilReaper
+ * @version 1.1.0
+ * @since 1.6.0
  */
 @Entity(name = "item_lore")
 public final class ItemLoreEntity implements Comparable<ItemLoreEntity> {
@@ -28,54 +31,97 @@ public final class ItemLoreEntity implements Comparable<ItemLoreEntity> {
     private ItemEntity item;
     private int orderIndex;
 
-
+    /**
+     * Default constructor for JPA and Micronaut Data.
+     */
     public ItemLoreEntity() {
+        // No-argument constructor for JPA
     }
 
     /**
+     * Constructs a new {@link ItemLoreEntity} with the specified values.
+     *
      * @param id   the unique identifier of the lore entry
      * @param text the lore text
      */
     public ItemLoreEntity(
             UUID id,
             String text,
-            ItemEntity item,
             int orderIndex
     ) {
         this.id = id;
         this.text = text;
-        this.item = item;
         this.orderIndex = orderIndex;
     }
 
+    /**
+     * Sets the unique identifier of the lore entry.
+     *
+     * @param id the unique identifier to set
+     */
     public void setId(UUID id) {
         this.id = id;
     }
 
+    /**
+     * Gets the unique identifier of the lore entry.
+     *
+     * @return the unique identifier
+     */
     public UUID getId() {
         return id;
     }
 
+    /**
+     * Sets the item associated with this lore entry.
+     *
+     * @param item the item to set
+     */
     public void setItem(ItemEntity item) {
         this.item = item;
     }
 
+    /**
+     * Gets the item associated with this lore entry.
+     *
+     * @return the associated item
+     */
     public ItemEntity getItem() {
         return item;
     }
 
+    /**
+     * Sets the lore text.
+     *
+     * @param text the lore text to set
+     */
     public void setText(String text) {
         this.text = text;
     }
 
+    /**
+     * Gets the lore text.
+     *
+     * @return the lore text
+     */
     public String getText() {
         return text;
     }
 
+    /**
+     * Sets the order index of the lore entry.
+     *
+     * @param orderIndex the order index to set
+     */
     public void setOrderIndex(int orderIndex) {
         this.orderIndex = orderIndex;
     }
 
+    /**
+     * Gets the order index of the lore entry.
+     *
+     * @return the order index
+     */
     public int getOrderIndex() {
         return orderIndex;
     }
