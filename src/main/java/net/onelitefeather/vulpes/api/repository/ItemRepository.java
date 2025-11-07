@@ -7,7 +7,6 @@ import io.micronaut.data.repository.PageableRepository;
 import net.onelitefeather.vulpes.api.model.ItemEntity;
 
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -19,40 +18,6 @@ import java.util.UUID;
  */
 @Repository
 public interface ItemRepository extends PageableRepository<ItemEntity, UUID> {
-
-    /**
-     * Retrieves the enchantments associated with an item by its ID.
-     *
-     * @param id the unique identifier of the item
-     * @return a map of enchantment names and their levels associated with the item
-     */
-    @Query(value = "SELECT e FROM items i JOIN i.enchantments e WHERE i.id = :id",
-            countQuery = "SELECT count(e) FROM items i JOIN i.enchantments e WHERE i.id = :id"
-    )
-    Map<String, Short> findEnchantmentsById(UUID id, Pageable pageable);
-
-    /**
-     * Retrieves the lore associated with an item by its ID.
-     *
-     * @param id the unique identifier of the item
-     * @return a list of lore strings associated with the item
-     */
-    @Query(value = "SELECT l FROM items i JOIN i.lore l WHERE i.id = :id",
-            countQuery = "SELECT count(l) FROM items i JOIN i.lore l WHERE i.id = :id"
-    )
-    List<String> findLoreById(UUID id, Pageable pageable);
-
-    /**
-     * Retrieves the flags associated with an item by its ID.
-     *
-     * @param id the unique identifier of the item
-     * @return a list of flags associated with the item
-     */
-    @Query(value = "SELECT f FROM items i JOIN i.flags f WHERE i.id = :id",
-            countQuery = "SELECT count(f) FROM items i JOIN i.flags f WHERE i.id = :id"
-    )
-    List<String> findFlagsById(UUID id, Pageable pageable);
-
 
     /**
      * Retrieves all items along with their associated enchantments, lore, and flags.
