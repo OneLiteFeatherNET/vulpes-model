@@ -32,7 +32,7 @@ tasks {
     }
 
     test {
-        finalizedBy(rootProject.tasks.jacocoTestReport)
+        finalizedBy(jacocoTestReport)
         testLogging {
             events("passed", "skipped", "failed")
         }

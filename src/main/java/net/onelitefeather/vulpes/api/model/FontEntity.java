@@ -1,11 +1,13 @@
 package net.onelitefeather.vulpes.api.model;
 
-import jakarta.persistence.ElementCollection;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import net.onelitefeather.vulpes.api.generator.VulpesGenerator;
+import net.onelitefeather.vulpes.api.model.font.FontLoreEntity;
 
 import java.util.List;
 import java.util.UUID;
@@ -34,8 +36,8 @@ public class FontEntity implements VulpesModel {
     private String comment;
     private int height;
     private int ascent;
-    @ElementCollection
-    private List<String> chars;
+    @OneToMany(mappedBy = "font", cascade = CascadeType.ALL)
+    private List<FontLoreEntity> chars;
 
     /**
      * Default constructor for JPA and Micronaut Data.
@@ -60,7 +62,17 @@ public class FontEntity implements VulpesModel {
      * @param ascent       the ascent of the font
      * @param chars        the list of characters included in the font
      */
-    public FontEntity(UUID id, String uiName, String variableName, String provider, String texturePath, String comment, int height, int ascent, List<String> chars) {
+    public FontEntity(
+            UUID id,
+            String uiName,
+            String variableName,
+            String provider,
+            String texturePath,
+            String comment,
+            int height,
+            int ascent,
+            List<FontLoreEntity> chars
+    ) {
         this.id = id;
         this.uiName = uiName;
         this.variableName = variableName;
@@ -181,7 +193,7 @@ public class FontEntity implements VulpesModel {
      *
      * @return the list of characters in the font
      */
-    public List<String> getChars() {
+    public List<FontLoreEntity> getChars() {
         return chars;
     }
 
@@ -190,7 +202,7 @@ public class FontEntity implements VulpesModel {
      *
      * @param chars the list of characters to set
      */
-    public void setChars(List<String> chars) {
+    public void setChars(List<FontLoreEntity> chars) {
         this.chars = chars;
     }
 

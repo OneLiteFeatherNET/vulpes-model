@@ -2,7 +2,6 @@ package net.onelitefeather.vulpes.api.repository;
 
 import io.micronaut.data.annotation.Query;
 import io.micronaut.data.annotation.Repository;
-import io.micronaut.data.model.Pageable;
 import io.micronaut.data.repository.PageableRepository;
 import net.onelitefeather.vulpes.api.model.FontEntity;
 
@@ -18,18 +17,6 @@ import java.util.UUID;
  */
 @Repository
 public interface FontRepository extends PageableRepository<FontEntity, UUID> {
-
-    /**
-     * Retrieves the characters associated with a font by its ID.
-     *
-     * @param id the unique identifier of the font
-     * @return a list of characters associated with the font
-     */
-    @Query(
-            value = "SELECT c FROM fonts f JOIN f.chars c WHERE f.id = :id",
-            countQuery = "SELECT COUNT(c) FROM fonts f JOIN f.chars c WHERE f.id = :id"
-    )
-    List<String> findCharsByFontId(UUID id, Pageable pageable);
 
     /**
      * Retrieves all fonts along with their associated characters.
