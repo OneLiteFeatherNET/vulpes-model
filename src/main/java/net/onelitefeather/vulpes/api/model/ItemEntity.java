@@ -1,11 +1,16 @@
 package net.onelitefeather.vulpes.api.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import net.onelitefeather.vulpes.api.generator.VulpesGenerator;
+import net.onelitefeather.vulpes.api.model.item.ItemEnchantmentEntity;
+import net.onelitefeather.vulpes.api.model.item.ItemFlagEntity;
+import net.onelitefeather.vulpes.api.model.item.ItemLoreEntity;
 
 import java.util.List;
 import java.util.Map;
@@ -36,12 +41,12 @@ public class ItemEntity implements VulpesModel {
     private String groupName;
     private int customModelData;
     private int amount;
-    @ElementCollection
-    private Map<String, Short> enchantments;
-    @ElementCollection
-    private List<String> lore;
-    @ElementCollection
-    private List<String> flags;
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<ItemEnchantmentEntity> enchantments;
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<ItemLoreEntity> lore;
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<ItemFlagEntity> flags;
 
     /**
      * Default constructor for JPA and Micronaut Data.
@@ -69,7 +74,20 @@ public class ItemEntity implements VulpesModel {
      * @param lore            the lore associated with the item
      * @param flags           the flags associated with the item
      */
-    public ItemEntity(UUID id, String uiName, String variableName, String comment, String displayName, String material, String groupName, int customModelData, int amount, Map<String, Short> enchantments, List<String> lore, List<String> flags) {
+    public ItemEntity(
+            UUID id,
+            String uiName,
+            String variableName,
+            String comment,
+            String displayName,
+            String material,
+            String groupName,
+            int customModelData,
+            int amount,
+            List<ItemEnchantmentEntity> enchantments,
+            List<ItemLoreEntity> lore,
+            List<ItemFlagEntity> flags
+    ) {
         this.id = id;
         this.uiName = uiName;
         this.variableName = variableName;
@@ -157,7 +175,6 @@ public class ItemEntity implements VulpesModel {
     public void setComment(String description) {
         this.comment = description;
     }
-
 
     /**
      * Returns the display name of the item.
@@ -254,7 +271,7 @@ public class ItemEntity implements VulpesModel {
      *
      * @return the enchantments of the item
      */
-    public Map<String, Short> getEnchantments() {
+    public List<ItemEnchantmentEntity> getEnchantments() {
         return enchantments;
     }
 
@@ -263,7 +280,7 @@ public class ItemEntity implements VulpesModel {
      *
      * @param enchantments the enchantments to set
      */
-    public void setEnchantments(Map<String, Short> enchantments) {
+    public void setEnchantments(List<ItemEnchantmentEntity> enchantments) {
         this.enchantments = enchantments;
     }
 
@@ -272,7 +289,7 @@ public class ItemEntity implements VulpesModel {
      *
      * @return the lore of the item
      */
-    public List<String> getLore() {
+    public List<ItemLoreEntity> getLore() {
         return lore;
     }
 
@@ -281,7 +298,7 @@ public class ItemEntity implements VulpesModel {
      *
      * @param lore the lore to set
      */
-    public void setLore(List<String> lore) {
+    public void setLore(List<ItemLoreEntity> lore) {
         this.lore = lore;
     }
 
@@ -290,7 +307,7 @@ public class ItemEntity implements VulpesModel {
      *
      * @return the flags of the item
      */
-    public List<String> getFlags() {
+    public List<ItemFlagEntity> getFlags() {
         return flags;
     }
 
@@ -299,7 +316,7 @@ public class ItemEntity implements VulpesModel {
      *
      * @param flags the flags to set
      */
-    public void setFlags(List<String> flags) {
+    public void setFlags(List<ItemFlagEntity> flags) {
         this.flags = flags;
     }
 
