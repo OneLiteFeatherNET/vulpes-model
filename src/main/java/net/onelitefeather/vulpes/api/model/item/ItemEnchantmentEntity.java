@@ -4,17 +4,81 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import net.onelitefeather.vulpes.api.generator.VulpesGenerator;
+import net.onelitefeather.vulpes.api.model.ItemEntity;
 
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity(name = "item_enchantments")
-public record ItemEnchantmentEntity(
-        @Id
-        @GeneratedValue(strategy = GenerationType.UUID)
-        @VulpesGenerator
-        UUID id,
-        String name,
-        short level
-) {
+public final class ItemEnchantmentEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @VulpesGenerator
+    private UUID id;
+    private String name;
+    private short level;
+    @ManyToOne
+    @JoinColumn(name = "item_id", nullable = false)
+    private ItemEntity item;
+
+    public ItemEnchantmentEntity() {
+
+    }
+
+    public ItemEnchantmentEntity(
+            UUID id,
+            String name,
+            short level,
+            ItemEntity item
+    ) {
+        this.id = id;
+        this.name = name;
+        this.level = level;
+        this.item = item;
+    }
+
+    public UUID id() {
+        return id;
+    }
+
+    public String name() {
+        return name;
+    }
+
+    public short level() {
+        return level;
+    }
+
+    public ItemEntity item() {
+        return item;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (obj == null || obj.getClass() != this.getClass()) return false;
+        var that = (ItemEnchantmentEntity) obj;
+        return Objects.equals(this.id, that.id) &&
+                Objects.equals(this.name, that.name) &&
+                this.level == that.level &&
+                Objects.equals(this.item, that.item);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, level, item);
+    }
+
+    @Override
+    public String toString() {
+        return "ItemEnchantmentEntity[" +
+                "id=" + id + ", " +
+                "name=" + name + ", " +
+                "level=" + level + ", " +
+                "item=" + item + ']';
+    }
+
 }
