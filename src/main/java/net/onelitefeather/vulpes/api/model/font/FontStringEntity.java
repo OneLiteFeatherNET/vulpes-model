@@ -13,7 +13,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Entity(name = "font_lore")
-public final class FontLoreEntity implements Comparable<FontLoreEntity> {
+public final class FontStringEntity implements Comparable<FontStringEntity> {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @VulpesGenerator
@@ -24,17 +24,17 @@ public final class FontLoreEntity implements Comparable<FontLoreEntity> {
     private FontEntity font;
     private int orderIndex;
 
-    public FontLoreEntity() {
+    public FontStringEntity() {
     }
 
-    public FontLoreEntity(
+    public FontStringEntity(
             UUID id,
-            String line,
+            String content,
             FontEntity font,
             int orderIndex
     ) {
         this.id = id;
-        this.line = line;
+        this.line = content;
         this.font = font;
         this.orderIndex = orderIndex;
     }
@@ -75,7 +75,7 @@ public final class FontLoreEntity implements Comparable<FontLoreEntity> {
     public boolean equals(Object obj) {
         if (obj == this) return true;
         if (obj == null || obj.getClass() != this.getClass()) return false;
-        var that = (FontLoreEntity) obj;
+        var that = (FontStringEntity) obj;
         return Objects.equals(this.id, that.id) &&
                 Objects.equals(this.line, that.line) &&
                 Objects.equals(this.font, that.font);
@@ -95,7 +95,7 @@ public final class FontLoreEntity implements Comparable<FontLoreEntity> {
     }
 
     @Override
-    public int compareTo(FontLoreEntity o) {
+    public int compareTo(FontStringEntity o) {
         return Integer.compare(this.orderIndex, o.orderIndex);
     }
 }
