@@ -38,7 +38,7 @@ public class FontEntity implements VulpesModel {
     private String comment;
     private int height;
     private int ascent;
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "font", cascade = CascadeType.ALL)
     private List<FontLoreEntity> chars;
 
     /**
