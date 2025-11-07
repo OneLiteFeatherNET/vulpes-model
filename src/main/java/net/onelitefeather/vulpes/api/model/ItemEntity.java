@@ -41,11 +41,11 @@ public class ItemEntity implements VulpesModel {
     private String groupName;
     private int customModelData;
     private int amount;
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
     private List<ItemEnchantmentEntity> enchantments;
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
     private List<ItemLoreEntity> lore;
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
     private List<ItemFlagEntity> flags;
 
     /**
