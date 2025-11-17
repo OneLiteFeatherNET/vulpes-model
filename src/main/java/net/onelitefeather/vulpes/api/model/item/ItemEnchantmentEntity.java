@@ -20,6 +20,7 @@ public final class ItemEnchantmentEntity {
     private UUID id;
     private String name;
     private short level;
+    private boolean unsafe;
     @ManyToOne
     @JoinColumn(name = "item_id", nullable = false)
     private ItemEntity item;
@@ -34,18 +35,21 @@ public final class ItemEnchantmentEntity {
     /**
      * Constructs a new {@link ItemEnchantmentEntity} with the specified values.
      *
-     * @param id    the unique identifier of the item enchantment
-     * @param name  the name of the enchantment
-     * @param level the level of the enchantment
+     * @param id     the unique identifier of the item enchantment
+     * @param name   the name of the enchantment
+     * @param level  the level of the enchantment
+     * @param unsafe whether the enchantment is unsafe
      */
     public ItemEnchantmentEntity(
             UUID id,
             String name,
-            short level
+            short level,
+            boolean unsafe
     ) {
         this.id = id;
         this.name = name;
         this.level = level;
+        this.unsafe = unsafe;
     }
 
     /**
@@ -103,6 +107,24 @@ public final class ItemEnchantmentEntity {
     }
 
     /**
+     * Returns whether the enchantment is unsafe.
+     *
+     * @return true if the enchantment is unsafe, false otherwise
+     */
+    public boolean isUnsafe() {
+        return unsafe;
+    }
+
+    /**
+     * Sets whether the enchantment is unsafe.
+     *
+     * @param unsafe whether the enchantment is unsafe
+     */
+    public void setUnsafe(boolean unsafe) {
+        this.unsafe = unsafe;
+    }
+
+    /**
      * Returns the {@link ItemEntity} which is linked with this enchantment.
      *
      * @return the item associated with this enchantment
@@ -128,12 +150,13 @@ public final class ItemEnchantmentEntity {
         return Objects.equals(this.id, that.id) &&
                 Objects.equals(this.name, that.name) &&
                 this.level == that.level &&
+                this.unsafe == that.unsafe &&
                 Objects.equals(this.item, that.item);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, level, item);
+        return Objects.hash(id, name, level, unsafe, item);
     }
 
     @Override
@@ -142,7 +165,7 @@ public final class ItemEnchantmentEntity {
                 "id=" + id + ", " +
                 "name=" + name + ", " +
                 "level=" + level + ", " +
+                "unsafe=" + unsafe + ", " +
                 "item=" + item + ']';
     }
-
 }
