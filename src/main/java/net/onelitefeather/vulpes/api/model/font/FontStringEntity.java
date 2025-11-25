@@ -12,7 +12,7 @@ import net.onelitefeather.vulpes.api.model.FontEntity;
 import java.util.Objects;
 import java.util.UUID;
 
-@Entity(name = "font_lore")
+@Entity(name = "font_string")
 public final class FontStringEntity implements Comparable<FontStringEntity> {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
