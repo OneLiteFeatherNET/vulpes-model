@@ -44,7 +44,7 @@ public class SoundEventEntity implements VulpesModel {
      * Represents the list of sound data related to this sound model.
      * This is a one-to-many relationship where each sound model can have multiple sound data entities.
      */
-    @OneToMany(mappedBy = "id")
+    @OneToMany(mappedBy = "soundEvent")
     private List<SoundFileSource> dataEntities;
 
     /**

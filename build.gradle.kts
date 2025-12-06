@@ -8,7 +8,7 @@ plugins {
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(21))
+        languageVersion.set(JavaLanguageVersion.of(25))
     }
     withSourcesJar()
     withJavadocJar()
@@ -28,11 +28,11 @@ dependencies {
 tasks {
     compileJava {
         options.encoding = "UTF-8"
-        options.release.set(21)
+        options.release.set(25)
     }
 
     test {
-        finalizedBy(rootProject.tasks.jacocoTestReport)
+        finalizedBy(jacocoTestReport)
         testLogging {
             events("passed", "skipped", "failed")
         }
