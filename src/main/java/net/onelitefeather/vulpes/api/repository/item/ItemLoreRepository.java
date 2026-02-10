@@ -12,9 +12,9 @@ import java.util.UUID;
 /**
  * Repository definition to manage {@link ItemLoreEntity} entities.
  *
- * @version 1.0.0
- * @since 1.7.0
  * @author theEvilReaper
+ * @version 1.1.0
+ * @since 1.7.0
  */
 @Repository
 public interface ItemLoreRepository extends PageableRepository<ItemLoreEntity, UUID> {
@@ -29,4 +29,13 @@ public interface ItemLoreRepository extends PageableRepository<ItemLoreEntity, U
             countQuery = "SELECT count(f) FROM item_lore f WHERE f.item.id = :id"
     )
     Page<ItemLoreEntity> findLoreById(UUID id, Pageable pageable);
+
+    /**
+     * Counts the number of lore entries associated with an item.
+     *
+     * @param itemId the unique identifier of the item
+     * @return the count of lore entries
+     */
+    @Query("SELECT COUNT(l) FROM item_lore l WHERE l.item.id = :itemId")
+    long countByItemId(UUID itemId);
 }
