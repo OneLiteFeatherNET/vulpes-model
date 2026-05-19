@@ -3,7 +3,7 @@ plugins {
     jacoco
     `maven-publish`
     `java-library`
-    id("io.micronaut.library") version "4.6.2"
+    id("io.micronaut.library") version "5.0.0"
 }
 
 java {
