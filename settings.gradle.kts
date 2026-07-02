@@ -1,7 +1,7 @@
 rootProject.name = "vulpes-model"
 
 plugins {
-    id("io.micronaut.platform.catalog") version "5.0.1"
+    id("io.micronaut.platform.catalog") version "5.0.2"
 }
 
 dependencyResolutionManagement {
