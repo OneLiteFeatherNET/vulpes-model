@@ -6,6 +6,8 @@ plugins {
     id("io.micronaut.library") version "5.0.2"
 }
 
+version = "1.7.1" //x-release-please-version
+
 java {
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(25))
