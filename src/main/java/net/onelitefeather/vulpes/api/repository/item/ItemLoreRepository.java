@@ -25,7 +25,7 @@ public interface ItemLoreRepository extends PageableRepository<ItemLoreEntity, U
      * @param id the unique identifier of the item
      * @return a list of lore strings associated with the item
      */
-    @Query(value = "SELECT f FROM item_lore f WHERE f.item.id = :id",
+    @Query(value = "SELECT f FROM item_lore f WHERE f.item.id = :id ORDER BY f.orderIndex ASC",
             countQuery = "SELECT count(f) FROM item_lore f WHERE f.item.id = :id"
     )
     Page<ItemLoreEntity> findLoreById(UUID id, Pageable pageable);
