@@ -25,7 +25,7 @@ public interface FontStringRepository extends PageableRepository<FontStringEntit
      * @param id the unique identifier of the font
      * @return a list of characters associated with the font
      */
-    @Query(value = "SELECT f FROM font_string f WHERE f.font.id = :id",
+    @Query(value = "SELECT f FROM font_string f WHERE f.font.id = :id ORDER BY f.orderIndex ASC",
             countQuery = "SELECT count(f) FROM font_string f WHERE f.font.id = :id"
     )
     Page<FontStringEntity> findCharsByFontId(UUID id, Pageable pageable);
