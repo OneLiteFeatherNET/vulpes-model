@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.2](https://github.com/OneLiteFeatherNET/vulpes-model/compare/v1.8.1...v1.8.2) (2026-08-22)
+
+
+### Bug Fixes
+
+* **font:** add missing order by ([b003818](https://github.com/OneLiteFeatherNET/vulpes-model/commit/b00381855d4ea84c1b60e0ca5823cdf8f4cecd2e))
+
 ## [1.8.1](https://github.com/OneLiteFeatherNET/vulpes-model/compare/v1.8.0...v1.8.1) (2026-08-22)
 
 
