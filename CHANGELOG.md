@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.3](https://github.com/OneLiteFeatherNET/vulpes-model/compare/v1.8.2...v1.8.3) (2026-08-23)
+
+
+### Bug Fixes
+
+* **project:** avoid reserved keyword usage ([4342af0](https://github.com/OneLiteFeatherNET/vulpes-model/commit/4342af0f3265fe3f342a73c2780b8f2a07d3d76c))
+
 ## [1.8.2](https://github.com/OneLiteFeatherNET/vulpes-model/compare/v1.8.1...v1.8.2) (2026-08-22)
 
 
