@@ -4,7 +4,14 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import net.onelitefeather.vulpes.api.generator.VulpesGenerator;
+import net.onelitefeather.vulpes.api.model.project.ProjectEntity;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.UUID;
 
@@ -18,6 +25,9 @@ import java.util.UUID;
  * </p>
  */
 @Entity(name = "notifications")
+@Table(name = "notifications", indexes = {
+        @Index(name = "idx_notifications_project_id", columnList = "project_id")
+})
 public class NotificationEntity implements VulpesModel {
 
     @Id
@@ -30,6 +40,10 @@ public class NotificationEntity implements VulpesModel {
     private String material;
     private String frameType;
     private String title;
+    @ManyToOne
+    @JoinColumn(name = "project_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private ProjectEntity project;
 
     /**
      * Default constructor for JPA and Micronaut Data.
@@ -51,8 +65,9 @@ public class NotificationEntity implements VulpesModel {
      * @param material     the material type associated with the notification
      * @param frameType    the frame type associated with the notification
      * @param title        the title of the notification
+     * @param project      the project this notification belongs to
      */
-    public NotificationEntity(UUID id, String uiName, String variableName, String comment, String material, String frameType, String title) {
+    public NotificationEntity(UUID id, String uiName, String variableName, String comment, String material, String frameType, String title, ProjectEntity project) {
         this.id = id;
         this.uiName = uiName;
         this.variableName = variableName;
@@ -60,6 +75,7 @@ public class NotificationEntity implements VulpesModel {
         this.material = material;
         this.frameType = frameType;
         this.title = title;
+        this.project = project;
     }
 
     /**
@@ -189,6 +205,24 @@ public class NotificationEntity implements VulpesModel {
     }
 
     /**
+     * Returns the project this notification belongs to.
+     *
+     * @return the project of the notification
+     */
+    public ProjectEntity getProject() {
+        return project;
+    }
+
+    /**
+     * Sets the project this notification belongs to.
+     *
+     * @param project the project to set
+     */
+    public void setProject(ProjectEntity project) {
+        this.project = project;
+    }
+
+    /**
      * Provides a string representation of the NotificationModel
      *
      * @return a string representation
@@ -203,6 +237,7 @@ public class NotificationEntity implements VulpesModel {
                 ", material='" + material + '\'' +
                 ", frameType='" + frameType + '\'' +
                 ", title='" + title + '\'' +
+                ", project=" + project +
                 '}';
     }
 }

@@ -5,10 +5,17 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import net.onelitefeather.vulpes.api.generator.VulpesGenerator;
 import net.onelitefeather.vulpes.api.model.VulpesModel;
+import net.onelitefeather.vulpes.api.model.project.ProjectEntity;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.List;
 import java.util.Objects;
@@ -25,6 +32,9 @@ import java.util.UUID;
  * @since 0.1.0
  */
 @Entity(name = "sounds")
+@Table(name = "sounds", indexes = {
+        @Index(name = "idx_sounds_project_id", columnList = "project_id")
+})
 public class SoundEventEntity implements VulpesModel {
 
     @Id
@@ -47,6 +57,11 @@ public class SoundEventEntity implements VulpesModel {
     @OneToMany(mappedBy = "soundEvent")
     private List<SoundFileSource> dataEntities;
 
+    @ManyToOne
+    @JoinColumn(name = "project_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private ProjectEntity project;
+
     /**
      * Default constructor for JPA and Micronaut Data.
      * <p>
@@ -67,8 +82,9 @@ public class SoundEventEntity implements VulpesModel {
      * @param replace      whether to replace an existing sound model
      * @param subTitle     the subtitle for the sound model
      * @param dataEntities the list of sound data entities related to this sound model
+     * @param project      the project this sound event belongs to
      */
-    public SoundEventEntity(UUID id, String uiName, String variableName, String keyName, boolean replace, String subTitle, List<SoundFileSource> dataEntities) {
+    public SoundEventEntity(UUID id, String uiName, String variableName, String keyName, boolean replace, String subTitle, List<SoundFileSource> dataEntities, ProjectEntity project) {
         this.id = id;
         this.uiName = uiName;
         this.keyName = keyName;
@@ -76,6 +92,7 @@ public class SoundEventEntity implements VulpesModel {
         this.replace = replace;
         this.subTitle = subTitle;
         this.dataEntities = dataEntities;
+        this.project = project;
     }
 
     /**
@@ -187,16 +204,34 @@ public class SoundEventEntity implements VulpesModel {
         this.dataEntities = soundDatumEntities;
     }
 
+    /**
+     * Returns the project this sound event belongs to.
+     *
+     * @return the project of the sound event
+     */
+    public ProjectEntity getProject() {
+        return project;
+    }
+
+    /**
+     * Sets the project this sound event belongs to.
+     *
+     * @param project the project to set
+     */
+    public void setProject(ProjectEntity project) {
+        this.project = project;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         SoundEventEntity that = (SoundEventEntity) o;
-        return replace == that.replace && Objects.equals(id, that.id) && Objects.equals(uiName, that.uiName) && Objects.equals(variableName, that.variableName) && Objects.equals(keyName, that.keyName) && Objects.equals(subTitle, that.subTitle) && Objects.equals(dataEntities, that.dataEntities);
+        return replace == that.replace && Objects.equals(id, that.id) && Objects.equals(uiName, that.uiName) && Objects.equals(variableName, that.variableName) && Objects.equals(keyName, that.keyName) && Objects.equals(subTitle, that.subTitle) && Objects.equals(dataEntities, that.dataEntities) && Objects.equals(project, that.project);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, uiName, variableName, keyName, replace, subTitle, dataEntities);
+        return Objects.hash(id, uiName, variableName, keyName, replace, subTitle, dataEntities, project);
     }
 
     @Override
@@ -209,6 +244,7 @@ public class SoundEventEntity implements VulpesModel {
                 ", replace=" + replace +
                 ", subTitle='" + subTitle + '\'' +
                 ", dataEntities=" + dataEntities +
+                ", project=" + project +
                 '}';
     }
 }
