@@ -9,6 +9,8 @@ import jakarta.persistence.ManyToOne;
 import net.onelitefeather.vulpes.api.generator.VulpesGenerator;
 import net.onelitefeather.vulpes.api.model.VulpesModel;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -45,6 +47,7 @@ public class SoundFileSource implements VulpesModel {
 
     @ManyToOne
     @JoinColumn(name = "sound_event_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private SoundEventEntity soundEvent;
 
     /**
