@@ -2,6 +2,8 @@ package net.onelitefeather.vulpes.api.repository;
 
 import io.micronaut.data.annotation.Query;
 import io.micronaut.data.annotation.Repository;
+import io.micronaut.data.model.Page;
+import io.micronaut.data.model.Pageable;
 import io.micronaut.data.repository.PageableRepository;
 import net.onelitefeather.vulpes.api.model.FontEntity;
 
@@ -25,4 +27,13 @@ public interface FontRepository extends PageableRepository<FontEntity, UUID> {
      */
     @Query("select f from fonts f JOIN FETCH f.chars")
     List<FontEntity> findAll();
+
+    /**
+     * Retrieves all fonts that belong to a specific project.
+     *
+     * @param projectId the unique identifier of the project
+     * @param pageable  the pagination information
+     * @return a page of FontEntity objects belonging to the project
+     */
+    Page<FontEntity> findByProjectId(UUID projectId, Pageable pageable);
 }
