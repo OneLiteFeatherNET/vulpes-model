@@ -4,7 +4,14 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import net.onelitefeather.vulpes.api.generator.VulpesGenerator;
+import net.onelitefeather.vulpes.api.model.project.ProjectEntity;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.UUID;
 
@@ -18,6 +25,9 @@ import java.util.UUID;
  * </p>
  */
 @Entity(name = "attributes")
+@Table(name = "attributes", indexes = {
+        @Index(name = "idx_attributes_project_id", columnList = "project_id")
+})
 public class AttributeEntity implements VulpesModel {
 
     @Id
@@ -28,6 +38,10 @@ public class AttributeEntity implements VulpesModel {
     private String variableName;
     private double defaultValue;
     private double maximumValue;
+    @ManyToOne
+    @JoinColumn(name = "project_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private ProjectEntity project;
 
     /**
      * Default constructor for JPA and Micronaut Data.
@@ -42,18 +56,20 @@ public class AttributeEntity implements VulpesModel {
     /**
      * Constructs a new {@link AttributeEntity} with the specified values.
      *
-     * @param id            the unique identifier of the attribute
-     * @param uiName     the model name associated with the attribute
-     * @param variableName          the name of the attribute
-     * @param defaultValue  the default value of the attribute
-     * @param maximumValue  the maximum value of the attribute
+     * @param id           the unique identifier of the attribute
+     * @param uiName       the model name associated with the attribute
+     * @param variableName the name of the attribute
+     * @param defaultValue the default value of the attribute
+     * @param maximumValue the maximum value of the attribute
+     * @param project      the project this attribute belongs to
      */
-    public AttributeEntity(UUID id, String uiName, String variableName, double defaultValue, double maximumValue) {
+    public AttributeEntity(UUID id, String uiName, String variableName, double defaultValue, double maximumValue, ProjectEntity project) {
         this.id = id;
         this.uiName = uiName;
         this.variableName = variableName;
         this.defaultValue = defaultValue;
         this.maximumValue = maximumValue;
+        this.project = project;
     }
 
     // Getters and setters for each field
@@ -149,6 +165,24 @@ public class AttributeEntity implements VulpesModel {
     }
 
     /**
+     * Returns the project this attribute belongs to.
+     *
+     * @return the project of the attribute
+     */
+    public ProjectEntity getProject() {
+        return project;
+    }
+
+    /**
+     * Sets the project this attribute belongs to.
+     *
+     * @param project the project to set
+     */
+    public void setProject(ProjectEntity project) {
+        this.project = project;
+    }
+
+    /**
      * Provides a string representation of the AttributeModel
      *
      * @return a string representation
@@ -161,6 +195,7 @@ public class AttributeEntity implements VulpesModel {
                 ", name='" + variableName + '\'' +
                 ", defaultValue=" + defaultValue +
                 ", maximumValue=" + maximumValue +
+                ", project=" + project +
                 '}';
     }
 }

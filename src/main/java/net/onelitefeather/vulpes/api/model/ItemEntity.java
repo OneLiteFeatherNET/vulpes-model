@@ -5,11 +5,18 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import net.onelitefeather.vulpes.api.generator.VulpesGenerator;
 import net.onelitefeather.vulpes.api.model.item.ItemEnchantmentEntity;
 import net.onelitefeather.vulpes.api.model.item.ItemFlagEntity;
 import net.onelitefeather.vulpes.api.model.item.ItemLoreEntity;
+import net.onelitefeather.vulpes.api.model.project.ProjectEntity;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.List;
 import java.util.UUID;
@@ -24,6 +31,9 @@ import java.util.UUID;
  * </p>
  */
 @Entity(name = "items")
+@Table(name = "items", indexes = {
+        @Index(name = "idx_items_project_id", columnList = "project_id")
+})
 public class ItemEntity implements VulpesModel {
 
     @Id
@@ -45,6 +55,11 @@ public class ItemEntity implements VulpesModel {
     private List<ItemLoreEntity> lore;
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
     private List<ItemFlagEntity> flags;
+
+    @ManyToOne
+    @JoinColumn(name = "project_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private ProjectEntity project;
 
     /**
      * Default constructor for JPA and Micronaut Data.
@@ -71,6 +86,7 @@ public class ItemEntity implements VulpesModel {
      * @param enchantments    the enchantments applied to the item
      * @param lore            the lore associated with the item
      * @param flags           the flags associated with the item
+     * @param project         the project this item belongs to
      */
     public ItemEntity(
             UUID id,
@@ -84,7 +100,8 @@ public class ItemEntity implements VulpesModel {
             int amount,
             List<ItemEnchantmentEntity> enchantments,
             List<ItemLoreEntity> lore,
-            List<ItemFlagEntity> flags
+            List<ItemFlagEntity> flags,
+            ProjectEntity project
     ) {
         this.id = id;
         this.uiName = uiName;
@@ -98,6 +115,7 @@ public class ItemEntity implements VulpesModel {
         this.enchantments = enchantments;
         this.lore = lore;
         this.flags = flags;
+        this.project = project;
     }
 
     // Getters and setters for each field
@@ -319,6 +337,24 @@ public class ItemEntity implements VulpesModel {
     }
 
     /**
+     * Returns the project this item belongs to.
+     *
+     * @return the project of the item
+     */
+    public ProjectEntity getProject() {
+        return project;
+    }
+
+    /**
+     * Sets the project this item belongs to.
+     *
+     * @param project the project to set
+     */
+    public void setProject(ProjectEntity project) {
+        this.project = project;
+    }
+
+    /**
      * Provides a string representation of the ItemModel.
      *
      * @return a string representation
@@ -338,6 +374,7 @@ public class ItemEntity implements VulpesModel {
                 ", enchantments=" + enchantments +
                 ", lore=" + lore +
                 ", flags=" + flags +
+                ", project=" + project +
                 '}';
     }
 }

@@ -5,9 +5,16 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import net.onelitefeather.vulpes.api.generator.VulpesGenerator;
 import net.onelitefeather.vulpes.api.model.font.FontStringEntity;
+import net.onelitefeather.vulpes.api.model.project.ProjectEntity;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.List;
 import java.util.UUID;
@@ -22,6 +29,9 @@ import java.util.UUID;
  * </p>
  */
 @Entity(name = "fonts")
+@Table(name = "fonts", indexes = {
+        @Index(name = "idx_fonts_project_id", columnList = "project_id")
+})
 public class FontEntity implements VulpesModel {
 
     @Id
@@ -38,6 +48,11 @@ public class FontEntity implements VulpesModel {
     private int ascent;
     @OneToMany(mappedBy = "font", cascade = CascadeType.ALL)
     private List<FontStringEntity> chars;
+
+    @ManyToOne
+    @JoinColumn(name = "project_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private ProjectEntity project;
 
     /**
      * Default constructor for JPA and Micronaut Data.
@@ -61,6 +76,7 @@ public class FontEntity implements VulpesModel {
      * @param height       the height of the font
      * @param ascent       the ascent of the font
      * @param chars        the list of characters included in the font
+     * @param project      the project this font belongs to
      */
     public FontEntity(
             UUID id,
@@ -71,7 +87,8 @@ public class FontEntity implements VulpesModel {
             String comment,
             int height,
             int ascent,
-            List<FontStringEntity> chars
+            List<FontStringEntity> chars,
+            ProjectEntity project
     ) {
         this.id = id;
         this.uiName = uiName;
@@ -82,6 +99,7 @@ public class FontEntity implements VulpesModel {
         this.height = height;
         this.ascent = ascent;
         this.chars = chars;
+        this.project = project;
     }
 
     // Getters and setters for each field
@@ -206,6 +224,24 @@ public class FontEntity implements VulpesModel {
         this.chars = chars;
     }
 
+    /**
+     * Returns the project this font belongs to.
+     *
+     * @return the project of the font
+     */
+    public ProjectEntity getProject() {
+        return project;
+    }
+
+    /**
+     * Sets the project this font belongs to.
+     *
+     * @param project the project to set
+     */
+    public void setProject(ProjectEntity project) {
+        this.project = project;
+    }
+
     @Override
     public String toString() {
         return "FontEntity{" +
@@ -219,6 +255,7 @@ public class FontEntity implements VulpesModel {
                 ", height=" + height +
                 ", ascent=" + ascent +
                 ", chars=" + chars +
+                ", project=" + project +
                 '}';
     }
 }

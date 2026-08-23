@@ -8,6 +8,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import net.onelitefeather.vulpes.api.generator.VulpesGenerator;
 import net.onelitefeather.vulpes.api.model.FontEntity;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -21,6 +23,7 @@ public final class FontStringEntity implements Comparable<FontStringEntity> {
     private String line;
     @ManyToOne
     @JoinColumn(name = "font_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private FontEntity font;
     private int orderIndex;
 

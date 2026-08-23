@@ -2,6 +2,7 @@ package net.onelitefeather.vulpes.api.repository;
 
 import io.micronaut.data.annotation.Query;
 import io.micronaut.data.annotation.Repository;
+import io.micronaut.data.model.Page;
 import io.micronaut.data.model.Pageable;
 import io.micronaut.data.repository.PageableRepository;
 import net.onelitefeather.vulpes.api.model.ItemEntity;
@@ -29,4 +30,13 @@ public interface ItemRepository extends PageableRepository<ItemEntity, UUID> {
             countQuery = "SELECT count(i) FROM items i"
     )
     List<ItemEntity> findAllWithFetches(Pageable pageable);
+
+    /**
+     * Retrieves all items that belong to a specific project.
+     *
+     * @param projectId the unique identifier of the project
+     * @param pageable  the pagination information
+     * @return a page of ItemEntity objects belonging to the project
+     */
+    Page<ItemEntity> findByProjectId(UUID projectId, Pageable pageable);
 }
