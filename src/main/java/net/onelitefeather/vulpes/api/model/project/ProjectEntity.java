@@ -30,7 +30,7 @@ import java.util.UUID;
  */
 @Entity(name = "projects")
 @Table(name = "projects", indexes = {
-        @Index(name = "idx_projects_key", columnList = "key", unique = true)
+        @Index(name = "idx_projects_key", columnList = "project_key", unique = true)
 })
 public class ProjectEntity implements VulpesModel {
 
@@ -43,6 +43,7 @@ public class ProjectEntity implements VulpesModel {
     private String displayName;
 
     @NotNull
+    @Column(name = "project_key")
     private String key;
 
     @Nullable
