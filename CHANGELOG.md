@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.0.0](https://github.com/OneLiteFeatherNET/vulpes-model/compare/v1.8.3...v2.0.0) (2026-08-23)
+
+
+### ⚠ BREAKING CHANGES
+
+* **entity:** add project entity relationship ([#114](https://github.com/OneLiteFeatherNET/vulpes-model/issues/114))
+
+### Features
+
+* **entity:** add project entity relationship ([#114](https://github.com/OneLiteFeatherNET/vulpes-model/issues/114)) ([b3f323e](https://github.com/OneLiteFeatherNET/vulpes-model/commit/b3f323e6f7f9c6e4e4069bb6e0382944d3b1ecb0))
+
 ## [1.8.3](https://github.com/OneLiteFeatherNET/vulpes-model/compare/v1.8.2...v1.8.3) (2026-08-23)
 
 
