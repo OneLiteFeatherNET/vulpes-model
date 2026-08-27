@@ -11,6 +11,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import net.onelitefeather.vulpes.api.generator.VulpesGenerator;
+import net.onelitefeather.vulpes.api.model.item.ItemComponent;
 import net.onelitefeather.vulpes.api.model.item.ItemEnchantmentEntity;
 import net.onelitefeather.vulpes.api.model.item.ItemFlagEntity;
 import net.onelitefeather.vulpes.api.model.item.ItemLoreEntity;
@@ -55,6 +56,8 @@ public class ItemEntity implements VulpesModel {
     private List<ItemLoreEntity> lore;
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
     private List<ItemFlagEntity> flags;
+    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
+    private List<ItemComponent> components;
 
     @ManyToOne
     @JoinColumn(name = "project_id", nullable = false)
@@ -101,6 +104,7 @@ public class ItemEntity implements VulpesModel {
             List<ItemEnchantmentEntity> enchantments,
             List<ItemLoreEntity> lore,
             List<ItemFlagEntity> flags,
+            List<ItemComponent> components,
             ProjectEntity project
     ) {
         this.id = id;
@@ -115,6 +119,7 @@ public class ItemEntity implements VulpesModel {
         this.enchantments = enchantments;
         this.lore = lore;
         this.flags = flags;
+        this.components = components;
         this.project = project;
     }
 
@@ -301,6 +306,24 @@ public class ItemEntity implements VulpesModel {
     }
 
     /**
+     * Sets the components associated with the item.
+     *
+     * @param components the components to set
+     */
+    public void setComponents(List<ItemComponent> components) {
+        this.components = components;
+    }
+
+    /**
+     * Returns the components associated with the item.
+     *
+     * @return the components of the item
+     */
+    public List<ItemComponent> getComponents() {
+        return components;
+    }
+
+    /**
      * Returns the lore associated with the item.
      *
      * @return the lore of the item
@@ -374,6 +397,7 @@ public class ItemEntity implements VulpesModel {
                 ", enchantments=" + enchantments +
                 ", lore=" + lore +
                 ", flags=" + flags +
+                ", components=" + components +
                 ", project=" + project +
                 '}';
     }
