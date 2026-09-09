@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.0](https://github.com/OneLiteFeatherNET/vulpes-model/compare/v2.0.0...v2.1.0) (2026-09-09)
+
+
+### Features
+
+* add entity structure to represent dimension ([#119](https://github.com/OneLiteFeatherNET/vulpes-model/issues/119)) ([eb20417](https://github.com/OneLiteFeatherNET/vulpes-model/commit/eb204175945402ce6e6c37c8439ce2c220465f84))
+
 ## [2.0.0](https://github.com/OneLiteFeatherNET/vulpes-model/compare/v1.8.3...v2.0.0) (2026-08-23)
 
 
