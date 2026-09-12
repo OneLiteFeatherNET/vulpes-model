@@ -3,15 +3,12 @@ package net.onelitefeather.vulpes.api.model.dimension;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
-import net.onelitefeather.vulpes.api.generator.VulpesGenerator;
+import net.onelitefeather.vulpes.api.model.AbstractEntity;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -37,12 +34,7 @@ import java.util.UUID;
 @Table(name = "dimension_attributes", indexes = {
         @Index(name = "idx_dimension_attributes_type_key", columnList = "dimension_type_id, attribute_key", unique = true)
 })
-public final class DimensionAttributeEntity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @VulpesGenerator
-    private UUID id;
+public final class DimensionAttributeEntity extends AbstractEntity {
 
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -81,28 +73,10 @@ public final class DimensionAttributeEntity {
             AttributeOperator operator,
             String attributeValue
     ) {
-        this.id = id;
+        this.setId(id);
         this.attributeKey = attributeKey;
         this.operator = operator;
         this.attributeValue = attributeValue;
-    }
-
-    /**
-     * Sets the unique identifier of the attribute entry.
-     *
-     * @param id the unique identifier to set
-     */
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    /**
-     * Gets the unique identifier of the attribute entry.
-     *
-     * @return the unique identifier
-     */
-    public UUID getId() {
-        return id;
     }
 
     /**
@@ -182,7 +156,7 @@ public final class DimensionAttributeEntity {
         if (obj == this) return true;
         if (obj == null || obj.getClass() != this.getClass()) return false;
         var that = (DimensionAttributeEntity) obj;
-        return Objects.equals(this.id, that.id) &&
+        return Objects.equals(this.getId(), that.getId()) &&
                 Objects.equals(this.attributeKey, that.attributeKey) &&
                 this.operator == that.operator &&
                 Objects.equals(this.attributeValue, that.attributeValue) &&
@@ -191,13 +165,13 @@ public final class DimensionAttributeEntity {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, attributeKey, operator, attributeValue, dimensionType);
+        return Objects.hash(getId(), attributeKey, operator, attributeValue, dimensionType);
     }
 
     @Override
     public String toString() {
         return "DimensionAttributeEntity[" +
-                "id=" + id + ", " +
+                "id=" + getId() + ", " +
                 "attributeKey=" + attributeKey + ", " +
                 "operator=" + operator + ", " +
                 "attributeValue=" + attributeValue + ", " +

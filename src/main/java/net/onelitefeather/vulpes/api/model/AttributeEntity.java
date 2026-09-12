@@ -1,14 +1,10 @@
 package net.onelitefeather.vulpes.api.model;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import net.onelitefeather.vulpes.api.generator.VulpesGenerator;
 import net.onelitefeather.vulpes.api.model.project.ProjectEntity;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -28,14 +24,10 @@ import java.util.UUID;
 @Table(name = "attributes", indexes = {
         @Index(name = "idx_attributes_project_id", columnList = "project_id")
 })
-public class AttributeEntity implements VulpesModel {
+public class AttributeEntity extends AbstractEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @VulpesGenerator
-    private UUID id;
     private String uiName;
-    private String variableName;
+    private String key;
     private double defaultValue;
     private double maximumValue;
     @ManyToOne
@@ -58,39 +50,21 @@ public class AttributeEntity implements VulpesModel {
      *
      * @param id           the unique identifier of the attribute
      * @param uiName       the model name associated with the attribute
-     * @param variableName the name of the attribute
+     * @param key          the namespaced key of the attribute (e.g. {@code minecraft:generic.max_health})
      * @param defaultValue the default value of the attribute
      * @param maximumValue the maximum value of the attribute
      * @param project      the project this attribute belongs to
      */
-    public AttributeEntity(UUID id, String uiName, String variableName, double defaultValue, double maximumValue, ProjectEntity project) {
-        this.id = id;
+    public AttributeEntity(UUID id, String uiName, String key, double defaultValue, double maximumValue, ProjectEntity project) {
+        this.setId(id);
         this.uiName = uiName;
-        this.variableName = variableName;
+        this.key = key;
         this.defaultValue = defaultValue;
         this.maximumValue = maximumValue;
         this.project = project;
     }
 
     // Getters and setters for each field
-
-    /**
-     * Returns the unique identifier of the attribute
-     *
-     * @return the unique identifier of the attribute
-     */
-    public UUID getId() {
-        return id;
-    }
-
-    /**
-     * Sets the unique identifier of the attribute
-     *
-     * @param id the unique identifier to set
-     */
-    public void setId(UUID id) {
-        this.id = id;
-    }
 
     /**
      * Returns the model name associated with the attribute
@@ -111,21 +85,32 @@ public class AttributeEntity implements VulpesModel {
     }
 
     /**
-     * Returns the name of the attribute
+     * Returns the namespaced key of the attribute (e.g. {@code minecraft:generic.max_health}).
      *
-     * @return the name of the attribute
+     * @return the namespaced key of the attribute
      */
-    public String getVariableName() {
-        return variableName;
+    public String getKey() {
+        return key;
     }
 
     /**
-     * Sets the name of the attribute
+     * Sets the namespaced key of the attribute (e.g. {@code minecraft:generic.max_health}).
      *
-     * @param name the name to set
+     * @param key the namespaced key to set
      */
-    public void setVariableName(String name) {
-        this.variableName = name;
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    /**
+     * Derives the variable name of the attribute from its namespaced key, e.g. {@code minecraft:generic.max_health}
+     * becomes {@code GENERIC.MAX_HEALTH}.
+     *
+     * @return the derived variable name of the attribute
+     */
+    public String getVariableName() {
+        int separatorIndex = key.indexOf(':');
+        return (separatorIndex >= 0 ? key.substring(separatorIndex + 1) : key).toUpperCase();
     }
 
     /**
@@ -190,9 +175,9 @@ public class AttributeEntity implements VulpesModel {
     @Override
     public String toString() {
         return "AttributeModel{" +
-                "id='" + id + '\'' +
+                "id='" + getId() + '\'' +
                 ", modelName='" + uiName + '\'' +
-                ", name='" + variableName + '\'' +
+                ", key='" + key + '\'' +
                 ", defaultValue=" + defaultValue +
                 ", maximumValue=" + maximumValue +
                 ", project=" + project +

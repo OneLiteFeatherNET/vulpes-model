@@ -2,15 +2,11 @@ package net.onelitefeather.vulpes.api.model;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import net.onelitefeather.vulpes.api.generator.VulpesGenerator;
 import net.onelitefeather.vulpes.api.model.item.ItemEnchantmentEntity;
 import net.onelitefeather.vulpes.api.model.item.ItemFlagEntity;
 import net.onelitefeather.vulpes.api.model.item.ItemLoreEntity;
@@ -34,15 +30,10 @@ import java.util.UUID;
 @Table(name = "items", indexes = {
         @Index(name = "idx_items_project_id", columnList = "project_id")
 })
-public class ItemEntity implements VulpesModel {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @VulpesGenerator
-    private UUID id;
+public class ItemEntity extends AbstractEntity {
 
     private String uiName;
-    private String variableName;
+    private String key;
     private String comment;
     private String displayName;
     private String material;
@@ -76,7 +67,7 @@ public class ItemEntity implements VulpesModel {
      *
      * @param id              the unique identifier of the item
      * @param uiName          the model name associated with the item
-     * @param variableName    the name of the item
+     * @param key             the namespaced key of the item (e.g. {@code minecraft:dirt})
      * @param comment         a description of the item
      * @param displayName     the display name of the item
      * @param material        the material type associated with the item
@@ -91,7 +82,7 @@ public class ItemEntity implements VulpesModel {
     public ItemEntity(
             UUID id,
             String uiName,
-            String variableName,
+            String key,
             String comment,
             String displayName,
             String material,
@@ -103,9 +94,9 @@ public class ItemEntity implements VulpesModel {
             List<ItemFlagEntity> flags,
             ProjectEntity project
     ) {
-        this.id = id;
+        this.setId(id);
         this.uiName = uiName;
-        this.variableName = variableName;
+        this.key = key;
         this.comment = comment;
         this.displayName = displayName;
         this.material = material;
@@ -119,24 +110,6 @@ public class ItemEntity implements VulpesModel {
     }
 
     // Getters and setters for each field
-
-    /**
-     * Returns the unique identifier of the item.
-     *
-     * @return the unique identifier of the item
-     */
-    public UUID getId() {
-        return id;
-    }
-
-    /**
-     * Sets the unique identifier of the item.
-     *
-     * @param id the unique identifier to set
-     */
-    public void setId(UUID id) {
-        this.id = id;
-    }
 
     /**
      * Sets the name representation for the ui
@@ -157,21 +130,32 @@ public class ItemEntity implements VulpesModel {
     }
 
     /**
-     * Sets the variable name for the notification
+     * Sets the namespaced key for the item (e.g. {@code minecraft:dirt}).
      *
-     * @param variableName the variable name to set
+     * @param key the namespaced key to set
      */
-    public void setVariableName(String variableName) {
-        this.variableName = variableName;
+    public void setKey(String key) {
+        this.key = key;
     }
 
     /**
-     * Returns the variable name for the notification
+     * Returns the namespaced key for the item (e.g. {@code minecraft:dirt}).
      *
-     * @return the variable name of the notification
+     * @return the namespaced key of the item
+     */
+    public String getKey() {
+        return key;
+    }
+
+    /**
+     * Derives the variable name of the item from its namespaced key, e.g. {@code minecraft:dirt}
+     * becomes {@code DIRT}.
+     *
+     * @return the derived variable name of the item
      */
     public String getVariableName() {
-        return variableName;
+        int separatorIndex = key.indexOf(':');
+        return (separatorIndex >= 0 ? key.substring(separatorIndex + 1) : key).toUpperCase();
     }
 
     /**
@@ -362,9 +346,9 @@ public class ItemEntity implements VulpesModel {
     @Override
     public String toString() {
         return "ItemModel{" +
-                "id='" + id + '\'' +
+                "id='" + getId() + '\'' +
                 ", modelName='" + uiName + '\'' +
-                ", name='" + variableName + '\'' +
+                ", key='" + key + '\'' +
                 ", comment='" + comment + '\'' +
                 ", displayName='" + displayName + '\'' +
                 ", material='" + material + '\'' +

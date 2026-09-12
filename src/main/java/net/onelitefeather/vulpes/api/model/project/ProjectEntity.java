@@ -3,14 +3,10 @@ package net.onelitefeather.vulpes.api.model.project;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
-import net.onelitefeather.vulpes.api.generator.VulpesGenerator;
-import net.onelitefeather.vulpes.api.model.VulpesModel;
+import net.onelitefeather.vulpes.api.model.AbstractEntity;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.util.UUID;
@@ -32,12 +28,7 @@ import java.util.UUID;
 @Table(name = "projects", indexes = {
         @Index(name = "idx_projects_key", columnList = "project_key", unique = true)
 })
-public class ProjectEntity implements VulpesModel {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @VulpesGenerator
-    private UUID id;
+public class ProjectEntity extends AbstractEntity {
 
     @NotNull
     private String displayName;
@@ -90,22 +81,13 @@ public class ProjectEntity implements VulpesModel {
             @Nullable String description,
             boolean labor
     ) {
-        this.id = id;
+        this.setId(id);
         this.displayName = displayName;
         this.key = key;
         this.projectUrl = projectUrl;
         this.docuUrl = docuUrl;
         this.description = description;
         this.labor = labor;
-    }
-
-    /**
-     * Sets the unique identifier of the project.
-     *
-     * @param id of the project
-     */
-    public void setId(UUID id) {
-        this.id = id;
     }
 
     /**
@@ -160,15 +142,6 @@ public class ProjectEntity implements VulpesModel {
      */
     public void setLabor(boolean labor) {
         this.labor = labor;
-    }
-
-    /**
-     * Returns the unique identifier of the project.
-     *
-     * @return the unique identifier of the project
-     */
-    public UUID getId() {
-        return id;
     }
 
     /**

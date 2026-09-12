@@ -2,16 +2,12 @@ package net.onelitefeather.vulpes.api.model.sound;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import net.onelitefeather.vulpes.api.generator.VulpesGenerator;
-import net.onelitefeather.vulpes.api.model.VulpesModel;
+import net.onelitefeather.vulpes.api.model.AbstractEntity;
 import net.onelitefeather.vulpes.api.model.project.ProjectEntity;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
@@ -35,14 +31,10 @@ import java.util.UUID;
 @Table(name = "sounds", indexes = {
         @Index(name = "idx_sounds_project_id", columnList = "project_id")
 })
-public class SoundEventEntity implements VulpesModel {
+public class SoundEventEntity extends AbstractEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @VulpesGenerator
-    private UUID id;
     private String uiName;
-    private String variableName;
+    private String key;
     private String keyName;
     @Column(name = "replace_flag")
     @ColumnDefault("false")
@@ -77,40 +69,22 @@ public class SoundEventEntity implements VulpesModel {
      *
      * @param id           the unique identifier of the sound model
      * @param uiName       the user interface name for the sound model
-     * @param variableName the variable name for the sound model
+     * @param key          the namespaced key for the sound model (e.g. {@code minecraft:ambient.cave})
      * @param keyName      the key name for the sound model
      * @param replace      whether to replace an existing sound model
      * @param subTitle     the subtitle for the sound model
      * @param dataEntities the list of sound data entities related to this sound model
      * @param project      the project this sound event belongs to
      */
-    public SoundEventEntity(UUID id, String uiName, String variableName, String keyName, boolean replace, String subTitle, List<SoundFileSource> dataEntities, ProjectEntity project) {
-        this.id = id;
+    public SoundEventEntity(UUID id, String uiName, String key, String keyName, boolean replace, String subTitle, List<SoundFileSource> dataEntities, ProjectEntity project) {
+        this.setId(id);
         this.uiName = uiName;
         this.keyName = keyName;
-        this.variableName = variableName;
+        this.key = key;
         this.replace = replace;
         this.subTitle = subTitle;
         this.dataEntities = dataEntities;
         this.project = project;
-    }
-
-    /**
-     * Returns the unique identifier of the sound model
-     *
-     * @return the unique identifier of the sound model
-     */
-    public UUID getId() {
-        return id;
-    }
-
-    /**
-     * Sets the unique identifier of the sound model
-     *
-     * @param id the unique identifier to set
-     */
-    public void setId(UUID id) {
-        this.id = id;
     }
 
     /**
@@ -150,21 +124,32 @@ public class SoundEventEntity implements VulpesModel {
     }
 
     /**
-     * Set the name for the variable associated with this sound model.
+     * Set the namespaced key associated with this sound model (e.g. {@code minecraft:ambient.cave}).
      *
-     * @param variableName the name of the variable to set
+     * @param key the namespaced key to set
      */
-    public void setVariableName(String variableName) {
-        this.variableName = variableName;
+    public void setKey(String key) {
+        this.key = key;
     }
 
     /**
-     * Returns the name of the variable associated with this sound model.
+     * Returns the namespaced key associated with this sound model (e.g. {@code minecraft:ambient.cave}).
      *
-     * @return the name of the variable
+     * @return the namespaced key
+     */
+    public String getKey() {
+        return key;
+    }
+
+    /**
+     * Derives the variable name of the sound model from its namespaced key, e.g. {@code minecraft:ambient.cave}
+     * becomes {@code AMBIENT.CAVE}.
+     *
+     * @return the derived variable name of the sound model
      */
     public String getVariableName() {
-        return variableName;
+        int separatorIndex = key.indexOf(':');
+        return (separatorIndex >= 0 ? key.substring(separatorIndex + 1) : key).toUpperCase();
     }
 
     /**
@@ -226,20 +211,20 @@ public class SoundEventEntity implements VulpesModel {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         SoundEventEntity that = (SoundEventEntity) o;
-        return replace == that.replace && Objects.equals(id, that.id) && Objects.equals(uiName, that.uiName) && Objects.equals(variableName, that.variableName) && Objects.equals(keyName, that.keyName) && Objects.equals(subTitle, that.subTitle) && Objects.equals(dataEntities, that.dataEntities) && Objects.equals(project, that.project);
+        return replace == that.replace && Objects.equals(getId(), that.getId()) && Objects.equals(uiName, that.uiName) && Objects.equals(key, that.key) && Objects.equals(keyName, that.keyName) && Objects.equals(subTitle, that.subTitle) && Objects.equals(dataEntities, that.dataEntities) && Objects.equals(project, that.project);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, uiName, variableName, keyName, replace, subTitle, dataEntities, project);
+        return Objects.hash(getId(), uiName, key, keyName, replace, subTitle, dataEntities, project);
     }
 
     @Override
     public String toString() {
         return "SoundEventEntity{" +
-                "id=" + id +
+                "id=" + getId() +
                 ", uiName='" + uiName + '\'' +
-                ", variableName='" + variableName + '\'' +
+                ", key='" + key + '\'' +
                 ", keyName='" + keyName + '\'' +
                 ", replace=" + replace +
                 ", subTitle='" + subTitle + '\'' +

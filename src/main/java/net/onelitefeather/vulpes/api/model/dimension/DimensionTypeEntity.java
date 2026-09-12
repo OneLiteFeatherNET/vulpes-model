@@ -5,9 +5,6 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.EnumType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -18,8 +15,7 @@ import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import net.onelitefeather.vulpes.api.generator.VulpesGenerator;
-import net.onelitefeather.vulpes.api.model.VulpesModel;
+import net.onelitefeather.vulpes.api.model.AbstractEntity;
 import net.onelitefeather.vulpes.api.model.project.ProjectEntity;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
@@ -53,18 +49,13 @@ import java.util.UUID;
 @Table(name = "dimension_types", indexes = {
         @Index(name = "idx_dimension_types_project_id", columnList = "project_id")
 })
-public class DimensionTypeEntity implements VulpesModel {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @VulpesGenerator
-    private UUID id;
+public class DimensionTypeEntity extends AbstractEntity {
 
     @NotNull
     private String uiName;
 
     @NotNull
-    private String variableName;
+    private String key;
 
     @ColumnDefault("false")
     private boolean hasFixedTime;
@@ -141,7 +132,7 @@ public class DimensionTypeEntity implements VulpesModel {
      *
      * @param id                          the unique identifier of the dimension type
      * @param uiName                      the user interface name of the dimension type
-     * @param variableName                the variable name of the dimension type
+     * @param key                         the namespaced key of the dimension type (e.g. {@code minecraft:overworld})
      * @param hasFixedTime                whether the dimension type has a fixed time
      * @param hasSkylight                 whether the dimension type has skylight
      * @param hasCeiling                  whether the dimension type has a ceiling
@@ -164,7 +155,7 @@ public class DimensionTypeEntity implements VulpesModel {
     public DimensionTypeEntity(
             UUID id,
             String uiName,
-            String variableName,
+            String key,
             boolean hasFixedTime,
             boolean hasSkylight,
             boolean hasCeiling,
@@ -184,9 +175,9 @@ public class DimensionTypeEntity implements VulpesModel {
             List<DimensionTimelineEntity> timelines,
             ProjectEntity project
     ) {
-        this.id = id;
+        this.setId(id);
         this.uiName = uiName;
-        this.variableName = variableName;
+        this.key = key;
         this.hasFixedTime = hasFixedTime;
         this.hasSkylight = hasSkylight;
         this.hasCeiling = hasCeiling;
@@ -210,24 +201,6 @@ public class DimensionTypeEntity implements VulpesModel {
     // Getters and setters for each field
 
     /**
-     * Returns the unique identifier of the dimension type.
-     *
-     * @return the unique identifier of the dimension type
-     */
-    public UUID getId() {
-        return id;
-    }
-
-    /**
-     * Sets the unique identifier of the dimension type.
-     *
-     * @param id the unique identifier to set
-     */
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    /**
      * Returns the user interface name of the dimension type.
      *
      * @return the user interface name
@@ -246,21 +219,32 @@ public class DimensionTypeEntity implements VulpesModel {
     }
 
     /**
-     * Returns the variable name of the dimension type.
+     * Returns the namespaced key of the dimension type (e.g. {@code minecraft:overworld}).
      *
-     * @return the variable name
+     * @return the namespaced key
      */
-    public String getVariableName() {
-        return variableName;
+    public String getKey() {
+        return key;
     }
 
     /**
-     * Sets the variable name of the dimension type.
+     * Sets the namespaced key of the dimension type (e.g. {@code minecraft:overworld}).
      *
-     * @param variableName the variable name to set
+     * @param key the namespaced key to set
      */
-    public void setVariableName(String variableName) {
-        this.variableName = variableName;
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    /**
+     * Derives the variable name of the dimension type from its namespaced key, e.g. {@code minecraft:overworld}
+     * becomes {@code OVERWORLD}.
+     *
+     * @return the derived variable name
+     */
+    public String getVariableName() {
+        int separatorIndex = key.indexOf(':');
+        return (separatorIndex >= 0 ? key.substring(separatorIndex + 1) : key).toUpperCase();
     }
 
     /**
@@ -591,9 +575,9 @@ public class DimensionTypeEntity implements VulpesModel {
     @Override
     public String toString() {
         return "DimensionTypeEntity{" +
-                "id=" + id +
+                "id=" + getId() +
                 ", uiName='" + uiName + '\'' +
-                ", variableName='" + variableName + '\'' +
+                ", key='" + key + '\'' +
                 ", hasFixedTime=" + hasFixedTime +
                 ", hasSkylight=" + hasSkylight +
                 ", hasCeiling=" + hasCeiling +

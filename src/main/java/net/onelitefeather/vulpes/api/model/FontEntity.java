@@ -2,15 +2,11 @@ package net.onelitefeather.vulpes.api.model;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import net.onelitefeather.vulpes.api.generator.VulpesGenerator;
 import net.onelitefeather.vulpes.api.model.font.FontStringEntity;
 import net.onelitefeather.vulpes.api.model.project.ProjectEntity;
 import org.hibernate.annotations.OnDelete;
@@ -32,14 +28,10 @@ import java.util.UUID;
 @Table(name = "fonts", indexes = {
         @Index(name = "idx_fonts_project_id", columnList = "project_id")
 })
-public class FontEntity implements VulpesModel {
+public class FontEntity extends AbstractEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @VulpesGenerator
-    private UUID id;
     private String uiName;
-    private String variableName;
+    private String key;
     private String provider;
     private String mapper = "font";
     private String texturePath;
@@ -69,7 +61,7 @@ public class FontEntity implements VulpesModel {
      *
      * @param id           the unique identifier of the font
      * @param uiName       the user interface name of the font
-     * @param variableName the variable name of the font
+     * @param key          the namespaced key of the font (e.g. {@code minecraft:default})
      * @param provider     the provider of the font
      * @param texturePath  the path to the texture of the font
      * @param comment      a comment or description for the font
@@ -81,7 +73,7 @@ public class FontEntity implements VulpesModel {
     public FontEntity(
             UUID id,
             String uiName,
-            String variableName,
+            String key,
             String provider,
             String texturePath,
             String comment,
@@ -90,9 +82,9 @@ public class FontEntity implements VulpesModel {
             List<FontStringEntity> chars,
             ProjectEntity project
     ) {
-        this.id = id;
+        this.setId(id);
         this.uiName = uiName;
-        this.variableName = variableName;
+        this.key = key;
         this.provider = provider;
         this.texturePath = texturePath;
         this.comment = comment;
@@ -104,24 +96,6 @@ public class FontEntity implements VulpesModel {
 
     // Getters and setters for each field
 
-    /**
-     * Returns the unique identifier of the font
-     *
-     * @return the unique identifier of the font
-     */
-    public UUID getId() {
-        return id;
-    }
-
-    /**
-     * Sets the unique identifier of the font
-     *
-     * @param id the unique identifier to set
-     */
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
     public void setUiName(String uiName) {
         this.uiName = uiName;
     }
@@ -130,12 +104,23 @@ public class FontEntity implements VulpesModel {
         return uiName;
     }
 
-    public void setVariableName(String variableName) {
-        this.variableName = variableName;
+    public void setKey(String key) {
+        this.key = key;
     }
 
+    public String getKey() {
+        return key;
+    }
+
+    /**
+     * Derives the variable name of the font from its namespaced key, e.g. {@code minecraft:default}
+     * becomes {@code DEFAULT}.
+     *
+     * @return the derived variable name of the font
+     */
     public String getVariableName() {
-        return variableName;
+        int separatorIndex = key.indexOf(':');
+        return (separatorIndex >= 0 ? key.substring(separatorIndex + 1) : key).toUpperCase();
     }
 
     public void setMapper(String mapper) {
@@ -245,9 +230,9 @@ public class FontEntity implements VulpesModel {
     @Override
     public String toString() {
         return "FontEntity{" +
-                "id=" + id +
+                "id=" + getId() +
                 ", uiName='" + uiName + '\'' +
-                ", variableName='" + variableName + '\'' +
+                ", key='" + key + '\'' +
                 ", provider='" + provider + '\'' +
                 ", mapper='" + mapper + '\'' +
                 ", texturePath='" + texturePath + '\'' +
