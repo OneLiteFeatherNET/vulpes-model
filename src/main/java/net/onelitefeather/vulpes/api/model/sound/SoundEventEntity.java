@@ -3,15 +3,12 @@ package net.onelitefeather.vulpes.api.model.sound;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Index;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import net.onelitefeather.vulpes.api.model.AbstractEntity;
 import net.onelitefeather.vulpes.api.model.project.ProjectEntity;
 import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.List;
 import java.util.Objects;
@@ -30,11 +27,12 @@ import java.util.UUID;
 @Entity(name = "sounds")
 @Table(name = "sounds", indexes = {
         @Index(name = "idx_sounds_project_id", columnList = "project_id")
+}, uniqueConstraints = {
+        @UniqueConstraint(name = "uq_sounds_project_key", columnNames = {"project_id", "key"})
 })
 public class SoundEventEntity extends AbstractEntity {
 
     private String uiName;
-    private String key;
     private String keyName;
     @Column(name = "replace_flag")
     @ColumnDefault("false")
@@ -48,11 +46,6 @@ public class SoundEventEntity extends AbstractEntity {
      */
     @OneToMany(mappedBy = "soundEvent")
     private List<SoundFileSource> dataEntities;
-
-    @ManyToOne
-    @JoinColumn(name = "project_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private ProjectEntity project;
 
     /**
      * Default constructor for JPA and Micronaut Data.
@@ -69,7 +62,9 @@ public class SoundEventEntity extends AbstractEntity {
      *
      * @param id           the unique identifier of the sound model
      * @param uiName       the user interface name for the sound model
-     * @param key          the namespaced key for the sound model (e.g. {@code minecraft:ambient.cave})
+     * @param key          the local key of the sound model within the project's namespace
+     *                     (e.g. {@code ambient.cave}, becomes {@code <project-key>:ambient.cave}
+     *                     via {@link #getNamespacedKey()})
      * @param keyName      the key name for the sound model
      * @param replace      whether to replace an existing sound model
      * @param subTitle     the subtitle for the sound model
@@ -77,14 +72,13 @@ public class SoundEventEntity extends AbstractEntity {
      * @param project      the project this sound event belongs to
      */
     public SoundEventEntity(UUID id, String uiName, String key, String keyName, boolean replace, String subTitle, List<SoundFileSource> dataEntities, ProjectEntity project) {
+        super(key, project);
         this.setId(id);
         this.uiName = uiName;
         this.keyName = keyName;
-        this.key = key;
         this.replace = replace;
         this.subTitle = subTitle;
         this.dataEntities = dataEntities;
-        this.project = project;
     }
 
     /**
@@ -123,34 +117,6 @@ public class SoundEventEntity extends AbstractEntity {
         return keyName;
     }
 
-    /**
-     * Set the namespaced key associated with this sound model (e.g. {@code minecraft:ambient.cave}).
-     *
-     * @param key the namespaced key to set
-     */
-    public void setKey(String key) {
-        this.key = key;
-    }
-
-    /**
-     * Returns the namespaced key associated with this sound model (e.g. {@code minecraft:ambient.cave}).
-     *
-     * @return the namespaced key
-     */
-    public String getKey() {
-        return key;
-    }
-
-    /**
-     * Derives the variable name of the sound model from its namespaced key, e.g. {@code minecraft:ambient.cave}
-     * becomes {@code AMBIENT.CAVE}.
-     *
-     * @return the derived variable name of the sound model
-     */
-    public String getVariableName() {
-        int separatorIndex = key.indexOf(':');
-        return (separatorIndex >= 0 ? key.substring(separatorIndex + 1) : key).toUpperCase();
-    }
 
     /**
      * Sets the subtitle for the sound model.
@@ -189,34 +155,16 @@ public class SoundEventEntity extends AbstractEntity {
         this.dataEntities = soundDatumEntities;
     }
 
-    /**
-     * Returns the project this sound event belongs to.
-     *
-     * @return the project of the sound event
-     */
-    public ProjectEntity getProject() {
-        return project;
-    }
-
-    /**
-     * Sets the project this sound event belongs to.
-     *
-     * @param project the project to set
-     */
-    public void setProject(ProjectEntity project) {
-        this.project = project;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         SoundEventEntity that = (SoundEventEntity) o;
-        return replace == that.replace && Objects.equals(getId(), that.getId()) && Objects.equals(uiName, that.uiName) && Objects.equals(key, that.key) && Objects.equals(keyName, that.keyName) && Objects.equals(subTitle, that.subTitle) && Objects.equals(dataEntities, that.dataEntities) && Objects.equals(project, that.project);
+        return replace == that.replace && Objects.equals(getId(), that.getId()) && Objects.equals(uiName, that.uiName) && Objects.equals(getKey(), that.getKey()) && Objects.equals(keyName, that.keyName) && Objects.equals(subTitle, that.subTitle) && Objects.equals(dataEntities, that.dataEntities) && Objects.equals(getProject(), that.getProject());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), uiName, key, keyName, replace, subTitle, dataEntities, project);
+        return Objects.hash(getId(), uiName, getKey(), keyName, replace, subTitle, dataEntities, getProject());
     }
 
     @Override
@@ -224,12 +172,12 @@ public class SoundEventEntity extends AbstractEntity {
         return "SoundEventEntity{" +
                 "id=" + getId() +
                 ", uiName='" + uiName + '\'' +
-                ", key='" + key + '\'' +
+                ", key='" + getKey() + '\'' +
                 ", keyName='" + keyName + '\'' +
                 ", replace=" + replace +
                 ", subTitle='" + subTitle + '\'' +
                 ", dataEntities=" + dataEntities +
-                ", project=" + project +
+                ", project=" + getProject() +
                 '}';
     }
 }

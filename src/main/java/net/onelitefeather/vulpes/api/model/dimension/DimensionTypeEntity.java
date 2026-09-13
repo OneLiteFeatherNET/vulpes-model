@@ -6,10 +6,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Index;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Max;
@@ -18,8 +17,6 @@ import jakarta.validation.constraints.NotNull;
 import net.onelitefeather.vulpes.api.model.AbstractEntity;
 import net.onelitefeather.vulpes.api.model.project.ProjectEntity;
 import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.List;
 import java.util.UUID;
@@ -48,14 +45,13 @@ import java.util.UUID;
 @Entity(name = "dimension_types")
 @Table(name = "dimension_types", indexes = {
         @Index(name = "idx_dimension_types_project_id", columnList = "project_id")
+}, uniqueConstraints = {
+        @UniqueConstraint(name = "uq_dimension_types_project_key", columnNames = {"project_id", "key"})
 })
 public class DimensionTypeEntity extends AbstractEntity {
 
     @NotNull
     private String uiName;
-
-    @NotNull
-    private String key;
 
     @ColumnDefault("false")
     private boolean hasFixedTime;
@@ -112,11 +108,6 @@ public class DimensionTypeEntity extends AbstractEntity {
     @OneToMany(mappedBy = "dimensionType", cascade = CascadeType.ALL)
     private List<DimensionTimelineEntity> timelines;
 
-    @ManyToOne
-    @JoinColumn(name = "project_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private ProjectEntity project;
-
     /**
      * Default constructor for JPA and Micronaut Data.
      * <p>
@@ -132,7 +123,9 @@ public class DimensionTypeEntity extends AbstractEntity {
      *
      * @param id                          the unique identifier of the dimension type
      * @param uiName                      the user interface name of the dimension type
-     * @param key                         the namespaced key of the dimension type (e.g. {@code minecraft:overworld})
+     * @param key                         the local key of the dimension type within the project's namespace
+     *                                    (e.g. {@code overworld}, becomes {@code <project-key>:overworld}
+     *                                    via {@link #getNamespacedKey()})
      * @param hasFixedTime                whether the dimension type has a fixed time
      * @param hasSkylight                 whether the dimension type has skylight
      * @param hasCeiling                  whether the dimension type has a ceiling
@@ -175,9 +168,9 @@ public class DimensionTypeEntity extends AbstractEntity {
             List<DimensionTimelineEntity> timelines,
             ProjectEntity project
     ) {
+        super(key, project);
         this.setId(id);
         this.uiName = uiName;
-        this.key = key;
         this.hasFixedTime = hasFixedTime;
         this.hasSkylight = hasSkylight;
         this.hasCeiling = hasCeiling;
@@ -195,7 +188,6 @@ public class DimensionTypeEntity extends AbstractEntity {
         this.defaultClock = defaultClock;
         this.attributes = attributes;
         this.timelines = timelines;
-        this.project = project;
     }
 
     // Getters and setters for each field
@@ -218,34 +210,6 @@ public class DimensionTypeEntity extends AbstractEntity {
         this.uiName = uiName;
     }
 
-    /**
-     * Returns the namespaced key of the dimension type (e.g. {@code minecraft:overworld}).
-     *
-     * @return the namespaced key
-     */
-    public String getKey() {
-        return key;
-    }
-
-    /**
-     * Sets the namespaced key of the dimension type (e.g. {@code minecraft:overworld}).
-     *
-     * @param key the namespaced key to set
-     */
-    public void setKey(String key) {
-        this.key = key;
-    }
-
-    /**
-     * Derives the variable name of the dimension type from its namespaced key, e.g. {@code minecraft:overworld}
-     * becomes {@code OVERWORLD}.
-     *
-     * @return the derived variable name
-     */
-    public String getVariableName() {
-        int separatorIndex = key.indexOf(':');
-        return (separatorIndex >= 0 ? key.substring(separatorIndex + 1) : key).toUpperCase();
-    }
 
     /**
      * Returns whether the dimension type has a fixed time.
@@ -554,30 +518,12 @@ public class DimensionTypeEntity extends AbstractEntity {
         this.timelines = timelines;
     }
 
-    /**
-     * Returns the project this dimension type belongs to.
-     *
-     * @return the project of the dimension type
-     */
-    public ProjectEntity getProject() {
-        return project;
-    }
-
-    /**
-     * Sets the project this dimension type belongs to.
-     *
-     * @param project the project to set
-     */
-    public void setProject(ProjectEntity project) {
-        this.project = project;
-    }
-
     @Override
     public String toString() {
         return "DimensionTypeEntity{" +
                 "id=" + getId() +
                 ", uiName='" + uiName + '\'' +
-                ", key='" + key + '\'' +
+                ", key='" + getKey() + '\'' +
                 ", hasFixedTime=" + hasFixedTime +
                 ", hasSkylight=" + hasSkylight +
                 ", hasCeiling=" + hasCeiling +
@@ -595,7 +541,7 @@ public class DimensionTypeEntity extends AbstractEntity {
                 ", defaultClock='" + defaultClock + '\'' +
                 ", attributes=" + attributes +
                 ", timelines=" + timelines +
-                ", project=" + project +
+                ", project=" + getProject() +
                 '}';
     }
 }

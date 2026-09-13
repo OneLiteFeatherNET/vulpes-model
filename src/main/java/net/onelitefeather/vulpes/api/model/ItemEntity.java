@@ -3,16 +3,13 @@ package net.onelitefeather.vulpes.api.model;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Index;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import net.onelitefeather.vulpes.api.model.item.ItemEnchantmentEntity;
 import net.onelitefeather.vulpes.api.model.item.ItemFlagEntity;
 import net.onelitefeather.vulpes.api.model.item.ItemLoreEntity;
 import net.onelitefeather.vulpes.api.model.project.ProjectEntity;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.List;
 import java.util.UUID;
@@ -29,11 +26,12 @@ import java.util.UUID;
 @Entity(name = "items")
 @Table(name = "items", indexes = {
         @Index(name = "idx_items_project_id", columnList = "project_id")
+}, uniqueConstraints = {
+        @UniqueConstraint(name = "uq_items_project_key", columnNames = {"project_id", "key"})
 })
 public class ItemEntity extends AbstractEntity {
 
     private String uiName;
-    private String key;
     private String comment;
     private String displayName;
     private String material;
@@ -46,11 +44,6 @@ public class ItemEntity extends AbstractEntity {
     private List<ItemLoreEntity> lore;
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
     private List<ItemFlagEntity> flags;
-
-    @ManyToOne
-    @JoinColumn(name = "project_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private ProjectEntity project;
 
     /**
      * Default constructor for JPA and Micronaut Data.
@@ -67,7 +60,9 @@ public class ItemEntity extends AbstractEntity {
      *
      * @param id              the unique identifier of the item
      * @param uiName          the model name associated with the item
-     * @param key             the namespaced key of the item (e.g. {@code minecraft:dirt})
+     * @param key             the local key of the item within the project's namespace
+     *                        (e.g. {@code dirt}, becomes {@code <project-key>:dirt}
+     *                        via {@link #getNamespacedKey()})
      * @param comment         a description of the item
      * @param displayName     the display name of the item
      * @param material        the material type associated with the item
@@ -94,9 +89,9 @@ public class ItemEntity extends AbstractEntity {
             List<ItemFlagEntity> flags,
             ProjectEntity project
     ) {
+        super(key, project);
         this.setId(id);
         this.uiName = uiName;
-        this.key = key;
         this.comment = comment;
         this.displayName = displayName;
         this.material = material;
@@ -106,7 +101,6 @@ public class ItemEntity extends AbstractEntity {
         this.enchantments = enchantments;
         this.lore = lore;
         this.flags = flags;
-        this.project = project;
     }
 
     // Getters and setters for each field
@@ -127,35 +121,6 @@ public class ItemEntity extends AbstractEntity {
      */
     public String getUiName() {
         return uiName;
-    }
-
-    /**
-     * Sets the namespaced key for the item (e.g. {@code minecraft:dirt}).
-     *
-     * @param key the namespaced key to set
-     */
-    public void setKey(String key) {
-        this.key = key;
-    }
-
-    /**
-     * Returns the namespaced key for the item (e.g. {@code minecraft:dirt}).
-     *
-     * @return the namespaced key of the item
-     */
-    public String getKey() {
-        return key;
-    }
-
-    /**
-     * Derives the variable name of the item from its namespaced key, e.g. {@code minecraft:dirt}
-     * becomes {@code DIRT}.
-     *
-     * @return the derived variable name of the item
-     */
-    public String getVariableName() {
-        int separatorIndex = key.indexOf(':');
-        return (separatorIndex >= 0 ? key.substring(separatorIndex + 1) : key).toUpperCase();
     }
 
     /**
@@ -321,24 +286,6 @@ public class ItemEntity extends AbstractEntity {
     }
 
     /**
-     * Returns the project this item belongs to.
-     *
-     * @return the project of the item
-     */
-    public ProjectEntity getProject() {
-        return project;
-    }
-
-    /**
-     * Sets the project this item belongs to.
-     *
-     * @param project the project to set
-     */
-    public void setProject(ProjectEntity project) {
-        this.project = project;
-    }
-
-    /**
      * Provides a string representation of the ItemModel.
      *
      * @return a string representation
@@ -348,7 +295,7 @@ public class ItemEntity extends AbstractEntity {
         return "ItemModel{" +
                 "id='" + getId() + '\'' +
                 ", modelName='" + uiName + '\'' +
-                ", key='" + key + '\'' +
+                ", key='" + getKey() + '\'' +
                 ", comment='" + comment + '\'' +
                 ", displayName='" + displayName + '\'' +
                 ", material='" + material + '\'' +
@@ -358,7 +305,7 @@ public class ItemEntity extends AbstractEntity {
                 ", enchantments=" + enchantments +
                 ", lore=" + lore +
                 ", flags=" + flags +
-                ", project=" + project +
+                ", project=" + getProject() +
                 '}';
     }
 }

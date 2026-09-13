@@ -3,7 +3,7 @@ package net.onelitefeather.vulpes.api.model.sound;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import net.onelitefeather.vulpes.api.model.AbstractEntity;
+import net.onelitefeather.vulpes.api.model.IdentifiableEntity;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -20,7 +20,7 @@ import java.util.UUID;
  * @since 0.1.0
  */
 @Entity(name = "sound_data")
-public class SoundFileSource extends AbstractEntity {
+public class SoundFileSource extends IdentifiableEntity {
 
     private String name;
     @ColumnDefault("1.0")

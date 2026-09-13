@@ -8,7 +8,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
-import net.onelitefeather.vulpes.api.model.AbstractEntity;
+import net.onelitefeather.vulpes.api.model.IdentifiableEntity;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -34,7 +34,7 @@ import java.util.UUID;
 @Table(name = "dimension_attributes", indexes = {
         @Index(name = "idx_dimension_attributes_type_key", columnList = "dimension_type_id, attribute_key", unique = true)
 })
-public final class DimensionAttributeEntity extends AbstractEntity {
+public final class DimensionAttributeEntity extends IdentifiableEntity {
 
     @NotNull
     @Enumerated(EnumType.STRING)

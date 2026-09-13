@@ -3,7 +3,7 @@ package net.onelitefeather.vulpes.api.model.font;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import net.onelitefeather.vulpes.api.model.AbstractEntity;
+import net.onelitefeather.vulpes.api.model.IdentifiableEntity;
 import net.onelitefeather.vulpes.api.model.FontEntity;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -12,7 +12,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Entity(name = "font_string")
-public final class FontStringEntity extends AbstractEntity implements Comparable<FontStringEntity> {
+public final class FontStringEntity extends IdentifiableEntity implements Comparable<FontStringEntity> {
     private String line;
     @ManyToOne
     @JoinColumn(name = "font_id", nullable = false)

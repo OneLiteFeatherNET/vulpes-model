@@ -3,7 +3,7 @@ package net.onelitefeather.vulpes.api.model.item;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import net.onelitefeather.vulpes.api.model.AbstractEntity;
+import net.onelitefeather.vulpes.api.model.IdentifiableEntity;
 import net.onelitefeather.vulpes.api.model.ItemEntity;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -19,7 +19,7 @@ import java.util.UUID;
  * @since 1.6.0
  */
 @Entity(name = "item_flags")
-public final class ItemFlagEntity extends AbstractEntity {
+public final class ItemFlagEntity extends IdentifiableEntity {
     private String flag;
     @ManyToOne
     @JoinColumn(name = "item_id")

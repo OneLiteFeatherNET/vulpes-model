@@ -2,12 +2,9 @@ package net.onelitefeather.vulpes.api.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Index;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import net.onelitefeather.vulpes.api.model.project.ProjectEntity;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.UUID;
 
@@ -23,19 +20,16 @@ import java.util.UUID;
 @Entity(name = "notifications")
 @Table(name = "notifications", indexes = {
         @Index(name = "idx_notifications_project_id", columnList = "project_id")
+}, uniqueConstraints = {
+        @UniqueConstraint(name = "uq_notifications_project_key", columnNames = {"project_id", "key"})
 })
 public class NotificationEntity extends AbstractEntity {
 
     private String uiName;
-    private String key;
     private String comment;
     private String material;
     private String frameType;
     private String title;
-    @ManyToOne
-    @JoinColumn(name = "project_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private ProjectEntity project;
 
     /**
      * Default constructor for JPA and Micronaut Data.
@@ -52,7 +46,9 @@ public class NotificationEntity extends AbstractEntity {
      *
      * @param id           the unique identifier of the notification
      * @param uiName       the user interface name of the notification
-     * @param key          the namespaced key of the notification (e.g. {@code minecraft:achievement})
+     * @param key          the local key of the notification within the project's namespace
+     *                     (e.g. {@code achievement}, becomes {@code <project-key>:achievement}
+     *                     via {@link #getNamespacedKey()})
      * @param comment      a comment for the description
      * @param material     the material type associated with the notification
      * @param frameType    the frame type associated with the notification
@@ -60,14 +56,13 @@ public class NotificationEntity extends AbstractEntity {
      * @param project      the project this notification belongs to
      */
     public NotificationEntity(UUID id, String uiName, String key, String comment, String material, String frameType, String title, ProjectEntity project) {
+        super(key, project);
         this.setId(id);
         this.uiName = uiName;
-        this.key = key;
         this.comment = comment;
         this.material = material;
         this.frameType = frameType;
         this.title = title;
-        this.project = project;
     }
 
     /**
@@ -86,35 +81,6 @@ public class NotificationEntity extends AbstractEntity {
      */
     public String getUiName() {
         return uiName;
-    }
-
-    /**
-     * Sets the namespaced key for the notification (e.g. {@code minecraft:achievement}).
-     *
-     * @param key the namespaced key to set
-     */
-    public void setKey(String key) {
-        this.key = key;
-    }
-
-    /**
-     * Returns the namespaced key for the notification (e.g. {@code minecraft:achievement}).
-     *
-     * @return the namespaced key of the notification
-     */
-    public String getKey() {
-        return key;
-    }
-
-    /**
-     * Derives the variable name of the notification from its namespaced key, e.g. {@code minecraft:achievement}
-     * becomes {@code ACHIEVEMENT}.
-     *
-     * @return the derived variable name of the notification
-     */
-    public String getVariableName() {
-        int separatorIndex = key.indexOf(':');
-        return (separatorIndex >= 0 ? key.substring(separatorIndex + 1) : key).toUpperCase();
     }
 
     /**
@@ -190,24 +156,6 @@ public class NotificationEntity extends AbstractEntity {
     }
 
     /**
-     * Returns the project this notification belongs to.
-     *
-     * @return the project of the notification
-     */
-    public ProjectEntity getProject() {
-        return project;
-    }
-
-    /**
-     * Sets the project this notification belongs to.
-     *
-     * @param project the project to set
-     */
-    public void setProject(ProjectEntity project) {
-        this.project = project;
-    }
-
-    /**
      * Provides a string representation of the NotificationModel
      *
      * @return a string representation
@@ -217,12 +165,12 @@ public class NotificationEntity extends AbstractEntity {
         return "NotificationModel{" +
                 "id='" + getId() + '\'' +
                 ", uiName='" + uiName + '\'' +
-                ", key='" + key + '\'' +
+                ", key='" + getKey() + '\'' +
                 ", description='" + comment + '\'' +
                 ", material='" + material + '\'' +
                 ", frameType='" + frameType + '\'' +
                 ", title='" + title + '\'' +
-                ", project=" + project +
+                ", project=" + getProject() +
                 '}';
     }
 }

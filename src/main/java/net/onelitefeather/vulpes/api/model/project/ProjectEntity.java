@@ -6,7 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Index;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
-import net.onelitefeather.vulpes.api.model.AbstractEntity;
+import net.onelitefeather.vulpes.api.model.IdentifiableEntity;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.util.UUID;
@@ -28,7 +28,7 @@ import java.util.UUID;
 @Table(name = "projects", indexes = {
         @Index(name = "idx_projects_key", columnList = "project_key", unique = true)
 })
-public class ProjectEntity extends AbstractEntity {
+public class ProjectEntity extends IdentifiableEntity {
 
     @NotNull
     private String displayName;
