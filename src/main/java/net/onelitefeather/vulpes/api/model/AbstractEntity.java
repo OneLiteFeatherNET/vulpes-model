@@ -1,72 +1,104 @@
 package net.onelitefeather.vulpes.api.model;
 
-import io.micronaut.data.annotation.DateCreated;
-import io.micronaut.data.annotation.DateUpdated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MappedSuperclass;
-import net.onelitefeather.vulpes.api.generator.VulpesGenerator;
-
-import java.time.Instant;
-import java.util.UUID;
+import jakarta.validation.constraints.NotNull;
+import net.onelitefeather.vulpes.api.model.project.ProjectEntity;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 /**
- * Base class for all entities of the Vulpes model. Bundles the fields that are common to every
- * entity: the generated identifier and the creation/modification timestamps, which are maintained
- * automatically by Micronaut Data.
+ * Base class for every entity that belongs to a {@link ProjectEntity}. Adds the project
+ * reference and the entity's local key, which combine into a namespaced key
+ * (e.g. {@code cygnus:whatever}) via {@link #getNamespacedKey()}.
  *
  * @author theEvilReaper
  * @version 1.0.0
  * @since 2.2.0
  */
 @MappedSuperclass
-public abstract class AbstractEntity implements VulpesModel {
+public abstract class AbstractEntity extends IdentifiableEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @VulpesGenerator
-    private UUID id;
+    @ManyToOne
+    @JoinColumn(name = "project_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private ProjectEntity project;
 
-    @DateCreated
-    private Instant creationDate;
-
-    @DateUpdated
-    private Instant modificationDate;
+    @NotNull
+    private String key;
 
     /**
-     * Returns the unique identifier of the entity.
-     *
-     * @return the unique identifier
+     * Default constructor for JPA and Micronaut Data.
      */
-    public UUID getId() {
-        return id;
+    protected AbstractEntity() {
+        // No-argument constructor for JPA
     }
 
     /**
-     * Sets the unique identifier of the entity.
+     * Constructs a new {@link AbstractEntity} with the specified local key and project.
      *
-     * @param id the unique identifier to set
+     * @param key     the local key of the entity within the project's namespace
+     * @param project the project this entity belongs to
      */
-    public void setId(UUID id) {
-        this.id = id;
+    protected AbstractEntity(String key, ProjectEntity project) {
+        this.key = key;
+        this.project = project;
     }
 
     /**
-     * Returns the point in time at which the entity was created.
+     * Returns the project this entity belongs to.
      *
-     * @return the creation date
+     * @return the project of the entity
      */
-    public Instant getCreationDate() {
-        return creationDate;
+    public ProjectEntity getProject() {
+        return project;
     }
 
     /**
-     * Returns the point in time at which the entity was last modified.
+     * Sets the project this entity belongs to.
      *
-     * @return the modification date
+     * @param project the project to set
      */
-    public Instant getModificationDate() {
-        return modificationDate;
+    public void setProject(ProjectEntity project) {
+        this.project = project;
+    }
+
+    /**
+     * Returns the local key of the entity within its project's namespace (e.g. {@code whatever}).
+     *
+     * @return the local key of the entity
+     */
+    public String getKey() {
+        return key;
+    }
+
+    /**
+     * Sets the local key of the entity within its project's namespace (e.g. {@code whatever}).
+     *
+     * @param key the local key to set
+     */
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    /**
+     * Returns the full namespaced key, combining the project's key with this entity's local key
+     * (e.g. project key {@code cygnus} and local key {@code whatever} become {@code cygnus:whatever}).
+     *
+     * @return the namespaced key of the entity
+     */
+    public String getNamespacedKey() {
+        return project.getKey() + ":" + key;
+    }
+
+    /**
+     * Derives the variable name of the entity from its local key, e.g. local key {@code whatever}
+     * becomes {@code WHATEVER}.
+     *
+     * @return the derived variable name of the entity
+     */
+    public String getVariableName() {
+        return key.toUpperCase();
     }
 }
