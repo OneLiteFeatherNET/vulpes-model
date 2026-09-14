@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.0](https://github.com/OneLiteFeatherNET/vulpes-model/compare/v2.1.0...v2.2.0) (2026-09-14)
+
+
+### Features
+
+* **entity:** add ground base entity ([#124](https://github.com/OneLiteFeatherNET/vulpes-model/issues/124)) ([430f0cf](https://github.com/OneLiteFeatherNET/vulpes-model/commit/430f0cf470483c9d88d7418375a87e5cb4666386))
+
 ## [2.1.0](https://github.com/OneLiteFeatherNET/vulpes-model/compare/v2.0.0...v2.1.0) (2026-09-09)
 
 
