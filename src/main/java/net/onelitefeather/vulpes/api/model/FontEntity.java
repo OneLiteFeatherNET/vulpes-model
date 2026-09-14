@@ -2,19 +2,12 @@ package net.onelitefeather.vulpes.api.model;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.Index;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import net.onelitefeather.vulpes.api.generator.VulpesGenerator;
+import jakarta.persistence.UniqueConstraint;
 import net.onelitefeather.vulpes.api.model.font.FontStringEntity;
 import net.onelitefeather.vulpes.api.model.project.ProjectEntity;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.List;
 import java.util.UUID;
@@ -31,15 +24,12 @@ import java.util.UUID;
 @Entity(name = "fonts")
 @Table(name = "fonts", indexes = {
         @Index(name = "idx_fonts_project_id", columnList = "project_id")
+}, uniqueConstraints = {
+        @UniqueConstraint(name = "uq_fonts_project_key", columnNames = {"project_id", "key"})
 })
-public class FontEntity implements VulpesModel {
+public class FontEntity extends AbstractEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @VulpesGenerator
-    private UUID id;
     private String uiName;
-    private String variableName;
     private String provider;
     private String mapper = "font";
     private String texturePath;
@@ -48,11 +38,6 @@ public class FontEntity implements VulpesModel {
     private int ascent;
     @OneToMany(mappedBy = "font", cascade = CascadeType.ALL)
     private List<FontStringEntity> chars;
-
-    @ManyToOne
-    @JoinColumn(name = "project_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private ProjectEntity project;
 
     /**
      * Default constructor for JPA and Micronaut Data.
@@ -69,7 +54,9 @@ public class FontEntity implements VulpesModel {
      *
      * @param id           the unique identifier of the font
      * @param uiName       the user interface name of the font
-     * @param variableName the variable name of the font
+     * @param key          the local key of the font within the project's namespace
+     *                     (e.g. {@code default}, becomes {@code <project-key>:default}
+     *                     via {@link #getNamespacedKey()})
      * @param provider     the provider of the font
      * @param texturePath  the path to the texture of the font
      * @param comment      a comment or description for the font
@@ -81,7 +68,7 @@ public class FontEntity implements VulpesModel {
     public FontEntity(
             UUID id,
             String uiName,
-            String variableName,
+            String key,
             String provider,
             String texturePath,
             String comment,
@@ -90,37 +77,18 @@ public class FontEntity implements VulpesModel {
             List<FontStringEntity> chars,
             ProjectEntity project
     ) {
-        this.id = id;
+        super(key, project);
+        this.setId(id);
         this.uiName = uiName;
-        this.variableName = variableName;
         this.provider = provider;
         this.texturePath = texturePath;
         this.comment = comment;
         this.height = height;
         this.ascent = ascent;
         this.chars = chars;
-        this.project = project;
     }
 
     // Getters and setters for each field
-
-    /**
-     * Returns the unique identifier of the font
-     *
-     * @return the unique identifier of the font
-     */
-    public UUID getId() {
-        return id;
-    }
-
-    /**
-     * Sets the unique identifier of the font
-     *
-     * @param id the unique identifier to set
-     */
-    public void setId(UUID id) {
-        this.id = id;
-    }
 
     public void setUiName(String uiName) {
         this.uiName = uiName;
@@ -128,14 +96,6 @@ public class FontEntity implements VulpesModel {
 
     public String getUiName() {
         return uiName;
-    }
-
-    public void setVariableName(String variableName) {
-        this.variableName = variableName;
-    }
-
-    public String getVariableName() {
-        return variableName;
     }
 
     public void setMapper(String mapper) {
@@ -224,30 +184,12 @@ public class FontEntity implements VulpesModel {
         this.chars = chars;
     }
 
-    /**
-     * Returns the project this font belongs to.
-     *
-     * @return the project of the font
-     */
-    public ProjectEntity getProject() {
-        return project;
-    }
-
-    /**
-     * Sets the project this font belongs to.
-     *
-     * @param project the project to set
-     */
-    public void setProject(ProjectEntity project) {
-        this.project = project;
-    }
-
     @Override
     public String toString() {
         return "FontEntity{" +
-                "id=" + id +
+                "id=" + getId() +
                 ", uiName='" + uiName + '\'' +
-                ", variableName='" + variableName + '\'' +
+                ", key='" + getKey() + '\'' +
                 ", provider='" + provider + '\'' +
                 ", mapper='" + mapper + '\'' +
                 ", texturePath='" + texturePath + '\'' +
@@ -255,7 +197,7 @@ public class FontEntity implements VulpesModel {
                 ", height=" + height +
                 ", ascent=" + ascent +
                 ", chars=" + chars +
-                ", project=" + project +
+                ", project=" + getProject() +
                 '}';
     }
 }

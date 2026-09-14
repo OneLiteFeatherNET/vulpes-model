@@ -5,25 +5,18 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.EnumType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.Index;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import net.onelitefeather.vulpes.api.generator.VulpesGenerator;
-import net.onelitefeather.vulpes.api.model.VulpesModel;
+import net.onelitefeather.vulpes.api.model.AbstractEntity;
 import net.onelitefeather.vulpes.api.model.project.ProjectEntity;
 import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.List;
 import java.util.UUID;
@@ -52,19 +45,13 @@ import java.util.UUID;
 @Entity(name = "dimension_types")
 @Table(name = "dimension_types", indexes = {
         @Index(name = "idx_dimension_types_project_id", columnList = "project_id")
+}, uniqueConstraints = {
+        @UniqueConstraint(name = "uq_dimension_types_project_key", columnNames = {"project_id", "key"})
 })
-public class DimensionTypeEntity implements VulpesModel {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @VulpesGenerator
-    private UUID id;
+public class DimensionTypeEntity extends AbstractEntity {
 
     @NotNull
     private String uiName;
-
-    @NotNull
-    private String variableName;
 
     @ColumnDefault("false")
     private boolean hasFixedTime;
@@ -121,11 +108,6 @@ public class DimensionTypeEntity implements VulpesModel {
     @OneToMany(mappedBy = "dimensionType", cascade = CascadeType.ALL)
     private List<DimensionTimelineEntity> timelines;
 
-    @ManyToOne
-    @JoinColumn(name = "project_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private ProjectEntity project;
-
     /**
      * Default constructor for JPA and Micronaut Data.
      * <p>
@@ -141,7 +123,9 @@ public class DimensionTypeEntity implements VulpesModel {
      *
      * @param id                          the unique identifier of the dimension type
      * @param uiName                      the user interface name of the dimension type
-     * @param variableName                the variable name of the dimension type
+     * @param key                         the local key of the dimension type within the project's namespace
+     *                                    (e.g. {@code overworld}, becomes {@code <project-key>:overworld}
+     *                                    via {@link #getNamespacedKey()})
      * @param hasFixedTime                whether the dimension type has a fixed time
      * @param hasSkylight                 whether the dimension type has skylight
      * @param hasCeiling                  whether the dimension type has a ceiling
@@ -164,7 +148,7 @@ public class DimensionTypeEntity implements VulpesModel {
     public DimensionTypeEntity(
             UUID id,
             String uiName,
-            String variableName,
+            String key,
             boolean hasFixedTime,
             boolean hasSkylight,
             boolean hasCeiling,
@@ -184,9 +168,9 @@ public class DimensionTypeEntity implements VulpesModel {
             List<DimensionTimelineEntity> timelines,
             ProjectEntity project
     ) {
-        this.id = id;
+        super(key, project);
+        this.setId(id);
         this.uiName = uiName;
-        this.variableName = variableName;
         this.hasFixedTime = hasFixedTime;
         this.hasSkylight = hasSkylight;
         this.hasCeiling = hasCeiling;
@@ -204,28 +188,9 @@ public class DimensionTypeEntity implements VulpesModel {
         this.defaultClock = defaultClock;
         this.attributes = attributes;
         this.timelines = timelines;
-        this.project = project;
     }
 
     // Getters and setters for each field
-
-    /**
-     * Returns the unique identifier of the dimension type.
-     *
-     * @return the unique identifier of the dimension type
-     */
-    public UUID getId() {
-        return id;
-    }
-
-    /**
-     * Sets the unique identifier of the dimension type.
-     *
-     * @param id the unique identifier to set
-     */
-    public void setId(UUID id) {
-        this.id = id;
-    }
 
     /**
      * Returns the user interface name of the dimension type.
@@ -245,23 +210,6 @@ public class DimensionTypeEntity implements VulpesModel {
         this.uiName = uiName;
     }
 
-    /**
-     * Returns the variable name of the dimension type.
-     *
-     * @return the variable name
-     */
-    public String getVariableName() {
-        return variableName;
-    }
-
-    /**
-     * Sets the variable name of the dimension type.
-     *
-     * @param variableName the variable name to set
-     */
-    public void setVariableName(String variableName) {
-        this.variableName = variableName;
-    }
 
     /**
      * Returns whether the dimension type has a fixed time.
@@ -570,30 +518,12 @@ public class DimensionTypeEntity implements VulpesModel {
         this.timelines = timelines;
     }
 
-    /**
-     * Returns the project this dimension type belongs to.
-     *
-     * @return the project of the dimension type
-     */
-    public ProjectEntity getProject() {
-        return project;
-    }
-
-    /**
-     * Sets the project this dimension type belongs to.
-     *
-     * @param project the project to set
-     */
-    public void setProject(ProjectEntity project) {
-        this.project = project;
-    }
-
     @Override
     public String toString() {
         return "DimensionTypeEntity{" +
-                "id=" + id +
+                "id=" + getId() +
                 ", uiName='" + uiName + '\'' +
-                ", variableName='" + variableName + '\'' +
+                ", key='" + getKey() + '\'' +
                 ", hasFixedTime=" + hasFixedTime +
                 ", hasSkylight=" + hasSkylight +
                 ", hasCeiling=" + hasCeiling +
@@ -611,7 +541,7 @@ public class DimensionTypeEntity implements VulpesModel {
                 ", defaultClock='" + defaultClock + '\'' +
                 ", attributes=" + attributes +
                 ", timelines=" + timelines +
-                ", project=" + project +
+                ", project=" + getProject() +
                 '}';
     }
 }

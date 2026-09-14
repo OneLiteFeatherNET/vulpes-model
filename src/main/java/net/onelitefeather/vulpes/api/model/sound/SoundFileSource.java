@@ -1,13 +1,9 @@
 package net.onelitefeather.vulpes.api.model.sound;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import net.onelitefeather.vulpes.api.generator.VulpesGenerator;
-import net.onelitefeather.vulpes.api.model.VulpesModel;
+import net.onelitefeather.vulpes.api.model.IdentifiableEntity;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -24,12 +20,8 @@ import java.util.UUID;
  * @since 0.1.0
  */
 @Entity(name = "sound_data")
-public class SoundFileSource implements VulpesModel {
+public class SoundFileSource extends IdentifiableEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @VulpesGenerator
-    private UUID id;
     private String name;
     @ColumnDefault("1.0")
     private float volume;
@@ -84,7 +76,7 @@ public class SoundFileSource implements VulpesModel {
             boolean preload,
             String type
     ) {
-        this.id = id;
+        this.setId(id);
         this.name = name;
         this.volume = volume;
         this.pitch = pitch;
@@ -96,24 +88,6 @@ public class SoundFileSource implements VulpesModel {
     }
 
     // Getters and setters for each field
-
-    /**
-     * Returns the unique identifier of the data.
-     *
-     * @return the unique identifier
-     */
-    public UUID getId() {
-        return id;
-    }
-
-    /**
-     * Sets the unique identifier of the sound data.
-     *
-     * @param id the unique identifier to set
-     */
-    public void setId(UUID id) {
-        this.id = id;
-    }
 
     /**
      * Sets the name of the sound data
@@ -253,18 +227,18 @@ public class SoundFileSource implements VulpesModel {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         SoundFileSource that = (SoundFileSource) o;
-        return Float.compare(volume, that.volume) == 0 && Float.compare(pitch, that.pitch) == 0 && weight == that.weight && stream == that.stream && attenuationDistance == that.attenuationDistance && preload == that.preload && Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(type, that.type);
+        return Float.compare(volume, that.volume) == 0 && Float.compare(pitch, that.pitch) == 0 && weight == that.weight && stream == that.stream && attenuationDistance == that.attenuationDistance && preload == that.preload && Objects.equals(getId(), that.getId()) && Objects.equals(name, that.name) && Objects.equals(type, that.type);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, volume, pitch, weight, stream, attenuationDistance, preload, type);
+        return Objects.hash(getId(), name, volume, pitch, weight, stream, attenuationDistance, preload, type);
     }
 
     @Override
     public String toString() {
         return "SoundDataEntity{" +
-                "id=" + id +
+                "id=" + getId() +
                 ", name='" + name + '\'' +
                 ", volume=" + volume +
                 ", pitch=" + pitch +

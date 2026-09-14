@@ -1,12 +1,9 @@
 package net.onelitefeather.vulpes.api.model.item;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import net.onelitefeather.vulpes.api.generator.VulpesGenerator;
+import net.onelitefeather.vulpes.api.model.IdentifiableEntity;
 import net.onelitefeather.vulpes.api.model.ItemEntity;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -22,11 +19,7 @@ import java.util.UUID;
  * @since 1.6.0
  */
 @Entity(name = "item_lore")
-public final class ItemLoreEntity implements Comparable<ItemLoreEntity> {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @VulpesGenerator
-    private UUID id;
+public final class ItemLoreEntity extends IdentifiableEntity implements Comparable<ItemLoreEntity> {
     private String text;
     @ManyToOne
     @JoinColumn(name = "item_id", nullable = false)
@@ -52,27 +45,9 @@ public final class ItemLoreEntity implements Comparable<ItemLoreEntity> {
             String text,
             int orderIndex
     ) {
-        this.id = id;
+        this.setId(id);
         this.text = text;
         this.orderIndex = orderIndex;
-    }
-
-    /**
-     * Sets the unique identifier of the lore entry.
-     *
-     * @param id the unique identifier to set
-     */
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    /**
-     * Gets the unique identifier of the lore entry.
-     *
-     * @return the unique identifier
-     */
-    public UUID getId() {
-        return id;
     }
 
     /**
@@ -134,20 +109,20 @@ public final class ItemLoreEntity implements Comparable<ItemLoreEntity> {
         if (obj == this) return true;
         if (obj == null || obj.getClass() != this.getClass()) return false;
         var that = (ItemLoreEntity) obj;
-        return Objects.equals(this.id, that.id) &&
+        return Objects.equals(this.getId(), that.getId()) &&
                 Objects.equals(this.text, that.text) &&
                 Objects.equals(this.item, that.item);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, text, item);
+        return Objects.hash(getId(), text, item);
     }
 
     @Override
     public String toString() {
         return "ItemLoreEntity[" +
-                "id=" + id + ", " +
+                "id=" + getId() + ", " +
                 "text=" + text + ", " +
                 "item=" + item + ']';
     }

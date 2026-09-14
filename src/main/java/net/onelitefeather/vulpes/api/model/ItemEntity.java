@@ -2,21 +2,14 @@ package net.onelitefeather.vulpes.api.model;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.Index;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import net.onelitefeather.vulpes.api.generator.VulpesGenerator;
+import jakarta.persistence.UniqueConstraint;
 import net.onelitefeather.vulpes.api.model.item.ItemEnchantmentEntity;
 import net.onelitefeather.vulpes.api.model.item.ItemFlagEntity;
 import net.onelitefeather.vulpes.api.model.item.ItemLoreEntity;
 import net.onelitefeather.vulpes.api.model.project.ProjectEntity;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.List;
 import java.util.UUID;
@@ -33,16 +26,12 @@ import java.util.UUID;
 @Entity(name = "items")
 @Table(name = "items", indexes = {
         @Index(name = "idx_items_project_id", columnList = "project_id")
+}, uniqueConstraints = {
+        @UniqueConstraint(name = "uq_items_project_key", columnNames = {"project_id", "key"})
 })
-public class ItemEntity implements VulpesModel {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @VulpesGenerator
-    private UUID id;
+public class ItemEntity extends AbstractEntity {
 
     private String uiName;
-    private String variableName;
     private String comment;
     private String displayName;
     private String material;
@@ -55,11 +44,6 @@ public class ItemEntity implements VulpesModel {
     private List<ItemLoreEntity> lore;
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
     private List<ItemFlagEntity> flags;
-
-    @ManyToOne
-    @JoinColumn(name = "project_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private ProjectEntity project;
 
     /**
      * Default constructor for JPA and Micronaut Data.
@@ -76,7 +60,9 @@ public class ItemEntity implements VulpesModel {
      *
      * @param id              the unique identifier of the item
      * @param uiName          the model name associated with the item
-     * @param variableName    the name of the item
+     * @param key             the local key of the item within the project's namespace
+     *                        (e.g. {@code dirt}, becomes {@code <project-key>:dirt}
+     *                        via {@link #getNamespacedKey()})
      * @param comment         a description of the item
      * @param displayName     the display name of the item
      * @param material        the material type associated with the item
@@ -91,7 +77,7 @@ public class ItemEntity implements VulpesModel {
     public ItemEntity(
             UUID id,
             String uiName,
-            String variableName,
+            String key,
             String comment,
             String displayName,
             String material,
@@ -103,9 +89,9 @@ public class ItemEntity implements VulpesModel {
             List<ItemFlagEntity> flags,
             ProjectEntity project
     ) {
-        this.id = id;
+        super(key, project);
+        this.setId(id);
         this.uiName = uiName;
-        this.variableName = variableName;
         this.comment = comment;
         this.displayName = displayName;
         this.material = material;
@@ -115,28 +101,9 @@ public class ItemEntity implements VulpesModel {
         this.enchantments = enchantments;
         this.lore = lore;
         this.flags = flags;
-        this.project = project;
     }
 
     // Getters and setters for each field
-
-    /**
-     * Returns the unique identifier of the item.
-     *
-     * @return the unique identifier of the item
-     */
-    public UUID getId() {
-        return id;
-    }
-
-    /**
-     * Sets the unique identifier of the item.
-     *
-     * @param id the unique identifier to set
-     */
-    public void setId(UUID id) {
-        this.id = id;
-    }
 
     /**
      * Sets the name representation for the ui
@@ -154,24 +121,6 @@ public class ItemEntity implements VulpesModel {
      */
     public String getUiName() {
         return uiName;
-    }
-
-    /**
-     * Sets the variable name for the notification
-     *
-     * @param variableName the variable name to set
-     */
-    public void setVariableName(String variableName) {
-        this.variableName = variableName;
-    }
-
-    /**
-     * Returns the variable name for the notification
-     *
-     * @return the variable name of the notification
-     */
-    public String getVariableName() {
-        return variableName;
     }
 
     /**
@@ -337,24 +286,6 @@ public class ItemEntity implements VulpesModel {
     }
 
     /**
-     * Returns the project this item belongs to.
-     *
-     * @return the project of the item
-     */
-    public ProjectEntity getProject() {
-        return project;
-    }
-
-    /**
-     * Sets the project this item belongs to.
-     *
-     * @param project the project to set
-     */
-    public void setProject(ProjectEntity project) {
-        this.project = project;
-    }
-
-    /**
      * Provides a string representation of the ItemModel.
      *
      * @return a string representation
@@ -362,9 +293,9 @@ public class ItemEntity implements VulpesModel {
     @Override
     public String toString() {
         return "ItemModel{" +
-                "id='" + id + '\'' +
+                "id='" + getId() + '\'' +
                 ", modelName='" + uiName + '\'' +
-                ", name='" + variableName + '\'' +
+                ", key='" + getKey() + '\'' +
                 ", comment='" + comment + '\'' +
                 ", displayName='" + displayName + '\'' +
                 ", material='" + material + '\'' +
@@ -374,7 +305,7 @@ public class ItemEntity implements VulpesModel {
                 ", enchantments=" + enchantments +
                 ", lore=" + lore +
                 ", flags=" + flags +
-                ", project=" + project +
+                ", project=" + getProject() +
                 '}';
     }
 }

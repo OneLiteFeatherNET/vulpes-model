@@ -1,12 +1,9 @@
 package net.onelitefeather.vulpes.api.model.font;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import net.onelitefeather.vulpes.api.generator.VulpesGenerator;
+import net.onelitefeather.vulpes.api.model.IdentifiableEntity;
 import net.onelitefeather.vulpes.api.model.FontEntity;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -15,11 +12,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Entity(name = "font_string")
-public final class FontStringEntity implements Comparable<FontStringEntity> {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @VulpesGenerator
-    private UUID id;
+public final class FontStringEntity extends IdentifiableEntity implements Comparable<FontStringEntity> {
     private String line;
     @ManyToOne
     @JoinColumn(name = "font_id", nullable = false)
@@ -46,27 +39,9 @@ public final class FontStringEntity implements Comparable<FontStringEntity> {
             String content,
             int orderIndex
     ) {
-        this.id = id;
+        this.setId(id);
         this.line = content;
         this.orderIndex = orderIndex;
-    }
-
-    /**
-     * Sets the unique identifier of the font string.
-     *
-     * @param id the unique identifier to set
-     */
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    /**
-     * Gets the unique identifier of the font string.
-     *
-     * @return the unique identifier
-     */
-    public UUID getId() {
-        return id;
     }
 
     /**
@@ -128,20 +103,20 @@ public final class FontStringEntity implements Comparable<FontStringEntity> {
         if (obj == this) return true;
         if (obj == null || obj.getClass() != this.getClass()) return false;
         var that = (FontStringEntity) obj;
-        return Objects.equals(this.id, that.id) &&
+        return Objects.equals(this.getId(), that.getId()) &&
                 Objects.equals(this.line, that.line) &&
                 Objects.equals(this.font, that.font);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, line, font);
+        return Objects.hash(getId(), line, font);
     }
 
     @Override
     public String toString() {
         return "FontLoreEntity[" +
-                "id=" + id + ", " +
+                "id=" + getId() + ", " +
                 "line=" + line + ", " +
                 "font=" + font + ']';
     }

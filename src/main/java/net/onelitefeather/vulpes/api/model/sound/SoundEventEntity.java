@@ -2,20 +2,13 @@ package net.onelitefeather.vulpes.api.model.sound;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.Index;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import net.onelitefeather.vulpes.api.generator.VulpesGenerator;
-import net.onelitefeather.vulpes.api.model.VulpesModel;
+import jakarta.persistence.UniqueConstraint;
+import net.onelitefeather.vulpes.api.model.AbstractEntity;
 import net.onelitefeather.vulpes.api.model.project.ProjectEntity;
 import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.List;
 import java.util.Objects;
@@ -34,15 +27,12 @@ import java.util.UUID;
 @Entity(name = "sounds")
 @Table(name = "sounds", indexes = {
         @Index(name = "idx_sounds_project_id", columnList = "project_id")
+}, uniqueConstraints = {
+        @UniqueConstraint(name = "uq_sounds_project_key", columnNames = {"project_id", "key"})
 })
-public class SoundEventEntity implements VulpesModel {
+public class SoundEventEntity extends AbstractEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @VulpesGenerator
-    private UUID id;
     private String uiName;
-    private String variableName;
     private String keyName;
     @Column(name = "replace_flag")
     @ColumnDefault("false")
@@ -56,11 +46,6 @@ public class SoundEventEntity implements VulpesModel {
      */
     @OneToMany(mappedBy = "soundEvent")
     private List<SoundFileSource> dataEntities;
-
-    @ManyToOne
-    @JoinColumn(name = "project_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private ProjectEntity project;
 
     /**
      * Default constructor for JPA and Micronaut Data.
@@ -77,40 +62,23 @@ public class SoundEventEntity implements VulpesModel {
      *
      * @param id           the unique identifier of the sound model
      * @param uiName       the user interface name for the sound model
-     * @param variableName the variable name for the sound model
+     * @param key          the local key of the sound model within the project's namespace
+     *                     (e.g. {@code ambient.cave}, becomes {@code <project-key>:ambient.cave}
+     *                     via {@link #getNamespacedKey()})
      * @param keyName      the key name for the sound model
      * @param replace      whether to replace an existing sound model
      * @param subTitle     the subtitle for the sound model
      * @param dataEntities the list of sound data entities related to this sound model
      * @param project      the project this sound event belongs to
      */
-    public SoundEventEntity(UUID id, String uiName, String variableName, String keyName, boolean replace, String subTitle, List<SoundFileSource> dataEntities, ProjectEntity project) {
-        this.id = id;
+    public SoundEventEntity(UUID id, String uiName, String key, String keyName, boolean replace, String subTitle, List<SoundFileSource> dataEntities, ProjectEntity project) {
+        super(key, project);
+        this.setId(id);
         this.uiName = uiName;
         this.keyName = keyName;
-        this.variableName = variableName;
         this.replace = replace;
         this.subTitle = subTitle;
         this.dataEntities = dataEntities;
-        this.project = project;
-    }
-
-    /**
-     * Returns the unique identifier of the sound model
-     *
-     * @return the unique identifier of the sound model
-     */
-    public UUID getId() {
-        return id;
-    }
-
-    /**
-     * Sets the unique identifier of the sound model
-     *
-     * @param id the unique identifier to set
-     */
-    public void setId(UUID id) {
-        this.id = id;
     }
 
     /**
@@ -149,23 +117,6 @@ public class SoundEventEntity implements VulpesModel {
         return keyName;
     }
 
-    /**
-     * Set the name for the variable associated with this sound model.
-     *
-     * @param variableName the name of the variable to set
-     */
-    public void setVariableName(String variableName) {
-        this.variableName = variableName;
-    }
-
-    /**
-     * Returns the name of the variable associated with this sound model.
-     *
-     * @return the name of the variable
-     */
-    public String getVariableName() {
-        return variableName;
-    }
 
     /**
      * Sets the subtitle for the sound model.
@@ -204,47 +155,29 @@ public class SoundEventEntity implements VulpesModel {
         this.dataEntities = soundDatumEntities;
     }
 
-    /**
-     * Returns the project this sound event belongs to.
-     *
-     * @return the project of the sound event
-     */
-    public ProjectEntity getProject() {
-        return project;
-    }
-
-    /**
-     * Sets the project this sound event belongs to.
-     *
-     * @param project the project to set
-     */
-    public void setProject(ProjectEntity project) {
-        this.project = project;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         SoundEventEntity that = (SoundEventEntity) o;
-        return replace == that.replace && Objects.equals(id, that.id) && Objects.equals(uiName, that.uiName) && Objects.equals(variableName, that.variableName) && Objects.equals(keyName, that.keyName) && Objects.equals(subTitle, that.subTitle) && Objects.equals(dataEntities, that.dataEntities) && Objects.equals(project, that.project);
+        return replace == that.replace && Objects.equals(getId(), that.getId()) && Objects.equals(uiName, that.uiName) && Objects.equals(getKey(), that.getKey()) && Objects.equals(keyName, that.keyName) && Objects.equals(subTitle, that.subTitle) && Objects.equals(dataEntities, that.dataEntities) && Objects.equals(getProject(), that.getProject());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, uiName, variableName, keyName, replace, subTitle, dataEntities, project);
+        return Objects.hash(getId(), uiName, getKey(), keyName, replace, subTitle, dataEntities, getProject());
     }
 
     @Override
     public String toString() {
         return "SoundEventEntity{" +
-                "id=" + id +
+                "id=" + getId() +
                 ", uiName='" + uiName + '\'' +
-                ", variableName='" + variableName + '\'' +
+                ", key='" + getKey() + '\'' +
                 ", keyName='" + keyName + '\'' +
                 ", replace=" + replace +
                 ", subTitle='" + subTitle + '\'' +
                 ", dataEntities=" + dataEntities +
-                ", project=" + project +
+                ", project=" + getProject() +
                 '}';
     }
 }

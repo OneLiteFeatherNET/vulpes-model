@@ -1,17 +1,10 @@
 package net.onelitefeather.vulpes.api.model;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.Index;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import net.onelitefeather.vulpes.api.generator.VulpesGenerator;
+import jakarta.persistence.UniqueConstraint;
 import net.onelitefeather.vulpes.api.model.project.ProjectEntity;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.UUID;
 
@@ -27,23 +20,16 @@ import java.util.UUID;
 @Entity(name = "notifications")
 @Table(name = "notifications", indexes = {
         @Index(name = "idx_notifications_project_id", columnList = "project_id")
+}, uniqueConstraints = {
+        @UniqueConstraint(name = "uq_notifications_project_key", columnNames = {"project_id", "key"})
 })
-public class NotificationEntity implements VulpesModel {
+public class NotificationEntity extends AbstractEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @VulpesGenerator
-    private UUID id;
     private String uiName;
-    private String variableName;
     private String comment;
     private String material;
     private String frameType;
     private String title;
-    @ManyToOne
-    @JoinColumn(name = "project_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private ProjectEntity project;
 
     /**
      * Default constructor for JPA and Micronaut Data.
@@ -60,40 +46,23 @@ public class NotificationEntity implements VulpesModel {
      *
      * @param id           the unique identifier of the notification
      * @param uiName       the user interface name of the notification
-     * @param variableName the variable name of the notification
+     * @param key          the local key of the notification within the project's namespace
+     *                     (e.g. {@code achievement}, becomes {@code <project-key>:achievement}
+     *                     via {@link #getNamespacedKey()})
      * @param comment      a comment for the description
      * @param material     the material type associated with the notification
      * @param frameType    the frame type associated with the notification
      * @param title        the title of the notification
      * @param project      the project this notification belongs to
      */
-    public NotificationEntity(UUID id, String uiName, String variableName, String comment, String material, String frameType, String title, ProjectEntity project) {
-        this.id = id;
+    public NotificationEntity(UUID id, String uiName, String key, String comment, String material, String frameType, String title, ProjectEntity project) {
+        super(key, project);
+        this.setId(id);
         this.uiName = uiName;
-        this.variableName = variableName;
         this.comment = comment;
         this.material = material;
         this.frameType = frameType;
         this.title = title;
-        this.project = project;
-    }
-
-    /**
-     * Returns the unique identifier of the notification
-     *
-     * @return the unique identifier of the notification
-     */
-    public UUID getId() {
-        return id;
-    }
-
-    /**
-     * Sets the unique identifier of the notification
-     *
-     * @param id the unique identifier to set
-     */
-    public void setId(UUID id) {
-        this.id = id;
     }
 
     /**
@@ -112,24 +81,6 @@ public class NotificationEntity implements VulpesModel {
      */
     public String getUiName() {
         return uiName;
-    }
-
-    /**
-     * Sets the variable name for the notification
-     *
-     * @param variableName the variable name to set
-     */
-    public void setVariableName(String variableName) {
-        this.variableName = variableName;
-    }
-
-    /**
-     * Returns the variable name for the notification
-     *
-     * @return the variable name of the notification
-     */
-    public String getVariableName() {
-        return variableName;
     }
 
     /**
@@ -205,24 +156,6 @@ public class NotificationEntity implements VulpesModel {
     }
 
     /**
-     * Returns the project this notification belongs to.
-     *
-     * @return the project of the notification
-     */
-    public ProjectEntity getProject() {
-        return project;
-    }
-
-    /**
-     * Sets the project this notification belongs to.
-     *
-     * @param project the project to set
-     */
-    public void setProject(ProjectEntity project) {
-        this.project = project;
-    }
-
-    /**
      * Provides a string representation of the NotificationModel
      *
      * @return a string representation
@@ -230,14 +163,14 @@ public class NotificationEntity implements VulpesModel {
     @Override
     public String toString() {
         return "NotificationModel{" +
-                "id='" + id + '\'' +
+                "id='" + getId() + '\'' +
                 ", uiName='" + uiName + '\'' +
-                ", variableName='" + variableName + '\'' +
+                ", key='" + getKey() + '\'' +
                 ", description='" + comment + '\'' +
                 ", material='" + material + '\'' +
                 ", frameType='" + frameType + '\'' +
                 ", title='" + title + '\'' +
-                ", project=" + project +
+                ", project=" + getProject() +
                 '}';
     }
 }
