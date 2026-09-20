@@ -45,7 +45,7 @@ public class SoundEventEntity extends AbstractEntity {
      * This is a one-to-many relationship where each sound model can have multiple sound data entities.
      */
     @OneToMany(mappedBy = "soundEvent")
-    private List<SoundFileSource> dataEntities;
+    private List<SoundFileSource> soundData;
 
     /**
      * Default constructor for JPA and Micronaut Data.
@@ -68,17 +68,17 @@ public class SoundEventEntity extends AbstractEntity {
      * @param keyName      the key name for the sound model
      * @param replace      whether to replace an existing sound model
      * @param subTitle     the subtitle for the sound model
-     * @param dataEntities the list of sound data entities related to this sound model
+     * @param soundData the list of sound data entities related to this sound model
      * @param project      the project this sound event belongs to
      */
-    public SoundEventEntity(UUID id, String uiName, String key, String keyName, boolean replace, String subTitle, List<SoundFileSource> dataEntities, ProjectEntity project) {
+    public SoundEventEntity(UUID id, String uiName, String key, String keyName, boolean replace, String subTitle, List<SoundFileSource> soundData, ProjectEntity project) {
         super(key, project);
         this.setId(id);
         this.uiName = uiName;
         this.keyName = keyName;
         this.replace = replace;
         this.subTitle = subTitle;
-        this.dataEntities = dataEntities;
+        this.soundData = soundData;
     }
 
     /**
@@ -143,7 +143,7 @@ public class SoundEventEntity extends AbstractEntity {
      * @return the list of sound data
      */
     public List<SoundFileSource> getSoundData() {
-        return dataEntities;
+        return soundData;
     }
 
     /**
@@ -152,19 +152,19 @@ public class SoundEventEntity extends AbstractEntity {
      * @param soundDatumEntities the list of sound data to set
      */
     public void setSoundData(List<SoundFileSource> soundDatumEntities) {
-        this.dataEntities = soundDatumEntities;
+        this.soundData = soundDatumEntities;
     }
 
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         SoundEventEntity that = (SoundEventEntity) o;
-        return replace == that.replace && Objects.equals(getId(), that.getId()) && Objects.equals(uiName, that.uiName) && Objects.equals(getKey(), that.getKey()) && Objects.equals(keyName, that.keyName) && Objects.equals(subTitle, that.subTitle) && Objects.equals(dataEntities, that.dataEntities) && Objects.equals(getProject(), that.getProject());
+        return replace == that.replace && Objects.equals(getId(), that.getId()) && Objects.equals(uiName, that.uiName) && Objects.equals(getKey(), that.getKey()) && Objects.equals(keyName, that.keyName) && Objects.equals(subTitle, that.subTitle) && Objects.equals(soundData, that.soundData) && Objects.equals(getProject(), that.getProject());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), uiName, getKey(), keyName, replace, subTitle, dataEntities, getProject());
+        return Objects.hash(getId(), uiName, getKey(), keyName, replace, subTitle, soundData, getProject());
     }
 
     @Override
@@ -176,7 +176,7 @@ public class SoundEventEntity extends AbstractEntity {
                 ", keyName='" + keyName + '\'' +
                 ", replace=" + replace +
                 ", subTitle='" + subTitle + '\'' +
-                ", dataEntities=" + dataEntities +
+                ", soundData=" + soundData +
                 ", project=" + getProject() +
                 '}';
     }
