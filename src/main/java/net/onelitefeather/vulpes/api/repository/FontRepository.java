@@ -36,4 +36,13 @@ public interface FontRepository extends PageableRepository<FontEntity, UUID> {
      * @return a page of FontEntity objects belonging to the project
      */
     Page<FontEntity> findByProjectId(UUID projectId, Pageable pageable);
+
+    /**
+     * Checks whether a {@link FontEntity} with the given key already exists within a specific project.
+     *
+     * @param projectId the unique identifier of the project
+     * @param key       the key to check for
+     * @return {@code true} if a font with that key exists in the project, {@code false} otherwise
+     */
+    boolean existsByProjectIdAndKey(UUID projectId, String key);
 }

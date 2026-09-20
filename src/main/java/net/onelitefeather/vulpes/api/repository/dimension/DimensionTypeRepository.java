@@ -32,4 +32,13 @@ public interface DimensionTypeRepository extends PageableRepository<DimensionTyp
      * @return a page of DimensionTypeEntity objects belonging to the project
      */
     Page<DimensionTypeEntity> findByProjectId(UUID projectId, Pageable pageable);
+
+    /**
+     * Checks whether a {@link DimensionTypeEntity} with the given key already exists within a specific project.
+     *
+     * @param projectId the unique identifier of the project
+     * @param key       the key to check for
+     * @return {@code true} if a dimension type with that key exists in the project, {@code false} otherwise
+     */
+    boolean existsByProjectIdAndKey(UUID projectId, String key);
 }

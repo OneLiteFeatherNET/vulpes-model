@@ -26,4 +26,13 @@ public interface NotificationRepository extends PageableRepository<NotificationE
      * @return a page of NotificationEntity objects belonging to the project
      */
     Page<NotificationEntity> findByProjectId(UUID projectId, Pageable pageable);
+
+    /**
+     * Checks whether a {@link NotificationEntity} with the given key already exists within a specific project.
+     *
+     * @param projectId the unique identifier of the project
+     * @param key       the key to check for
+     * @return {@code true} if a notification with that key exists in the project, {@code false} otherwise
+     */
+    boolean existsByProjectIdAndKey(UUID projectId, String key);
 }
