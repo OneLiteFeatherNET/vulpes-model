@@ -27,4 +27,13 @@ public interface SoundRepository extends PageableRepository<SoundEventEntity, UU
      * @return a page of SoundEventEntity objects belonging to the project
      */
     Page<SoundEventEntity> findByProjectId(UUID projectId, Pageable pageable);
+
+    /**
+     * Checks whether a {@link SoundEventEntity} with the given key already exists within a specific project.
+     *
+     * @param projectId the unique identifier of the project
+     * @param key       the key to check for
+     * @return {@code true} if a sound event with that key exists in the project, {@code false} otherwise
+     */
+    boolean existsByProjectIdAndKey(UUID projectId, String key);
 }
