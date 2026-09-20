@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.0](https://github.com/OneLiteFeatherNET/vulpes-model/compare/v2.2.0...v2.3.0) (2026-09-20)
+
+
+### Features
+
+* **repository:** add method to check if a key is already in use ([#127](https://github.com/OneLiteFeatherNET/vulpes-model/issues/127)) ([0d870dd](https://github.com/OneLiteFeatherNET/vulpes-model/commit/0d870dd123abf0de2a36c1eed8c063ac5af45dfb))
+
 ## [2.2.0](https://github.com/OneLiteFeatherNET/vulpes-model/compare/v2.1.0...v2.2.0) (2026-09-14)
 
 
