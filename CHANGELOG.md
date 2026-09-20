@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.1](https://github.com/OneLiteFeatherNET/vulpes-model/compare/v2.3.0...v2.3.1) (2026-09-20)
+
+
+### Bug Fixes
+
+* **sound:** rename relationship variable to soundData ([#130](https://github.com/OneLiteFeatherNET/vulpes-model/issues/130)) ([c6e5f46](https://github.com/OneLiteFeatherNET/vulpes-model/commit/c6e5f460c43d5ac77b0ce926b6ef54a7ed0c7b64))
+
 ## [2.3.0](https://github.com/OneLiteFeatherNET/vulpes-model/compare/v2.2.0...v2.3.0) (2026-09-20)
 
 
