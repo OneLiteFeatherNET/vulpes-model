@@ -2,6 +2,7 @@ package net.onelitefeather.vulpes.api.model;
 
 import io.micronaut.data.annotation.DateCreated;
 import io.micronaut.data.annotation.DateUpdated;
+import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -29,6 +30,7 @@ public abstract class IdentifiableEntity implements VulpesModel {
     private UUID id;
 
     @DateCreated
+    @Column(updatable = false)
     private Instant creationDate;
 
     @DateUpdated
