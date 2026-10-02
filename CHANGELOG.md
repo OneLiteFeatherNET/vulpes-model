@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.4.0](https://github.com/OneLiteFeatherNET/vulpes-model/compare/v2.3.1...v2.4.0) (2026-10-02)
+
+
+### Features
+
+* **entity:** add an optional comment ([#134](https://github.com/OneLiteFeatherNET/vulpes-model/issues/134)) ([3b79adf](https://github.com/OneLiteFeatherNET/vulpes-model/commit/3b79adf275480e0be11d350a0bca45708dcfd7fd))
+
 ## [2.3.1](https://github.com/OneLiteFeatherNET/vulpes-model/compare/v2.3.0...v2.3.1) (2026-09-20)
 
 
