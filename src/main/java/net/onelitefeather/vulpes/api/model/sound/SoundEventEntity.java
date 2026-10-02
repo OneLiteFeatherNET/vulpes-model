@@ -39,6 +39,7 @@ public class SoundEventEntity extends AbstractEntity {
     private boolean replace;
     @ColumnDefault("null")
     private String subTitle;
+    private String comment;
 
     /**
      * Represents the list of sound data related to this sound model.
@@ -72,12 +73,32 @@ public class SoundEventEntity extends AbstractEntity {
      * @param project      the project this sound event belongs to
      */
     public SoundEventEntity(UUID id, String uiName, String key, String keyName, boolean replace, String subTitle, List<SoundFileSource> soundData, ProjectEntity project) {
+        this(id, uiName, key, keyName, replace, subTitle, null, soundData, project);
+    }
+
+    /**
+     * Constructs a new {@link SoundEventEntity} with the specified values.
+     *
+     * @param id           the unique identifier of the sound model
+     * @param uiName       the user interface name for the sound model
+     * @param key          the local key of the sound model within the project's namespace
+     *                     (e.g. {@code ambient.cave}, becomes {@code <project-key>:ambient.cave}
+     *                     via {@link #getNamespacedKey()})
+     * @param keyName      the key name for the sound model
+     * @param replace      whether to replace an existing sound model
+     * @param subTitle     the subtitle for the sound model
+     * @param comment      a comment or description for the sound model
+     * @param soundData the list of sound data entities related to this sound model
+     * @param project      the project this sound event belongs to
+     */
+    public SoundEventEntity(UUID id, String uiName, String key, String keyName, boolean replace, String subTitle, String comment, List<SoundFileSource> soundData, ProjectEntity project) {
         super(key, project);
         this.setId(id);
         this.uiName = uiName;
         this.keyName = keyName;
         this.replace = replace;
         this.subTitle = subTitle;
+        this.comment = comment;
         this.soundData = soundData;
     }
 
@@ -136,6 +157,23 @@ public class SoundEventEntity extends AbstractEntity {
         return subTitle;
     }
 
+    /**
+     * Sets the comment for the sound model.
+     *
+     * @param comment the comment to set
+     */
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    /**
+     * Returns the comment for the sound model.
+     *
+     * @return the comment
+     */
+    public String getComment() {
+        return comment;
+    }
 
     /**
      * Returns the list of sound data related to this sound model
@@ -159,12 +197,12 @@ public class SoundEventEntity extends AbstractEntity {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         SoundEventEntity that = (SoundEventEntity) o;
-        return replace == that.replace && Objects.equals(getId(), that.getId()) && Objects.equals(uiName, that.uiName) && Objects.equals(getKey(), that.getKey()) && Objects.equals(keyName, that.keyName) && Objects.equals(subTitle, that.subTitle) && Objects.equals(soundData, that.soundData) && Objects.equals(getProject(), that.getProject());
+        return replace == that.replace && Objects.equals(getId(), that.getId()) && Objects.equals(uiName, that.uiName) && Objects.equals(getKey(), that.getKey()) && Objects.equals(keyName, that.keyName) && Objects.equals(subTitle, that.subTitle) && Objects.equals(comment, that.comment) && Objects.equals(soundData, that.soundData) && Objects.equals(getProject(), that.getProject());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), uiName, getKey(), keyName, replace, subTitle, soundData, getProject());
+        return Objects.hash(getId(), uiName, getKey(), keyName, replace, subTitle, comment, soundData, getProject());
     }
 
     @Override
@@ -176,6 +214,7 @@ public class SoundEventEntity extends AbstractEntity {
                 ", keyName='" + keyName + '\'' +
                 ", replace=" + replace +
                 ", subTitle='" + subTitle + '\'' +
+                ", comment='" + comment + '\'' +
                 ", soundData=" + soundData +
                 ", project=" + getProject() +
                 '}';
