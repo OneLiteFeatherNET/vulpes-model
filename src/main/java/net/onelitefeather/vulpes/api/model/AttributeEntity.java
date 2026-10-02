@@ -28,6 +28,7 @@ public class AttributeEntity extends AbstractEntity {
     private String uiName;
     private double defaultValue;
     private double maximumValue;
+    private String comment;
 
     /**
      * Default constructor for JPA and Micronaut Data.
@@ -52,11 +53,29 @@ public class AttributeEntity extends AbstractEntity {
      * @param project      the project this attribute belongs to
      */
     public AttributeEntity(UUID id, String uiName, String key, double defaultValue, double maximumValue, ProjectEntity project) {
+        this(id, uiName, key, defaultValue, maximumValue, null, project);
+    }
+
+    /**
+     * Constructs a new {@link AttributeEntity} with the specified values.
+     *
+     * @param id           the unique identifier of the attribute
+     * @param uiName       the model name associated with the attribute
+     * @param key          the local key of the attribute within the project's namespace
+     *                     (e.g. {@code generic.max_health}, becomes {@code <project-key>:generic.max_health}
+     *                     via {@link #getNamespacedKey()})
+     * @param defaultValue the default value of the attribute
+     * @param maximumValue the maximum value of the attribute
+     * @param comment      a comment or description for the attribute
+     * @param project      the project this attribute belongs to
+     */
+    public AttributeEntity(UUID id, String uiName, String key, double defaultValue, double maximumValue, String comment, ProjectEntity project) {
         super(key, project);
         this.setId(id);
         this.uiName = uiName;
         this.defaultValue = defaultValue;
         this.maximumValue = maximumValue;
+        this.comment = comment;
     }
 
     // Getters and setters for each field
@@ -116,6 +135,24 @@ public class AttributeEntity extends AbstractEntity {
     }
 
     /**
+     * Returns the comment of the attribute
+     *
+     * @return the comment of the attribute
+     */
+    public String getComment() {
+        return comment;
+    }
+
+    /**
+     * Sets the comment of the attribute
+     *
+     * @param comment the comment to set
+     */
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    /**
      * Provides a string representation of the AttributeModel
      *
      * @return a string representation
@@ -128,6 +165,7 @@ public class AttributeEntity extends AbstractEntity {
                 ", key='" + getKey() + '\'' +
                 ", defaultValue=" + defaultValue +
                 ", maximumValue=" + maximumValue +
+                ", comment='" + comment + '\'' +
                 ", project=" + getProject() +
                 '}';
     }
