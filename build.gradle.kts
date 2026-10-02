@@ -6,7 +6,7 @@ plugins {
     id("io.micronaut.library") version "5.0.2"
 }
 
-version = "2.4.0" //x-release-please-version
+version = "2.4.1-SNAPSHOT" //x-release-please-version
 
 java {
     toolchain {
