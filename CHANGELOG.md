@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.4.1](https://github.com/OneLiteFeatherNET/vulpes-model/compare/v2.4.0...v2.4.1) (2026-10-02)
+
+
+### Bug Fixes
+
+* **entity:** keep the creation date on updates ([#137](https://github.com/OneLiteFeatherNET/vulpes-model/issues/137)) ([06675be](https://github.com/OneLiteFeatherNET/vulpes-model/commit/06675beabd7f7eb1e0c8c8debe42818e36e6d3c9))
+
 ## [2.4.0](https://github.com/OneLiteFeatherNET/vulpes-model/compare/v2.3.1...v2.4.0) (2026-10-02)
 
 
