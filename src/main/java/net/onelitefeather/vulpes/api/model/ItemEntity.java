@@ -6,6 +6,7 @@ import jakarta.persistence.Index;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import net.onelitefeather.vulpes.api.model.item.ItemComponentEntity;
 import net.onelitefeather.vulpes.api.model.item.ItemEnchantmentEntity;
 import net.onelitefeather.vulpes.api.model.item.ItemFlagEntity;
 import net.onelitefeather.vulpes.api.model.item.ItemLoreEntity;
@@ -44,6 +45,8 @@ public class ItemEntity extends AbstractEntity {
     private List<ItemLoreEntity> lore;
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
     private List<ItemFlagEntity> flags;
+    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
+    private List<ItemComponentEntity> components;
 
     /**
      * Default constructor for JPA and Micronaut Data.
@@ -286,6 +289,24 @@ public class ItemEntity extends AbstractEntity {
     }
 
     /**
+     * Returns the data components of the item which have no dedicated field.
+     *
+     * @return the components of the item
+     */
+    public List<ItemComponentEntity> getComponents() {
+        return components;
+    }
+
+    /**
+     * Sets the data components of the item which have no dedicated field.
+     *
+     * @param components the components to set
+     */
+    public void setComponents(List<ItemComponentEntity> components) {
+        this.components = components;
+    }
+
+    /**
      * Provides a string representation of the ItemModel.
      *
      * @return a string representation
@@ -305,6 +326,7 @@ public class ItemEntity extends AbstractEntity {
                 ", enchantments=" + enchantments +
                 ", lore=" + lore +
                 ", flags=" + flags +
+                ", components=" + components +
                 ", project=" + getProject() +
                 '}';
     }
