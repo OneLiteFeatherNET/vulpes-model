@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.5.0](https://github.com/OneLiteFeatherNET/vulpes-model/compare/v2.4.1...v2.5.0) (2026-10-05)
+
+
+### Features
+
+* **item:** add data components to items ([4a22277](https://github.com/OneLiteFeatherNET/vulpes-model/commit/4a222778bc7470a612ff1223ea2f675dfeb06cc2))
+
 ## [2.4.1](https://github.com/OneLiteFeatherNET/vulpes-model/compare/v2.4.0...v2.4.1) (2026-10-02)
 
 
