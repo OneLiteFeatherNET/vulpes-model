@@ -17,9 +17,8 @@ import java.util.UUID;
 /**
  * Represents an Item in the system. This class is used as an entity for persistence
  * with JPA and Micronaut Data. It contains details related to an item such as name, description,
- * enchantments, etc. Everything else about the item stack is a data component: the vanilla ones like
- * the custom name, and Stelaris' own ones for the material and the amount, see
- * {@link net.onelitefeather.vulpes.api.model.item.StelarisComponents}.
+ * enchantments, etc. Everything else about the item stack, like its material or custom name, is a
+ * data component, see {@link #getComponents()}.
  * <p>
  * This class is mapped to the database table "items" and contains fields that are automatically
  * persisted by the JPA and Micronaut Data layers.
