@@ -1,5 +1,16 @@
 # Changelog
 
+## [3.0.0](https://github.com/OneLiteFeatherNET/vulpes-model/compare/v2.5.0...v3.0.0) (2026-10-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* **item:** move item fields into components ([#142](https://github.com/OneLiteFeatherNET/vulpes-model/issues/142))
+
+### Features
+
+* **item:** move item fields into components ([#142](https://github.com/OneLiteFeatherNET/vulpes-model/issues/142)) ([c88910a](https://github.com/OneLiteFeatherNET/vulpes-model/commit/c88910aa049e410c285951ae005dfccfba1dbfbf))
+
 ## [2.5.0](https://github.com/OneLiteFeatherNET/vulpes-model/compare/v2.4.1...v2.5.0) (2026-10-05)
 
 
