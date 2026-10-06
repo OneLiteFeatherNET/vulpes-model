@@ -18,7 +18,8 @@ import java.util.UUID;
 /**
  * Represents an Item in the system. This class is used as an entity for persistence
  * with JPA and Micronaut Data. It contains details related to an item such as name, description,
- * enchantments, etc. The material and the amount of the item stack are components, see
+ * enchantments, etc. Everything else about the item stack is a data component: the vanilla ones like
+ * the custom name, and Stelaris' own ones for the material and the amount, see
  * {@link net.onelitefeather.vulpes.api.model.item.StelarisComponents}.
  * <p>
  * This class is mapped to the database table "items" and contains fields that are automatically
@@ -35,9 +36,7 @@ public class ItemEntity extends AbstractEntity {
 
     private String uiName;
     private String comment;
-    private String displayName;
     private String groupName;
-    private int customModelData;
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
     private List<ItemEnchantmentEntity> enchantments;
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
@@ -66,9 +65,7 @@ public class ItemEntity extends AbstractEntity {
      *                        (e.g. {@code dirt}, becomes {@code <project-key>:dirt}
      *                        via {@link #getNamespacedKey()})
      * @param comment         a description of the item
-     * @param displayName     the display name of the item
      * @param groupName       the group to which the item belongs
-     * @param customModelData the custom model data for the item
      * @param enchantments    the enchantments applied to the item
      * @param lore            the lore associated with the item
      * @param flags           the flags associated with the item
@@ -79,9 +76,7 @@ public class ItemEntity extends AbstractEntity {
             String uiName,
             String key,
             String comment,
-            String displayName,
             String groupName,
-            int customModelData,
             List<ItemEnchantmentEntity> enchantments,
             List<ItemLoreEntity> lore,
             List<ItemFlagEntity> flags,
@@ -91,9 +86,7 @@ public class ItemEntity extends AbstractEntity {
         this.setId(id);
         this.uiName = uiName;
         this.comment = comment;
-        this.displayName = displayName;
         this.groupName = groupName;
-        this.customModelData = customModelData;
         this.enchantments = enchantments;
         this.lore = lore;
         this.flags = flags;
@@ -138,24 +131,6 @@ public class ItemEntity extends AbstractEntity {
     }
 
     /**
-     * Returns the display name of the item.
-     *
-     * @return the display name of the item
-     */
-    public String getDisplayName() {
-        return displayName;
-    }
-
-    /**
-     * Sets the display name of the item.
-     *
-     * @param displayName the display name to set
-     */
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
-    }
-
-    /**
      * Returns the group to which the item belongs.
      *
      * @return the group of the item
@@ -171,24 +146,6 @@ public class ItemEntity extends AbstractEntity {
      */
     public void setGroupName(String group) {
         this.groupName = group;
-    }
-
-    /**
-     * Returns the custom model data for the item.
-     *
-     * @return the custom model data of the item
-     */
-    public int getCustomModelData() {
-        return customModelData;
-    }
-
-    /**
-     * Sets the custom model data for the item.
-     *
-     * @param customModelData the custom model data to set
-     */
-    public void setCustomModelData(int customModelData) {
-        this.customModelData = customModelData;
     }
 
     /**
@@ -275,9 +232,7 @@ public class ItemEntity extends AbstractEntity {
                 ", modelName='" + uiName + '\'' +
                 ", key='" + getKey() + '\'' +
                 ", comment='" + comment + '\'' +
-                ", displayName='" + displayName + '\'' +
                 ", group='" + groupName + '\'' +
-                ", customModelData=" + customModelData +
                 ", enchantments=" + enchantments +
                 ", lore=" + lore +
                 ", flags=" + flags +
