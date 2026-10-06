@@ -8,7 +8,6 @@ import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import net.onelitefeather.vulpes.api.model.item.ItemComponentEntity;
 import net.onelitefeather.vulpes.api.model.item.ItemEnchantmentEntity;
-import net.onelitefeather.vulpes.api.model.item.ItemFlagEntity;
 import net.onelitefeather.vulpes.api.model.item.ItemLoreEntity;
 import net.onelitefeather.vulpes.api.model.project.ProjectEntity;
 
@@ -18,7 +17,8 @@ import java.util.UUID;
 /**
  * Represents an Item in the system. This class is used as an entity for persistence
  * with JPA and Micronaut Data. It contains details related to an item such as name, description,
- * material, enchantments, etc.
+ * enchantments, etc. Everything else about the item stack, like its material or custom name, is a
+ * data component, see {@link #getComponents()}.
  * <p>
  * This class is mapped to the database table "items" and contains fields that are automatically
  * persisted by the JPA and Micronaut Data layers.
@@ -34,17 +34,11 @@ public class ItemEntity extends AbstractEntity {
 
     private String uiName;
     private String comment;
-    private String displayName;
-    private String material;
     private String groupName;
-    private int customModelData;
-    private int amount;
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
     private List<ItemEnchantmentEntity> enchantments;
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
     private List<ItemLoreEntity> lore;
-    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
-    private List<ItemFlagEntity> flags;
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
     private List<ItemComponentEntity> components;
 
@@ -67,14 +61,9 @@ public class ItemEntity extends AbstractEntity {
      *                        (e.g. {@code dirt}, becomes {@code <project-key>:dirt}
      *                        via {@link #getNamespacedKey()})
      * @param comment         a description of the item
-     * @param displayName     the display name of the item
-     * @param material        the material type associated with the item
      * @param groupName       the group to which the item belongs
-     * @param customModelData the custom model data for the item
-     * @param amount          the amount of the item
      * @param enchantments    the enchantments applied to the item
      * @param lore            the lore associated with the item
-     * @param flags           the flags associated with the item
      * @param project         the project this item belongs to
      */
     public ItemEntity(
@@ -82,28 +71,18 @@ public class ItemEntity extends AbstractEntity {
             String uiName,
             String key,
             String comment,
-            String displayName,
-            String material,
             String groupName,
-            int customModelData,
-            int amount,
             List<ItemEnchantmentEntity> enchantments,
             List<ItemLoreEntity> lore,
-            List<ItemFlagEntity> flags,
             ProjectEntity project
     ) {
         super(key, project);
         this.setId(id);
         this.uiName = uiName;
         this.comment = comment;
-        this.displayName = displayName;
-        this.material = material;
         this.groupName = groupName;
-        this.customModelData = customModelData;
-        this.amount = amount;
         this.enchantments = enchantments;
         this.lore = lore;
-        this.flags = flags;
     }
 
     // Getters and setters for each field
@@ -145,42 +124,6 @@ public class ItemEntity extends AbstractEntity {
     }
 
     /**
-     * Returns the display name of the item.
-     *
-     * @return the display name of the item
-     */
-    public String getDisplayName() {
-        return displayName;
-    }
-
-    /**
-     * Sets the display name of the item.
-     *
-     * @param displayName the display name to set
-     */
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
-    }
-
-    /**
-     * Returns the material type associated with the item.
-     *
-     * @return the material type of the item
-     */
-    public String getMaterial() {
-        return material;
-    }
-
-    /**
-     * Sets the material type associated with the item.
-     *
-     * @param material the material to set
-     */
-    public void setMaterial(String material) {
-        this.material = material;
-    }
-
-    /**
      * Returns the group to which the item belongs.
      *
      * @return the group of the item
@@ -196,42 +139,6 @@ public class ItemEntity extends AbstractEntity {
      */
     public void setGroupName(String group) {
         this.groupName = group;
-    }
-
-    /**
-     * Returns the custom model data for the item.
-     *
-     * @return the custom model data of the item
-     */
-    public int getCustomModelData() {
-        return customModelData;
-    }
-
-    /**
-     * Sets the custom model data for the item.
-     *
-     * @param customModelData the custom model data to set
-     */
-    public void setCustomModelData(int customModelData) {
-        this.customModelData = customModelData;
-    }
-
-    /**
-     * Returns the amount of the item.
-     *
-     * @return the amount of the item
-     */
-    public int getAmount() {
-        return amount;
-    }
-
-    /**
-     * Sets the amount of the item.
-     *
-     * @param amount the amount to set
-     */
-    public void setAmount(int amount) {
-        this.amount = amount;
     }
 
     /**
@@ -271,24 +178,6 @@ public class ItemEntity extends AbstractEntity {
     }
 
     /**
-     * Returns the flags associated with the item.
-     *
-     * @return the flags of the item
-     */
-    public List<ItemFlagEntity> getFlags() {
-        return flags;
-    }
-
-    /**
-     * Sets the flags associated with the item.
-     *
-     * @param flags the flags to set
-     */
-    public void setFlags(List<ItemFlagEntity> flags) {
-        this.flags = flags;
-    }
-
-    /**
      * Returns the data components of the item which have no dedicated field.
      *
      * @return the components of the item
@@ -318,14 +207,9 @@ public class ItemEntity extends AbstractEntity {
                 ", modelName='" + uiName + '\'' +
                 ", key='" + getKey() + '\'' +
                 ", comment='" + comment + '\'' +
-                ", displayName='" + displayName + '\'' +
-                ", material='" + material + '\'' +
                 ", group='" + groupName + '\'' +
-                ", customModelData=" + customModelData +
-                ", amount=" + amount +
                 ", enchantments=" + enchantments +
                 ", lore=" + lore +
-                ", flags=" + flags +
                 ", components=" + components +
                 ", project=" + getProject() +
                 '}';

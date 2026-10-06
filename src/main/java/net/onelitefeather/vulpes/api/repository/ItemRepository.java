@@ -21,12 +21,12 @@ import java.util.UUID;
 public interface ItemRepository extends PageableRepository<ItemEntity, UUID> {
 
     /**
-     * Retrieves all items along with their associated enchantments, lore, and flags.
+     * Retrieves all items along with their associated enchantments and lore.
      *
-     * @return a list of all ItemEntity objects with their enchantments, lore, and flags
+     * @return a list of all ItemEntity objects with their enchantments and lore
      */
     @Query(
-            value = "SELECT i FROM items i LEFT JOIN FETCH i.enchantments LEFT JOIN FETCH i.lore LEFT JOIN FETCH i.flags",
+            value = "SELECT i FROM items i LEFT JOIN FETCH i.enchantments LEFT JOIN FETCH i.lore",
             countQuery = "SELECT count(i) FROM items i"
     )
     List<ItemEntity> findAllWithFetches(Pageable pageable);
