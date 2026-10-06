@@ -8,7 +8,6 @@ import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import net.onelitefeather.vulpes.api.model.item.ItemComponentEntity;
 import net.onelitefeather.vulpes.api.model.item.ItemEnchantmentEntity;
-import net.onelitefeather.vulpes.api.model.item.ItemFlagEntity;
 import net.onelitefeather.vulpes.api.model.item.ItemLoreEntity;
 import net.onelitefeather.vulpes.api.model.project.ProjectEntity;
 
@@ -42,8 +41,6 @@ public class ItemEntity extends AbstractEntity {
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
     private List<ItemLoreEntity> lore;
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
-    private List<ItemFlagEntity> flags;
-    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
     private List<ItemComponentEntity> components;
 
     /**
@@ -68,7 +65,6 @@ public class ItemEntity extends AbstractEntity {
      * @param groupName       the group to which the item belongs
      * @param enchantments    the enchantments applied to the item
      * @param lore            the lore associated with the item
-     * @param flags           the flags associated with the item
      * @param project         the project this item belongs to
      */
     public ItemEntity(
@@ -79,7 +75,6 @@ public class ItemEntity extends AbstractEntity {
             String groupName,
             List<ItemEnchantmentEntity> enchantments,
             List<ItemLoreEntity> lore,
-            List<ItemFlagEntity> flags,
             ProjectEntity project
     ) {
         super(key, project);
@@ -89,7 +84,6 @@ public class ItemEntity extends AbstractEntity {
         this.groupName = groupName;
         this.enchantments = enchantments;
         this.lore = lore;
-        this.flags = flags;
     }
 
     // Getters and setters for each field
@@ -185,24 +179,6 @@ public class ItemEntity extends AbstractEntity {
     }
 
     /**
-     * Returns the flags associated with the item.
-     *
-     * @return the flags of the item
-     */
-    public List<ItemFlagEntity> getFlags() {
-        return flags;
-    }
-
-    /**
-     * Sets the flags associated with the item.
-     *
-     * @param flags the flags to set
-     */
-    public void setFlags(List<ItemFlagEntity> flags) {
-        this.flags = flags;
-    }
-
-    /**
      * Returns the data components of the item which have no dedicated field.
      *
      * @return the components of the item
@@ -235,7 +211,6 @@ public class ItemEntity extends AbstractEntity {
                 ", group='" + groupName + '\'' +
                 ", enchantments=" + enchantments +
                 ", lore=" + lore +
-                ", flags=" + flags +
                 ", components=" + components +
                 ", project=" + getProject() +
                 '}';
