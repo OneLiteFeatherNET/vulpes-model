@@ -4,11 +4,15 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Index;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import net.onelitefeather.vulpes.api.model.AbstractEntity;
 import net.onelitefeather.vulpes.api.model.project.ProjectEntity;
 import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.type.SqlTypes;
 
 import java.util.UUID;
@@ -16,9 +20,11 @@ import java.util.UUID;
 /**
  * Represents an Advancement in the system. This class is used as an entity for persistence
  * with JPA and Micronaut Data. It contains the display of an advancement such as title,
- * description, icon and frame.
+ * description, icon and frame, and its position in the advancement tree.
  * <p>
- * A toast notification can be derived from the title, frame type and icon of an advancement.
+ * Advancements form a tree via {@link #getParent()}. An advancement without a parent is a root and
+ * opens its own tab, which uses the {@link #getBackground()} texture. A toast notification can be
+ * derived from the title, frame type and icon of an advancement.
  * </p>
  * <p>
  * This class is mapped to the database table "advancements" and contains fields that
@@ -27,7 +33,8 @@ import java.util.UUID;
  */
 @Entity(name = "advancements")
 @Table(name = "advancements", indexes = {
-        @Index(name = "idx_advancements_project_id", columnList = "project_id")
+        @Index(name = "idx_advancements_project_id", columnList = "project_id"),
+        @Index(name = "idx_advancements_parent_id", columnList = "parent_id")
 }, uniqueConstraints = {
         @UniqueConstraint(name = "uq_advancements_project_key", columnNames = {"project_id", "key"})
 })
@@ -42,6 +49,13 @@ public class AdvancementEntity extends AbstractEntity {
     private String title;
     @JdbcTypeCode(SqlTypes.JSON)
     private String description;
+    private String background;
+    private float x;
+    private float y;
+    @ManyToOne
+    @JoinColumn(name = "parent_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private AdvancementEntity parent;
 
     /**
      * Default constructor for JPA and Micronaut Data.
@@ -66,6 +80,7 @@ public class AdvancementEntity extends AbstractEntity {
      * @param frameType   the frame type of the advancement
      * @param title       the title as vanilla JSON text component
      * @param description the description as vanilla JSON text component
+     * @param parent      the parent advancement, null for a root advancement
      * @param project     the project this advancement belongs to
      */
     public AdvancementEntity(
@@ -77,6 +92,7 @@ public class AdvancementEntity extends AbstractEntity {
             AdvancementFrameType frameType,
             String title,
             String description,
+            AdvancementEntity parent,
             ProjectEntity project
     ) {
         super(key, project);
@@ -87,6 +103,7 @@ public class AdvancementEntity extends AbstractEntity {
         this.frameType = frameType;
         this.title = title;
         this.description = description;
+        this.parent = parent;
     }
 
     /**
@@ -198,6 +215,87 @@ public class AdvancementEntity extends AbstractEntity {
     }
 
     /**
+     * Returns the background texture of the tab. Only used by root advancements.
+     *
+     * @return the background texture, e.g. {@code minecraft:gui/advancements/backgrounds/stone}
+     */
+    public String getBackground() {
+        return background;
+    }
+
+    /**
+     * Sets the background texture of the tab. Only used by root advancements.
+     *
+     * @param background the background texture to set
+     */
+    public void setBackground(String background) {
+        this.background = background;
+    }
+
+    /**
+     * Returns the x position in the advancement tree
+     *
+     * @return the x position
+     */
+    public float getX() {
+        return x;
+    }
+
+    /**
+     * Sets the x position in the advancement tree
+     *
+     * @param x the x position to set
+     */
+    public void setX(float x) {
+        this.x = x;
+    }
+
+    /**
+     * Returns the y position in the advancement tree
+     *
+     * @return the y position
+     */
+    public float getY() {
+        return y;
+    }
+
+    /**
+     * Sets the y position in the advancement tree
+     *
+     * @param y the y position to set
+     */
+    public void setY(float y) {
+        this.y = y;
+    }
+
+    /**
+     * Returns the parent advancement in the tree
+     *
+     * @return the parent, or null if this is a root advancement
+     */
+    public AdvancementEntity getParent() {
+        return parent;
+    }
+
+    /**
+     * Sets the parent advancement in the tree
+     *
+     * @param parent the parent to set, null to make this a root advancement
+     */
+    public void setParent(AdvancementEntity parent) {
+        this.parent = parent;
+    }
+
+    /**
+     * Returns if this advancement is a root, which opens its own tab
+     *
+     * @return true if the advancement has no parent
+     */
+    public boolean isRoot() {
+        return parent == null;
+    }
+
+    /**
      * Provides a string representation of the AdvancementEntity
      *
      * @return a string representation
@@ -213,6 +311,10 @@ public class AdvancementEntity extends AbstractEntity {
                 ", frameType=" + frameType +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
+                ", background='" + background + '\'' +
+                ", x=" + x +
+                ", y=" + y +
+                ", parent=" + (parent == null ? null : parent.getId()) +
                 ", project=" + getProject() +
                 '}';
     }
