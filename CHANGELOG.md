@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.1.0](https://github.com/OneLiteFeatherNET/vulpes-model/compare/v3.0.0...v3.1.0) (2026-10-08)
+
+
+### Features
+
+* **advancement:** rework notification into advancement ([#146](https://github.com/OneLiteFeatherNET/vulpes-model/issues/146)) ([fa01c77](https://github.com/OneLiteFeatherNET/vulpes-model/commit/fa01c77d70293bf73c1debe3136204dfff88e87c))
+
 ## [3.0.0](https://github.com/OneLiteFeatherNET/vulpes-model/compare/v2.5.0...v3.0.0) (2026-10-06)
 
 
