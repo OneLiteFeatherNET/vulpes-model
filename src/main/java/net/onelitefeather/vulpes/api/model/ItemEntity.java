@@ -106,7 +106,7 @@ public class ItemEntity extends AbstractEntity {
     }
 
     /**
-     * Returns the comment of the notification
+     * Returns the comment of the item
      *
      * @return the description
      */
@@ -115,7 +115,7 @@ public class ItemEntity extends AbstractEntity {
     }
 
     /**
-     * Sets the comment of the notification
+     * Sets the comment of the item
      *
      * @param description the comment to set
      */
