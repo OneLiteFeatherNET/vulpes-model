@@ -52,6 +52,9 @@ public class AdvancementEntity extends AbstractEntity {
     private String background;
     private float x;
     private float y;
+    private boolean showToast = true;
+    private boolean announceToChat = true;
+    private boolean hidden;
     @ManyToOne
     @JoinColumn(name = "parent_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -269,6 +272,60 @@ public class AdvancementEntity extends AbstractEntity {
     }
 
     /**
+     * Returns if a toast is shown when the advancement is achieved
+     *
+     * @return true if a toast is shown
+     */
+    public boolean isShowToast() {
+        return showToast;
+    }
+
+    /**
+     * Sets if a toast is shown when the advancement is achieved
+     *
+     * @param showToast true to show a toast
+     */
+    public void setShowToast(boolean showToast) {
+        this.showToast = showToast;
+    }
+
+    /**
+     * Returns if the advancement is announced in the chat when it is achieved
+     *
+     * @return true if it is announced in the chat
+     */
+    public boolean isAnnounceToChat() {
+        return announceToChat;
+    }
+
+    /**
+     * Sets if the advancement is announced in the chat when it is achieved
+     *
+     * @param announceToChat true to announce it in the chat
+     */
+    public void setAnnounceToChat(boolean announceToChat) {
+        this.announceToChat = announceToChat;
+    }
+
+    /**
+     * Returns if the advancement is hidden until it is achieved
+     *
+     * @return true if it is hidden
+     */
+    public boolean isHidden() {
+        return hidden;
+    }
+
+    /**
+     * Sets if the advancement is hidden until it is achieved
+     *
+     * @param hidden true to hide it
+     */
+    public void setHidden(boolean hidden) {
+        this.hidden = hidden;
+    }
+
+    /**
      * Returns the parent advancement in the tree
      *
      * @return the parent, or null if this is a root advancement
@@ -314,6 +371,9 @@ public class AdvancementEntity extends AbstractEntity {
                 ", background='" + background + '\'' +
                 ", x=" + x +
                 ", y=" + y +
+                ", showToast=" + showToast +
+                ", announceToChat=" + announceToChat +
+                ", hidden=" + hidden +
                 ", parent=" + (parent == null ? null : parent.getId()) +
                 ", project=" + getProject() +
                 '}';
