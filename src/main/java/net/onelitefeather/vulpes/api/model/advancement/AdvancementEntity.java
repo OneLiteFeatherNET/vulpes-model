@@ -1,29 +1,30 @@
-package net.onelitefeather.vulpes.api.model;
+package net.onelitefeather.vulpes.api.model.advancement;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Index;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import net.onelitefeather.vulpes.api.model.AbstractEntity;
 import net.onelitefeather.vulpes.api.model.project.ProjectEntity;
 
 import java.util.UUID;
 
 /**
- * Represents a Notification in the system. This class is used as an entity for persistence
- * with JPA and Micronaut Data. It contains details related to a notification such as name,
+ * Represents an Advancement in the system. This class is used as an entity for persistence
+ * with JPA and Micronaut Data. It contains details related to an advancement such as name,
  * description, material, etc.
  * <p>
- * This class is mapped to the database table "vulpes_notifications" and contains fields that
+ * This class is mapped to the database table "advancements" and contains fields that
  * are automatically persisted by the JPA and Micronaut Data layers.
  * </p>
  */
-@Entity(name = "notifications")
-@Table(name = "notifications", indexes = {
-        @Index(name = "idx_notifications_project_id", columnList = "project_id")
+@Entity(name = "advancements")
+@Table(name = "advancements", indexes = {
+        @Index(name = "idx_advancements_project_id", columnList = "project_id")
 }, uniqueConstraints = {
-        @UniqueConstraint(name = "uq_notifications_project_key", columnNames = {"project_id", "key"})
+        @UniqueConstraint(name = "uq_advancements_project_key", columnNames = {"project_id", "key"})
 })
-public class NotificationEntity extends AbstractEntity {
+public class AdvancementEntity extends AbstractEntity {
 
     private String uiName;
     private String comment;
@@ -37,25 +38,25 @@ public class NotificationEntity extends AbstractEntity {
      * This constructor is required for the JPA provider to instantiate the entity.
      * </p>
      */
-    public NotificationEntity() {
+    public AdvancementEntity() {
         // No-argument constructor for JPA
     }
 
     /**
-     * Constructs a new {@link NotificationEntity} with the specified values.
+     * Constructs a new {@link AdvancementEntity} with the specified values.
      *
-     * @param id           the unique identifier of the notification
-     * @param uiName       the user interface name of the notification
-     * @param key          the local key of the notification within the project's namespace
-     *                     (e.g. {@code achievement}, becomes {@code <project-key>:achievement}
+     * @param id           the unique identifier of the advancement
+     * @param uiName       the user interface name of the advancement
+     * @param key          the local key of the advancement within the project's namespace
+     *                     (e.g. {@code first_kill}, becomes {@code <project-key>:first_kill}
      *                     via {@link #getNamespacedKey()})
      * @param comment      a comment for the description
-     * @param material     the material type associated with the notification
-     * @param frameType    the frame type associated with the notification
-     * @param title        the title of the notification
-     * @param project      the project this notification belongs to
+     * @param material     the material type associated with the advancement
+     * @param frameType    the frame type associated with the advancement
+     * @param title        the title of the advancement
+     * @param project      the project this advancement belongs to
      */
-    public NotificationEntity(UUID id, String uiName, String key, String comment, String material, String frameType, String title, ProjectEntity project) {
+    public AdvancementEntity(UUID id, String uiName, String key, String comment, String material, String frameType, String title, ProjectEntity project) {
         super(key, project);
         this.setId(id);
         this.uiName = uiName;
@@ -84,7 +85,7 @@ public class NotificationEntity extends AbstractEntity {
     }
 
     /**
-     * Returns the comment of the notification
+     * Returns the comment of the advancement
      *
      * @return the description
      */
@@ -93,7 +94,7 @@ public class NotificationEntity extends AbstractEntity {
     }
 
     /**
-     * Sets the comment of the notification
+     * Sets the comment of the advancement
      *
      * @param description the comment to set
      */
@@ -102,16 +103,16 @@ public class NotificationEntity extends AbstractEntity {
     }
 
     /**
-     * Returns the material type associated with the notification
+     * Returns the material type associated with the advancement
      *
-     * @return the material type of the notification
+     * @return the material type of the advancement
      */
     public String getMaterial() {
         return material;
     }
 
     /**
-     * Sets the material type associated with the notification
+     * Sets the material type associated with the advancement
      *
      * @param material the material to set
      */
@@ -120,16 +121,16 @@ public class NotificationEntity extends AbstractEntity {
     }
 
     /**
-     * Returns the frame type associated with the notification
+     * Returns the frame type associated with the advancement
      *
-     * @return the frame type of the notification
+     * @return the frame type of the advancement
      */
     public String getFrameType() {
         return frameType;
     }
 
     /**
-     * Sets the frame type associated with the notification
+     * Sets the frame type associated with the advancement
      *
      * @param frameType the frame type to set
      */
@@ -138,16 +139,16 @@ public class NotificationEntity extends AbstractEntity {
     }
 
     /**
-     * Returns the title of the notification
+     * Returns the title of the advancement
      *
-     * @return the title of the notification
+     * @return the title of the advancement
      */
     public String getTitle() {
         return title;
     }
 
     /**
-     * Sets the title of the notification
+     * Sets the title of the advancement
      *
      * @param title the title to set
      */
@@ -156,13 +157,13 @@ public class NotificationEntity extends AbstractEntity {
     }
 
     /**
-     * Provides a string representation of the NotificationModel
+     * Provides a string representation of the AdvancementEntity
      *
      * @return a string representation
      */
     @Override
     public String toString() {
-        return "NotificationModel{" +
+        return "AdvancementEntity{" +
                 "id='" + getId() + '\'' +
                 ", uiName='" + uiName + '\'' +
                 ", key='" + getKey() + '\'' +
