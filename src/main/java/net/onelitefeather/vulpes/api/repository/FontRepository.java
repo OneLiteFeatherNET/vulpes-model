@@ -21,11 +21,12 @@ import java.util.UUID;
 public interface FontRepository extends PageableRepository<FontEntity, UUID> {
 
     /**
-     * Retrieves all fonts along with their associated characters.
+     * Retrieves all fonts along with their associated characters. Fonts without any characters
+     * are included as well, and every font is returned only once.
      *
      * @return a list of all FontEntity objects with their characters
      */
-    @Query("select f from fonts f JOIN FETCH f.chars")
+    @Query("select distinct f from fonts f left join fetch f.chars")
     List<FontEntity> findAll();
 
     /**
