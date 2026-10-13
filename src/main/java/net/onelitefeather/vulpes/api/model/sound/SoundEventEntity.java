@@ -140,6 +140,24 @@ public class SoundEventEntity extends AbstractEntity {
 
 
     /**
+     * Returns whether this sound model replaces an existing sound model.
+     *
+     * @return true if the sound model replaces an existing one, otherwise false
+     */
+    public boolean isReplace() {
+        return replace;
+    }
+
+    /**
+     * Sets whether this sound model replaces an existing sound model.
+     *
+     * @param replace true to replace an existing sound model, otherwise false
+     */
+    public void setReplace(boolean replace) {
+        this.replace = replace;
+    }
+
+    /**
      * Sets the subtitle for the sound model.
      *
      * @param subTitle the subtitle to set
