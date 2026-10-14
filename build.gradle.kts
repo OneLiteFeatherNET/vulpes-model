@@ -29,6 +29,12 @@ dependencies {
     implementation(mn.micronaut.data.jpa)
     implementation(mn.micronaut.hibernate.jpa)
     api(libs.uuid.creator)
+
+    // Test
+    testRuntimeOnly(mn.h2)
+    testRuntimeOnly(mn.micronaut.jdbc.hikari)
+    testRuntimeOnly(mn.snakeyaml)
+    testRuntimeOnly(mn.micronaut.data.hibernate.jpa)
 }
 
 tasks {
