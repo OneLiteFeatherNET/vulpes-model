@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.1.1](https://github.com/OneLiteFeatherNET/vulpes-model/compare/v3.1.0...v3.1.1) (2026-10-14)
+
+
+### Bug Fixes
+
+* **font:** include fonts without chars in find all ([#150](https://github.com/OneLiteFeatherNET/vulpes-model/issues/150)) ([6a5539b](https://github.com/OneLiteFeatherNET/vulpes-model/commit/6a5539b6c3f5bf592a0b8e7b838e620ece9c3685))
+* **sound:** add accessor for replace flag ([#149](https://github.com/OneLiteFeatherNET/vulpes-model/issues/149)) ([82d4130](https://github.com/OneLiteFeatherNET/vulpes-model/commit/82d4130fecc5a5ed49158234e8436954990cb73a))
+
 ## [3.1.0](https://github.com/OneLiteFeatherNET/vulpes-model/compare/v3.0.0...v3.1.0) (2026-10-08)
 
 
