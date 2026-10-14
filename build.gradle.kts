@@ -17,6 +17,10 @@ java {
 
 }
 
+micronaut {
+    testRuntime("junit5")
+}
+
 dependencies {
     // Annotation Processors
     annotationProcessor(mn.micronaut.data.processor)
