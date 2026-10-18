@@ -3,6 +3,7 @@ package net.onelitefeather.vulpes.api.model.item;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.Min;
 import net.onelitefeather.vulpes.api.model.IdentifiableEntity;
 import net.onelitefeather.vulpes.api.model.ItemEntity;
 import org.hibernate.annotations.OnDelete;
@@ -25,6 +26,7 @@ public final class ItemLoreEntity extends IdentifiableEntity implements Comparab
     @JoinColumn(name = "item_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private ItemEntity item;
+    @Min(0)
     private int orderIndex;
 
     /**

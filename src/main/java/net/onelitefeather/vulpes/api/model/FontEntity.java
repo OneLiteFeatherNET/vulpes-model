@@ -6,6 +6,7 @@ import jakarta.persistence.Index;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import jakarta.validation.constraints.Min;
 import net.onelitefeather.vulpes.api.model.font.FontStringEntity;
 import net.onelitefeather.vulpes.api.model.project.ProjectEntity;
 
@@ -34,6 +35,7 @@ public class FontEntity extends AbstractEntity {
     private String mapper = "font";
     private String texturePath;
     private String comment;
+    @Min(1)
     private int height;
     private int ascent;
     @OneToMany(mappedBy = "font", cascade = CascadeType.ALL)
