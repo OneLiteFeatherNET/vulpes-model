@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.2.0](https://github.com/OneLiteFeatherNET/vulpes-model/compare/v3.1.2...v3.2.0) (2026-10-18)
+
+
+### Features
+
+* **attribute:** add minimum value, sync flag and more ([#158](https://github.com/OneLiteFeatherNET/vulpes-model/issues/158)) ([2189c65](https://github.com/OneLiteFeatherNET/vulpes-model/commit/2189c659f41fa50cef4e46a3ce34fc35a006bbf7))
+* **model:** add minimum value, sync flag and translation key to attributes ([2189c65](https://github.com/OneLiteFeatherNET/vulpes-model/commit/2189c659f41fa50cef4e46a3ce34fc35a006bbf7))
+
 ## [3.1.2](https://github.com/OneLiteFeatherNET/vulpes-model/compare/v3.1.1...v3.1.2) (2026-10-18)
 
 
