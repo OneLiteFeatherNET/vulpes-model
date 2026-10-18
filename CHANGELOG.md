@@ -1,5 +1,14 @@
 # Changelog
 
+## [3.1.2](https://github.com/OneLiteFeatherNET/vulpes-model/compare/v3.1.1...v3.1.2) (2026-10-18)
+
+
+### Bug Fixes
+
+* **model:** add range validation to item and font fields ([#154](https://github.com/OneLiteFeatherNET/vulpes-model/issues/154)) ([a548447](https://github.com/OneLiteFeatherNET/vulpes-model/commit/a548447e4efe5955d0a0d68ea7732b61dc0fc313))
+* **model:** reject blank keys and names and require the frame type ([#155](https://github.com/OneLiteFeatherNET/vulpes-model/issues/155)) ([84966b3](https://github.com/OneLiteFeatherNET/vulpes-model/commit/84966b3b4809835d62e74b823f3ebbb9dcd9a899))
+* **sound:** add new validation annotations ([#153](https://github.com/OneLiteFeatherNET/vulpes-model/issues/153)) ([f826942](https://github.com/OneLiteFeatherNET/vulpes-model/commit/f826942031565d2953822bc35bdcce22196aedff))
+
 ## [3.1.1](https://github.com/OneLiteFeatherNET/vulpes-model/compare/v3.1.0...v3.1.1) (2026-10-14)
 
 
