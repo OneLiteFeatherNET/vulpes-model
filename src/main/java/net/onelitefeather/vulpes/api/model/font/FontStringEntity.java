@@ -3,6 +3,7 @@ package net.onelitefeather.vulpes.api.model.font;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.Min;
 import net.onelitefeather.vulpes.api.model.IdentifiableEntity;
 import net.onelitefeather.vulpes.api.model.FontEntity;
 import org.hibernate.annotations.OnDelete;
@@ -18,6 +19,7 @@ public final class FontStringEntity extends IdentifiableEntity implements Compar
     @JoinColumn(name = "font_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private FontEntity font;
+    @Min(0)
     private int orderIndex;
 
     /**

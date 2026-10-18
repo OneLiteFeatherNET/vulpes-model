@@ -3,6 +3,7 @@ package net.onelitefeather.vulpes.api.model.item;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.Min;
 import net.onelitefeather.vulpes.api.model.IdentifiableEntity;
 import net.onelitefeather.vulpes.api.model.ItemEntity;
 import org.hibernate.annotations.OnDelete;
@@ -14,6 +15,7 @@ import java.util.UUID;
 @Entity(name = "item_enchantments")
 public final class ItemEnchantmentEntity extends IdentifiableEntity {
     private String name;
+    @Min(1)
     private short level;
     private boolean unsafe;
     @ManyToOne
