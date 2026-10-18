@@ -8,6 +8,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import jakarta.validation.constraints.NotNull;
 import net.onelitefeather.vulpes.api.model.AbstractEntity;
 import net.onelitefeather.vulpes.api.model.project.ProjectEntity;
 import org.hibernate.annotations.JdbcTypeCode;
@@ -43,6 +44,7 @@ public class AdvancementEntity extends AbstractEntity {
     private String uiName;
     private String comment;
     private String material;
+    @NotNull
     @Enumerated(EnumType.STRING)
     private AdvancementFrameType frameType;
     @JdbcTypeCode(SqlTypes.JSON)

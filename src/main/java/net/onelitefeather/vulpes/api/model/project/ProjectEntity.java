@@ -5,7 +5,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Index;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 import net.onelitefeather.vulpes.api.model.IdentifiableEntity;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -30,10 +30,10 @@ import java.util.UUID;
 })
 public class ProjectEntity extends IdentifiableEntity {
 
-    @NotNull
+    @NotBlank
     private String displayName;
 
-    @NotNull
+    @NotBlank
     @Column(name = "project_key")
     private String key;
 

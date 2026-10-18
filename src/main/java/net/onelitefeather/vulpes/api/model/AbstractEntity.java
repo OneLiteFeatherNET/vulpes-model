@@ -3,7 +3,7 @@ package net.onelitefeather.vulpes.api.model;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MappedSuperclass;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 import net.onelitefeather.vulpes.api.model.project.ProjectEntity;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -25,7 +25,7 @@ public abstract class AbstractEntity extends IdentifiableEntity {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private ProjectEntity project;
 
-    @NotNull
+    @NotBlank
     private String key;
 
     /**
