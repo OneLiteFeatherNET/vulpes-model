@@ -27,7 +27,10 @@ public class AttributeEntity extends AbstractEntity {
 
     private String uiName;
     private double defaultValue;
+    private double minimumValue;
     private double maximumValue;
+    private boolean synced;
+    private String translationKey;
     private String comment;
 
     /**
@@ -70,11 +73,36 @@ public class AttributeEntity extends AbstractEntity {
      * @param project      the project this attribute belongs to
      */
     public AttributeEntity(UUID id, String uiName, String key, double defaultValue, double maximumValue, String comment, ProjectEntity project) {
+        this(id, uiName, key, defaultValue, 0, maximumValue, false, null, comment, project);
+    }
+
+    /**
+     * Constructs a new {@link AttributeEntity} with all values Minestom knows about an attribute.
+     *
+     * @param id             the unique identifier of the attribute
+     * @param uiName         the model name associated with the attribute
+     * @param key            the local key of the attribute within the project's namespace
+     *                       (e.g. {@code generic.max_health}, becomes {@code <project-key>:generic.max_health}
+     *                       via {@link #getNamespacedKey()})
+     * @param defaultValue   the default value of the attribute
+     * @param minimumValue   the minimum value of the attribute
+     * @param maximumValue   the maximum value of the attribute
+     * @param synced         whether the value of the attribute is sent to the client
+     * @param translationKey the translation key for the name of the attribute, may be {@code null}
+     * @param comment        a comment or description for the attribute
+     * @param project        the project this attribute belongs to
+     */
+    public AttributeEntity(UUID id, String uiName, String key, double defaultValue, double minimumValue,
+                           double maximumValue, boolean synced, String translationKey, String comment,
+                           ProjectEntity project) {
         super(key, project);
         this.setId(id);
         this.uiName = uiName;
         this.defaultValue = defaultValue;
+        this.minimumValue = minimumValue;
         this.maximumValue = maximumValue;
+        this.synced = synced;
+        this.translationKey = translationKey;
         this.comment = comment;
     }
 
@@ -117,6 +145,24 @@ public class AttributeEntity extends AbstractEntity {
     }
 
     /**
+     * Returns the minimum value of the attribute
+     *
+     * @return the minimum value of the attribute
+     */
+    public double getMinimumValue() {
+        return minimumValue;
+    }
+
+    /**
+     * Sets the minimum value of the attribute
+     *
+     * @param minimumValue the minimum value to set
+     */
+    public void setMinimumValue(double minimumValue) {
+        this.minimumValue = minimumValue;
+    }
+
+    /**
      * Returns the maximum value of the attribute
      *
      * @return the maximum value of the attribute
@@ -132,6 +178,42 @@ public class AttributeEntity extends AbstractEntity {
      */
     public void setMaximumValue(double maximumValue) {
         this.maximumValue = maximumValue;
+    }
+
+    /**
+     * Returns whether the value of the attribute is sent to the client
+     *
+     * @return true if the value is synced to the client
+     */
+    public boolean isSynced() {
+        return synced;
+    }
+
+    /**
+     * Sets whether the value of the attribute is sent to the client
+     *
+     * @param synced the sync flag to set
+     */
+    public void setSynced(boolean synced) {
+        this.synced = synced;
+    }
+
+    /**
+     * Returns the translation key for the name of the attribute
+     *
+     * @return the translation key, or {@code null} if none is set
+     */
+    public String getTranslationKey() {
+        return translationKey;
+    }
+
+    /**
+     * Sets the translation key for the name of the attribute
+     *
+     * @param translationKey the translation key to set
+     */
+    public void setTranslationKey(String translationKey) {
+        this.translationKey = translationKey;
     }
 
     /**
@@ -164,7 +246,10 @@ public class AttributeEntity extends AbstractEntity {
                 ", modelName='" + uiName + '\'' +
                 ", key='" + getKey() + '\'' +
                 ", defaultValue=" + defaultValue +
+                ", minimumValue=" + minimumValue +
                 ", maximumValue=" + maximumValue +
+                ", synced=" + synced +
+                ", translationKey='" + translationKey + '\'' +
                 ", comment='" + comment + '\'' +
                 ", project=" + getProject() +
                 '}';
