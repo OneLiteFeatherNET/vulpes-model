@@ -3,6 +3,9 @@ package net.onelitefeather.vulpes.api.model.sound;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Min;
 import net.onelitefeather.vulpes.api.model.IdentifiableEntity;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
@@ -23,13 +26,19 @@ import java.util.UUID;
 public class SoundFileSource extends IdentifiableEntity {
 
     private String name;
+    @DecimalMin("0.0")
     @ColumnDefault("1.0")
     private float volume;
+    // The client clamps the pitch to this range when it plays a sound
+    @DecimalMin("0.5")
+    @DecimalMax("2.0")
     @ColumnDefault("1.0")
     private float pitch;
+    @Min(1)
     private int weight;
     @ColumnDefault("true")
     private boolean stream;
+    @Min(1)
     @ColumnDefault("16")
     private int attenuationDistance;
     @ColumnDefault("false")
