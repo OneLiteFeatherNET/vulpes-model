@@ -5,7 +5,7 @@ package net.onelitefeather.vulpes.api.model.asset;
  *
  * @author TheMeinerLP
  * @version 1.0.0
- * @since 3.3.0
+ * @since 3.4.0
  */
 public enum AssetTargetType {
     ITEM,

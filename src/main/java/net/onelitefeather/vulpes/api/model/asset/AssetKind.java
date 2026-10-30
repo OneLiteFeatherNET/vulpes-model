@@ -5,7 +5,7 @@ package net.onelitefeather.vulpes.api.model.asset;
  *
  * @author TheMeinerLP
  * @version 1.0.0
- * @since 3.3.0
+ * @since 3.4.0
  */
 public enum AssetKind {
 
@@ -22,12 +22,12 @@ public enum AssetKind {
     /**
      * A Blockbench model, a JSON object whose embedded textures are extracted as {@link #TEXTURE}.
      */
-    BBMODEL("application/json"),;
+    BBMODEL("application/json");
 
     private final String contentType;
 
     /**
-     * Creates a new instance of an enum entry with the given values-
+     * Creates a new instance of an enum entry with the given values.
      *
      * @param contentType of the kind
      */

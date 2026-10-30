@@ -23,7 +23,7 @@ import java.util.UUID;
  *
  * @author TheMeinerLP
  * @version 1.0.0
- * @since 3.3.0
+ * @since 3.4.0
  */
 @Entity
 @Table(
