@@ -4,6 +4,7 @@ import io.micronaut.data.annotation.Repository;
 import io.micronaut.data.repository.PageableRepository;
 import net.onelitefeather.vulpes.api.model.project.ProjectEntity;
 
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -15,4 +16,13 @@ import java.util.UUID;
  */
 @Repository
 public interface ProjectRepository extends PageableRepository<ProjectEntity, UUID> {
+
+    /**
+     * Retrieves the {@link ProjectEntity} with the given key.
+     * The key is unique across all projects, so at most one project can match.
+     *
+     * @param key the key of the project
+     * @return an {@link Optional} containing the project, or an empty one if no project has that key
+     */
+    Optional<ProjectEntity> findByKey(String key);
 }
