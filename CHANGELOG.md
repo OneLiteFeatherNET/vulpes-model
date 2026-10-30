@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.4.0](https://github.com/OneLiteFeatherNET/vulpes-model/compare/v3.3.0...v3.4.0) (2026-10-30)
+
+
+### Features
+
+* **asset:** add model structure ([#165](https://github.com/OneLiteFeatherNET/vulpes-model/issues/165)) ([c1925d7](https://github.com/OneLiteFeatherNET/vulpes-model/commit/c1925d73bac033da939bcf4c4cc599e2fb0065a8))
+
 ## [3.3.0](https://github.com/OneLiteFeatherNET/vulpes-model/compare/v3.2.0...v3.3.0) (2026-10-30)
 
 
