@@ -1,5 +1,17 @@
 # Changelog
 
+## [3.3.0](https://github.com/OneLiteFeatherNET/vulpes-model/compare/v3.2.0...v3.3.0) (2026-10-30)
+
+
+### Features
+
+* **project:** add findByKey method ([#163](https://github.com/OneLiteFeatherNET/vulpes-model/issues/163)) ([264b93a](https://github.com/OneLiteFeatherNET/vulpes-model/commit/264b93aa091f9758ec5170f3a317b13ca39c6d58))
+
+
+### Bug Fixes
+
+* **item:** remove unused findAllWithFetchs method ([1b8cc56](https://github.com/OneLiteFeatherNET/vulpes-model/commit/1b8cc5677c388a1b5e0b914c98bff4e4cffcb7cd))
+
 ## [3.2.0](https://github.com/OneLiteFeatherNET/vulpes-model/compare/v3.1.2...v3.2.0) (2026-10-18)
 
 
