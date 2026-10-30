@@ -61,10 +61,10 @@ public class ProjectAssetEntity extends IdentifiableEntity {
     private String sha1;
 
     @Column(name = "width")
-    private int width;
+    private Integer width;
 
     @Column(name = "height")
-    private int height;
+    private Integer height;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "source_asset_id")
@@ -141,7 +141,7 @@ public class ProjectAssetEntity extends IdentifiableEntity {
         this.sha1 = sha1;
     }
 
-    public int getWidth() {
+    public Integer getWidth() {
         return width;
     }
 
@@ -149,7 +149,7 @@ public class ProjectAssetEntity extends IdentifiableEntity {
         this.width = width;
     }
 
-    public int getHeight() {
+    public Integer getHeight() {
         return height;
     }
 
