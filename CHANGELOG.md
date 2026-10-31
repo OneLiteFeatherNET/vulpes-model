@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.5.0](https://github.com/OneLiteFeatherNET/vulpes-model/compare/v3.4.0...v3.5.0) (2026-10-31)
+
+
+### Features
+
+* **asset:** add key spaces and revisions to project assets ([#167](https://github.com/OneLiteFeatherNET/vulpes-model/issues/167)) ([64b03a0](https://github.com/OneLiteFeatherNET/vulpes-model/commit/64b03a07e15e15b258d99c298b8d3e676d60e281))
+
 ## [3.4.0](https://github.com/OneLiteFeatherNET/vulpes-model/compare/v3.3.0...v3.4.0) (2026-10-30)
 
 
