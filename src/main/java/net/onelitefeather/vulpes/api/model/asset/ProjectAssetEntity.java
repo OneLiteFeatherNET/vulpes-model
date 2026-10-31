@@ -17,8 +17,9 @@ import org.hibernate.annotations.OnDeleteAction;
 /**
  * A file stored for a project: a texture, a Minecraft model or a Blockbench model.
  *
- * <p>The bytes live in Micronaut Object Storage under {@code <projectId>/<assetId>}. This entity keeps
- * the metadata, so listing and validation never need to touch the storage. Textures extracted from a
+ * <p>The bytes live in Micronaut Object Storage, one object per {@link ProjectAssetRevisionEntity revision}.
+ * This entity keeps the metadata of the current content, so listing and validation never need to touch the
+ * storage. Textures extracted from a
  * Blockbench model point to it through {@link #getSourceAsset()}. A key is unique per project within
  * its {@link AssetKeySpace}.
  *
