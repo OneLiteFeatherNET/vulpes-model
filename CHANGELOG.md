@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.7.0](https://github.com/OneLiteFeatherNET/vulpes-model/compare/v3.6.0...v3.7.0) (2026-11-02)
+
+
+### Features
+
+* **expression:** add the expression and project function repositories ([#171](https://github.com/OneLiteFeatherNET/vulpes-model/issues/171)) ([762f7d7](https://github.com/OneLiteFeatherNET/vulpes-model/commit/762f7d7cd954eb058788728b01c79ac06177fb79))
+
 ## [3.6.0](https://github.com/OneLiteFeatherNET/vulpes-model/compare/v3.5.0...v3.6.0) (2026-10-31)
 
 
