@@ -35,6 +35,7 @@ dependencies {
     testRuntimeOnly(mn.micronaut.jdbc.hikari)
     testRuntimeOnly(mn.snakeyaml)
     testRuntimeOnly(mn.micronaut.data.hibernate.jpa)
+    testRuntimeOnly(mn.jackson.databind)
 }
 
 tasks {
