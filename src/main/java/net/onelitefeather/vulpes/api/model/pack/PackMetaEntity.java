@@ -17,8 +17,10 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import net.onelitefeather.vulpes.api.model.IdentifiableEntity;
 import net.onelitefeather.vulpes.api.model.project.ProjectEntity;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.type.SqlTypes;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -61,7 +63,8 @@ public class PackMetaEntity extends IdentifiableEntity {
 
     /** A text component, serialized as JSON. */
     @NotNull
-    @Column(name = "description", nullable = false, columnDefinition = "text")
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "description", nullable = false)
     private String description;
 
     @Min(1)
