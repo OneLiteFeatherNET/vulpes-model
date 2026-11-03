@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.8.0](https://github.com/OneLiteFeatherNET/vulpes-model/compare/v3.7.0...v3.8.0) (2026-11-03)
+
+
+### Features
+
+* **pack:** add meta entity ([#173](https://github.com/OneLiteFeatherNET/vulpes-model/issues/173)) ([0fc7062](https://github.com/OneLiteFeatherNET/vulpes-model/commit/0fc70623410e7037057c0e49564cec39d89c0e43))
+
 ## [3.7.0](https://github.com/OneLiteFeatherNET/vulpes-model/compare/v3.6.0...v3.7.0) (2026-11-02)
 
 
