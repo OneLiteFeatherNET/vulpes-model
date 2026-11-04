@@ -2,13 +2,19 @@ package net.onelitefeather.vulpes.api.model;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Index;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.Min;
+import net.onelitefeather.vulpes.api.model.asset.ProjectAssetEntity;
 import net.onelitefeather.vulpes.api.model.font.FontStringEntity;
 import net.onelitefeather.vulpes.api.model.project.ProjectEntity;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.List;
 import java.util.UUID;
@@ -17,6 +23,12 @@ import java.util.UUID;
  * Represents a Font in the system. This class is used as an entity for persistence
  * with JPA and Micronaut Data. It contains details related to a font such as name,
  * type, ascent, height, etc.
+ * <p>
+ * The texture of the font can be a texture asset of its project, see {@link #getTextureAsset()}.
+ * Its key names the file in the resource pack, e.g. the asset {@code cygnus:font/ghost} is
+ * {@code cygnus:font/ghost.png}. Deleting the asset leaves the font without it. The asset is
+ * loaded lazily, {@code FontRepository#findWithTextureAssetByProjectId} loads it with the fonts.
+ * </p>
  * <p>
  * This class is mapped to the database table "vulpes_fonts" and contains fields that
  * are automatically persisted by the JPA and Micronaut Data layers.
@@ -34,6 +46,10 @@ public class FontEntity extends AbstractEntity {
     private String provider;
     private String mapper = "font";
     private String texturePath;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "texture_asset_id")
+    @OnDelete(action = OnDeleteAction.SET_NULL)
+    private ProjectAssetEntity textureAsset;
     private String comment;
     @Min(1)
     private int height;
@@ -124,6 +140,29 @@ public class FontEntity extends AbstractEntity {
         return texturePath;
     }
 
+    /**
+     * Sets the texture asset of the font.
+     *
+     * @param textureAsset the texture asset, or {@code null} for none
+     */
+    public void setTextureAsset(ProjectAssetEntity textureAsset) {
+        this.textureAsset = textureAsset;
+    }
+
+    /**
+     * Returns the texture asset of the font.
+     * <p>
+     * The asset is loaded lazily: its id is known without loading it, its other fields only
+     * within a transaction or after
+     * {@link net.onelitefeather.vulpes.api.repository.FontRepository#findWithTextureAssetByProjectId(UUID)}.
+     * </p>
+     *
+     * @return the texture asset, or {@code null} when the font has none
+     */
+    public ProjectAssetEntity getTextureAsset() {
+        return textureAsset;
+    }
+
     public void setComment(String comment) {
         this.comment = comment;
     }
@@ -195,6 +234,7 @@ public class FontEntity extends AbstractEntity {
                 ", provider='" + provider + '\'' +
                 ", mapper='" + mapper + '\'' +
                 ", texturePath='" + texturePath + '\'' +
+                ", textureAssetId=" + (textureAsset == null ? null : textureAsset.getId()) +
                 ", comment='" + comment + '\'' +
                 ", height=" + height +
                 ", ascent=" + ascent +

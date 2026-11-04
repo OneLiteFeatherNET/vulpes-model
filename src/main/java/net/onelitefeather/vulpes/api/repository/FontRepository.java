@@ -39,6 +39,17 @@ public interface FontRepository extends PageableRepository<FontEntity, UUID> {
     Page<FontEntity> findByProjectId(UUID projectId, Pageable pageable);
 
     /**
+     * Retrieves all fonts of a project together with their texture assets, which
+     * {@link FontEntity#getTextureAsset()} otherwise loads lazily. Fonts without a texture asset
+     * are included as well.
+     *
+     * @param projectId the unique identifier of the project
+     * @return a list of the project's fonts with their texture assets
+     */
+    @Query("select f from fonts f left join fetch f.textureAsset where f.project.id = :projectId")
+    List<FontEntity> findWithTextureAssetByProjectId(UUID projectId);
+
+    /**
      * Checks whether a {@link FontEntity} with the given key already exists within a specific project.
      *
      * @param projectId the unique identifier of the project
