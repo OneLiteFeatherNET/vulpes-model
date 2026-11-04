@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.9.0](https://github.com/OneLiteFeatherNET/vulpes-model/compare/v3.8.0...v3.9.0) (2026-11-04)
+
+
+### Features
+
+* **font:** add asset support ([#175](https://github.com/OneLiteFeatherNET/vulpes-model/issues/175)) ([f324cb4](https://github.com/OneLiteFeatherNET/vulpes-model/commit/f324cb498c21c7603b0abe78ff0e32a0a997d98e))
+
 ## [3.8.0](https://github.com/OneLiteFeatherNET/vulpes-model/compare/v3.7.0...v3.8.0) (2026-11-03)
 
 
