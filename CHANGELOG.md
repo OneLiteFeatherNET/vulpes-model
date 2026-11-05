@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.9.1](https://github.com/OneLiteFeatherNET/vulpes-model/compare/v3.9.0...v3.9.1) (2026-11-05)
+
+
+### Bug Fixes
+
+* **pack:** cover missing pack icon ([#177](https://github.com/OneLiteFeatherNET/vulpes-model/issues/177)) ([4a12888](https://github.com/OneLiteFeatherNET/vulpes-model/commit/4a128889d264d64376ccc59902e137fdc397887c))
+
 ## [3.9.0](https://github.com/OneLiteFeatherNET/vulpes-model/compare/v3.8.0...v3.9.0) (2026-11-04)
 
 
