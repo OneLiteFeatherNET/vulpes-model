@@ -5,6 +5,9 @@ import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceException;
 import jakarta.validation.ConstraintViolationException;
+import net.onelitefeather.vulpes.api.model.asset.AssetKeySpace;
+import net.onelitefeather.vulpes.api.model.asset.AssetKind;
+import net.onelitefeather.vulpes.api.model.asset.ProjectAssetEntity;
 import net.onelitefeather.vulpes.api.model.project.ProjectEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -15,6 +18,7 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -95,6 +99,64 @@ class PackMetaPersistenceTest {
         persistAndFlush(meta(PackType.DATA, 82, 0, 82, null));
 
         assertThrows(PersistenceException.class, () -> persistAndFlush(meta(PackType.DATA, 83, 0, 83, null)));
+    }
+
+    private ProjectAssetEntity persistTexture(String key) {
+        var asset = new ProjectAssetEntity();
+        asset.setProject(project);
+        asset.setKey(key);
+        asset.setDisplayName(key);
+        asset.setKind(AssetKind.TEXTURE);
+        asset.setKeySpace(AssetKeySpace.of(AssetKind.TEXTURE));
+        asset.setFileName("pack.png");
+        asset.setContentType(AssetKind.TEXTURE.contentType());
+        asset.setSize(1);
+        asset.setSha1("0".repeat(40));
+        persistAndFlush(asset);
+        return asset;
+    }
+
+    @Test
+    @DisplayName("pack meta keeps its icon asset")
+    void keepsIconAsset() {
+        var icon = persistTexture("vulpes:pack/icon");
+        var meta = meta(PackType.RESOURCE, 60, 0, 60, null);
+        meta.setIconAsset(icon);
+        persistAndFlush(meta);
+        entityManager.clear();
+
+        var read = entityManager.find(PackMetaEntity.class, meta.getId());
+
+        assertNotNull(read.getIconAsset());
+        assertEquals(icon.getId(), read.getIconAsset().getId());
+    }
+
+    @Test
+    @DisplayName("pack meta without an icon has no icon asset")
+    void withoutIconAsset() {
+        var meta = meta(PackType.DATA, 82, 0, 82, null);
+        persistAndFlush(meta);
+        entityManager.clear();
+
+        assertNull(entityManager.find(PackMetaEntity.class, meta.getId()).getIconAsset());
+    }
+
+    @Test
+    @DisplayName("deleting the icon asset leaves the pack meta without an icon")
+    void deletingIconAssetKeepsPackMeta() {
+        var icon = persistTexture("vulpes:pack/icon");
+        var meta = meta(PackType.RESOURCE, 60, 0, 60, null);
+        meta.setIconAsset(icon);
+        persistAndFlush(meta);
+        entityManager.clear();
+
+        entityManager.remove(entityManager.find(ProjectAssetEntity.class, icon.getId()));
+        entityManager.flush();
+        entityManager.clear();
+
+        var read = entityManager.find(PackMetaEntity.class, meta.getId());
+        assertNotNull(read, "The pack meta must lose its icon, not block the delete");
+        assertNull(read.getIconAsset());
     }
 
     @Test
