@@ -16,6 +16,7 @@ import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import net.onelitefeather.vulpes.api.model.IdentifiableEntity;
+import net.onelitefeather.vulpes.api.model.asset.ProjectAssetEntity;
 import net.onelitefeather.vulpes.api.model.project.ProjectEntity;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.OnDelete;
@@ -90,6 +91,13 @@ public class PackMetaEntity extends IdentifiableEntity {
     @Column(name = "feature", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<String> enabledFeatures = new LinkedHashSet<>();
+
+    /** Written as the {@code pack.png} of the pack, {@code null} for none. */
+    @Nullable
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "icon_asset_id")
+    @OnDelete(action = OnDeleteAction.SET_NULL)
+    private ProjectAssetEntity iconAsset;
 
     /**
      * Creates an empty entity, required by JPA.
@@ -199,5 +207,27 @@ public class PackMetaEntity extends IdentifiableEntity {
 
     public void setEnabledFeatures(Set<String> enabledFeatures) {
         this.enabledFeatures = new LinkedHashSet<>(enabledFeatures);
+    }
+
+    /**
+     * Returns the texture asset written as the {@code pack.png} of the pack.
+     * <p>
+     * The asset is loaded lazily: its id is known without loading it, its other fields only
+     * within a transaction.
+     * </p>
+     *
+     * @return the icon asset, or {@code null} when the pack has no icon
+     */
+    public @Nullable ProjectAssetEntity getIconAsset() {
+        return iconAsset;
+    }
+
+    /**
+     * Sets the texture asset written as the {@code pack.png} of the pack.
+     *
+     * @param iconAsset the icon asset, or {@code null} for none
+     */
+    public void setIconAsset(@Nullable ProjectAssetEntity iconAsset) {
+        this.iconAsset = iconAsset;
     }
 }
