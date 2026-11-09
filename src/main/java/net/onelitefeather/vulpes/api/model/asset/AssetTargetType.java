@@ -10,5 +10,10 @@ package net.onelitefeather.vulpes.api.model.asset;
 public enum AssetTargetType {
     ITEM,
     FONT,
-    ADVANCEMENT
+    ADVANCEMENT,
+
+    /**
+     * A source of a sound event that plays the linked sound file.
+     */
+    SOUND_SOURCE
 }

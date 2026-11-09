@@ -15,7 +15,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 /**
- * A file stored for a project: a texture, a Minecraft model or a Blockbench model.
+ * A file stored for a project: a texture, a Minecraft model, a Blockbench model or a sound.
  *
  * <p>The bytes live in Micronaut Object Storage, one object per {@link ProjectAssetRevisionEntity revision}.
  * This entity keeps the metadata of the current content, so listing and validation never need to touch the
@@ -75,6 +75,18 @@ public class ProjectAssetEntity extends IdentifiableEntity {
 
     @Column(name = "height")
     private Integer height;
+
+    /** The number of audio channels, only for sounds. */
+    @Column(name = "channels")
+    private Integer channels;
+
+    /** The sample rate in Hz, only for sounds. */
+    @Column(name = "sample_rate")
+    private Integer sampleRate;
+
+    /** The duration in milliseconds, only for sounds, and only when it could be read. */
+    @Column(name = "duration_ms")
+    private Long durationMs;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "source_asset_id")
@@ -173,6 +185,30 @@ public class ProjectAssetEntity extends IdentifiableEntity {
 
     public void setHeight(Integer height) {
         this.height = height;
+    }
+
+    public Integer getChannels() {
+        return channels;
+    }
+
+    public void setChannels(Integer channels) {
+        this.channels = channels;
+    }
+
+    public Integer getSampleRate() {
+        return sampleRate;
+    }
+
+    public void setSampleRate(Integer sampleRate) {
+        this.sampleRate = sampleRate;
+    }
+
+    public Long getDurationMs() {
+        return durationMs;
+    }
+
+    public void setDurationMs(Long durationMs) {
+        this.durationMs = durationMs;
     }
 
     public ProjectAssetEntity getSourceAsset() {

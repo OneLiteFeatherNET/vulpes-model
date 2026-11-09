@@ -22,7 +22,12 @@ public enum AssetKind {
     /**
      * A Blockbench model, a JSON object whose embedded textures are extracted as {@link #TEXTURE}.
      */
-    BBMODEL("application/json");
+    BBMODEL("application/json"),
+
+    /**
+     * An Ogg Vorbis sound with one channel, played by the sources of a sound event.
+     */
+    SOUND("audio/ogg");
 
     private final String contentType;
 
