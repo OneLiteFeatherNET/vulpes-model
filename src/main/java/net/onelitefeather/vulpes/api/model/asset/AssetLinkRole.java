@@ -2,7 +2,7 @@ package net.onelitefeather.vulpes.api.model.asset;
 
 /**
  * How a linked asset is used by its target. A {@link #TEXTURE} link requires a texture asset, a
- * {@link #MODEL} link requires a model or a Blockbench model.
+ * {@link #MODEL} link requires a model or a Blockbench model, a {@link #SOUND} link requires a sound.
  *
  * @author TheMeinerLP
  * @version 1.0.0
@@ -10,5 +10,6 @@ package net.onelitefeather.vulpes.api.model.asset;
  */
 public enum AssetLinkRole {
     TEXTURE,
-    MODEL
+    MODEL,
+    SOUND
 }
