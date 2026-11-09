@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.10.0](https://github.com/OneLiteFeatherNET/vulpes-model/compare/v3.9.1...v3.10.0) (2026-11-09)
+
+
+### Features
+
+* **asset:** add sound assets and their link to sound sources ([#181](https://github.com/OneLiteFeatherNET/vulpes-model/issues/181)) ([aa5993f](https://github.com/OneLiteFeatherNET/vulpes-model/commit/aa5993ff78d82fdf9aad9a4d763561e15536d333))
+
 ## [3.9.1](https://github.com/OneLiteFeatherNET/vulpes-model/compare/v3.9.0...v3.9.1) (2026-11-05)
 
 
