@@ -19,4 +19,16 @@ class AssetKeySpaceTest {
         assertEquals(AssetKeySpace.MODEL, AssetKeySpace.of(AssetKind.MODEL));
         assertEquals(AssetKeySpace.MODEL, AssetKeySpace.of(AssetKind.BBMODEL));
     }
+
+    @Test
+    @DisplayName("a sound lives in the sound key space")
+    void soundLivesInSoundKeySpace() {
+        assertEquals(AssetKeySpace.SOUND, AssetKeySpace.of(AssetKind.SOUND));
+    }
+
+    @Test
+    @DisplayName("a sound is stored as Ogg audio")
+    void soundIsStoredAsOgg() {
+        assertEquals("audio/ogg", AssetKind.SOUND.contentType());
+    }
 }

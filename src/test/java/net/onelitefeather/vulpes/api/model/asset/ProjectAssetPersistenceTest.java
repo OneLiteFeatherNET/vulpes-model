@@ -11,7 +11,9 @@ import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @MicronautTest(environments = "test")
@@ -93,5 +95,63 @@ class ProjectAssetPersistenceTest {
         persistAndFlush(revision(asset, 1));
 
         assertThrows(PersistenceException.class, () -> persistAndFlush(revision(asset, 1)));
+    }
+
+    @Test
+    @DisplayName("a sound and a texture may share a key")
+    void soundAndTextureShareKey() {
+        persistAndFlush(asset("vulpes:ambient/wind", AssetKind.TEXTURE));
+
+        assertDoesNotThrow(() -> persistAndFlush(asset("vulpes:ambient/wind", AssetKind.SOUND)));
+    }
+
+    @Test
+    @DisplayName("a sound and a model may share a key")
+    void soundAndModelShareKey() {
+        persistAndFlush(asset("vulpes:ambient/wind", AssetKind.MODEL));
+
+        assertDoesNotThrow(() -> persistAndFlush(asset("vulpes:ambient/wind", AssetKind.SOUND)));
+    }
+
+    @Test
+    @DisplayName("two sounds must not share a key")
+    void duplicateSoundKeyIsRejected() {
+        persistAndFlush(asset("vulpes:ambient/wind", AssetKind.SOUND));
+
+        assertThrows(PersistenceException.class,
+                () -> persistAndFlush(asset("vulpes:ambient/wind", AssetKind.SOUND)));
+    }
+
+    @Test
+    @DisplayName("a sound keeps its channels, sample rate and duration")
+    void soundKeepsAudioMetadata() {
+        var sound = asset("vulpes:ambient/wind", AssetKind.SOUND);
+        sound.setChannels(1);
+        sound.setSampleRate(44100);
+        sound.setDurationMs(2500L);
+        persistAndFlush(sound);
+        entityManager.clear();
+
+        var loaded = entityManager.find(ProjectAssetEntity.class, sound.getId());
+
+        assertAll(
+                () -> assertEquals(1, loaded.getChannels()),
+                () -> assertEquals(44100, loaded.getSampleRate()),
+                () -> assertEquals(2500L, loaded.getDurationMs())
+        );
+    }
+
+    @Test
+    @DisplayName("a sound can be linked to a sound source")
+    void soundLinksToSoundSource() {
+        var sound = asset("vulpes:ambient/wind", AssetKind.SOUND);
+        persistAndFlush(sound);
+        var link = new AssetLinkEntity();
+        link.setAsset(sound);
+        link.setTargetType(AssetTargetType.SOUND_SOURCE);
+        link.setTargetId(UUID.randomUUID());
+        link.setRole(AssetLinkRole.SOUND);
+
+        assertDoesNotThrow(() -> persistAndFlush(link));
     }
 }
