@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.UUID;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -41,5 +42,29 @@ class SoundEventEntityTest {
         SoundEventEntity entity = createEntity(true);
         entity.setReplace(false);
         assertFalse(entity.isReplace(), "setReplace(false) must change the flag");
+    }
+
+    @Test
+    void sourceIsMasterByDefault() {
+        assertEquals(SoundSource.MASTER, createEntity(false).getSource(), "A new entity must play in the master source");
+    }
+
+    @Test
+    void minimumValueIsZeroByDefault() {
+        assertEquals(0.0, createEntity(false).getMinimumValue(), "A new entity must have a minimum value of 0");
+    }
+
+    @Test
+    void setSourceChangesSource() {
+        SoundEventEntity entity = createEntity(false);
+        entity.setSource(SoundSource.WEATHER);
+        assertEquals(SoundSource.WEATHER, entity.getSource(), "setSource must change the source");
+    }
+
+    @Test
+    void setMinimumValueChangesMinimumValue() {
+        SoundEventEntity entity = createEntity(false);
+        entity.setMinimumValue(0.5);
+        assertEquals(0.5, entity.getMinimumValue(), "setMinimumValue must change the minimum value");
     }
 }
