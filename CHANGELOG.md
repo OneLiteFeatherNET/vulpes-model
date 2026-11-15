@@ -1,5 +1,17 @@
 # Changelog
 
+## [3.11.0](https://github.com/OneLiteFeatherNET/vulpes-model/compare/v3.10.0...v3.11.0) (2026-11-15)
+
+
+### Features
+
+* **sound:** add the minimum value and source of a sound event ([1cb318b](https://github.com/OneLiteFeatherNET/vulpes-model/commit/1cb318bdaae098b88bdce8a22dc3ba902079e72c))
+
+
+### Bug Fixes
+
+* **sound:** add missing source and minimum value propertiery ([#184](https://github.com/OneLiteFeatherNET/vulpes-model/issues/184)) ([1cb318b](https://github.com/OneLiteFeatherNET/vulpes-model/commit/1cb318bdaae098b88bdce8a22dc3ba902079e72c))
+
 ## [3.10.0](https://github.com/OneLiteFeatherNET/vulpes-model/compare/v3.9.1...v3.10.0) (2026-11-09)
 
 
