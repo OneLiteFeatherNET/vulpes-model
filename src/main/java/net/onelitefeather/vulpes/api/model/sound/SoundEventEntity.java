@@ -2,10 +2,15 @@ package net.onelitefeather.vulpes.api.model.sound;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Index;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotNull;
 import net.onelitefeather.vulpes.api.model.AbstractEntity;
 import net.onelitefeather.vulpes.api.model.project.ProjectEntity;
 import org.hibernate.annotations.ColumnDefault;
@@ -40,6 +45,14 @@ public class SoundEventEntity extends AbstractEntity {
     @ColumnDefault("null")
     private String subTitle;
     private String comment;
+    @DecimalMin("0.0")
+    @DecimalMax("1.0")
+    @ColumnDefault("0.0")
+    private double minimumValue;
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @ColumnDefault("'MASTER'")
+    private SoundSource source = SoundSource.MASTER;
 
     /**
      * Represents the list of sound data related to this sound model.
@@ -194,6 +207,42 @@ public class SoundEventEntity extends AbstractEntity {
     }
 
     /**
+     * Returns the lowest value the sound event accepts, from 0 to 1.
+     *
+     * @return the minimum value
+     */
+    public double getMinimumValue() {
+        return minimumValue;
+    }
+
+    /**
+     * Sets the lowest value the sound event accepts, from 0 to 1.
+     *
+     * @param minimumValue the minimum value to set
+     */
+    public void setMinimumValue(double minimumValue) {
+        this.minimumValue = minimumValue;
+    }
+
+    /**
+     * Returns the category the sound event plays in.
+     *
+     * @return the source
+     */
+    public SoundSource getSource() {
+        return source;
+    }
+
+    /**
+     * Sets the category the sound event plays in.
+     *
+     * @param source the source to set
+     */
+    public void setSource(SoundSource source) {
+        this.source = source;
+    }
+
+    /**
      * Returns the list of sound data related to this sound model
      *
      * @return the list of sound data
@@ -215,12 +264,12 @@ public class SoundEventEntity extends AbstractEntity {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         SoundEventEntity that = (SoundEventEntity) o;
-        return replace == that.replace && Objects.equals(getId(), that.getId()) && Objects.equals(uiName, that.uiName) && Objects.equals(getKey(), that.getKey()) && Objects.equals(keyName, that.keyName) && Objects.equals(subTitle, that.subTitle) && Objects.equals(comment, that.comment) && Objects.equals(soundData, that.soundData) && Objects.equals(getProject(), that.getProject());
+        return replace == that.replace && Objects.equals(getId(), that.getId()) && Objects.equals(uiName, that.uiName) && Objects.equals(getKey(), that.getKey()) && Objects.equals(keyName, that.keyName) && Objects.equals(subTitle, that.subTitle) && Objects.equals(comment, that.comment) && Double.compare(minimumValue, that.minimumValue) == 0 && source == that.source && Objects.equals(soundData, that.soundData) && Objects.equals(getProject(), that.getProject());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), uiName, getKey(), keyName, replace, subTitle, comment, soundData, getProject());
+        return Objects.hash(getId(), uiName, getKey(), keyName, replace, subTitle, comment, minimumValue, source, soundData, getProject());
     }
 
     @Override
@@ -233,6 +282,8 @@ public class SoundEventEntity extends AbstractEntity {
                 ", replace=" + replace +
                 ", subTitle='" + subTitle + '\'' +
                 ", comment='" + comment + '\'' +
+                ", minimumValue=" + minimumValue +
+                ", source=" + source +
                 ", soundData=" + soundData +
                 ", project=" + getProject() +
                 '}';
