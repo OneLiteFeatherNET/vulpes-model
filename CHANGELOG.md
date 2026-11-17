@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.12.0](https://github.com/OneLiteFeatherNET/vulpes-model/compare/v3.11.0...v3.12.0) (2026-11-17)
+
+
+### Features
+
+* **blockstate:** add the block state entity and its repository ([#186](https://github.com/OneLiteFeatherNET/vulpes-model/issues/186)) ([87d7a26](https://github.com/OneLiteFeatherNET/vulpes-model/commit/87d7a26e688cbdacf96c1383c19677157d783804))
+
 ## [3.11.0](https://github.com/OneLiteFeatherNET/vulpes-model/compare/v3.10.0...v3.11.0) (2026-11-15)
 
 
